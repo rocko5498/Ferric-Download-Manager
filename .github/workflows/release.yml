@@ -97,9 +97,12 @@ jobs:
             if (-not (Test-Path "$dir\$f")) { throw "missing after install: $f" }
           }
           & "$dir\ferric-host.exe" --status
+          $desktop = Join-Path ([Environment]::GetFolderPath("Desktop")) "Ferric.lnk"
+          if (-not (Test-Path $desktop)) { throw "no desktop shortcut after install" }
           $un = Get-ChildItem $dir -Filter "unins*.exe" | Select-Object -First 1
           $u = Start-Process $un.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" -Wait -PassThru
           if ($u.ExitCode -ne 0) { throw "uninstaller exit code $($u.ExitCode)" }
+          if (Test-Path $desktop) { throw "desktop shortcut left behind after uninstall" }
 
       - name: Name the files and write checksums
         shell: pwsh

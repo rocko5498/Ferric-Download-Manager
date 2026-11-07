@@ -33,15 +33,12 @@ DisableDirPage=yes
 DisableReadyPage=yes
 AllowNoIcons=yes
 
-[Tasks]
-Name: "desktopicon"; Description: "Add a &desktop shortcut"; Flags: unchecked
-
 [Files]
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion; Excludes: "Install-Ferric.cmd,Install-Ferric.ps1,Uninstall-Ferric.ps1"
 
 [Icons]
 Name: "{autoprograms}\Ferric"; Filename: "{app}\ferric-qt.exe"; Comment: "Ferric Download Manager"
-Name: "{autodesktop}\Ferric"; Filename: "{app}\ferric-qt.exe"; Tasks: desktopicon
+Name: "{autodesktop}\Ferric"; Filename: "{app}\ferric-qt.exe"; Comment: "Ferric Download Manager"
 
 [Run]
 ; Connects the browsers to Ferric (native-messaging host). A failure here must not abort the install.

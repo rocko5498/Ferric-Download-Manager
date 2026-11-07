@@ -11,6 +11,9 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path $PSScriptRoot -Parent
 $profile = if ($Release) { "release" } else { "debug" }
 $qtBin = $env:QMAKE -replace '[/\\]qmake\.exe$', ''
+# Where Qt is: QMAKE, else whatever is on PATH (CI), else the install root a CI action exports, else the usual local folder.
+if (-not $qtBin -and (Get-Command qmake -ErrorAction SilentlyContinue)) { $qtBin = Split-Path (Get-Command qmake).Source }
+if (-not $qtBin -and $env:QT_ROOT_DIR) { $qtBin = Join-Path $env:QT_ROOT_DIR "bin" }
 if (-not $qtBin) { $qtBin = "C:\Qt\6.8.3\msvc2022_64\bin" }
 
 Write-Host "=== Ferric Release Packaging ===" -ForegroundColor Cyan

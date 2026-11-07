@@ -17,6 +17,7 @@ if ((Test-Path $host_) -and $ours) { & $host_ --uninstall 2>&1 | ForEach-Object 
 elseif (-not $ours) { Say "The browser registration belongs to another Ferric install; left in place." }
 
 Remove-Item (Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs\Ferric.lnk") -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path ([Environment]::GetFolderPath("Desktop")) "Ferric.lnk") -Force -ErrorAction SilentlyContinue
 Remove-Item "HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Ferric" -Recurse -Force -ErrorAction SilentlyContinue
 
 if ($RemoveData) {

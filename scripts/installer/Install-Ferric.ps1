@@ -35,14 +35,19 @@ if (-not $NoHostRegistration) {
 }
 
 if (-not $NoShortcut) {
-    $startMenu = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs"
     $shell = New-Object -ComObject WScript.Shell
-    $lnk = $shell.CreateShortcut((Join-Path $startMenu "Ferric.lnk"))
-    $lnk.TargetPath = Join-Path $InstallDir "ferric-qt.exe"
-    $lnk.WorkingDirectory = $InstallDir
-    $lnk.Description = "Ferric Download Manager"
-    $lnk.Save()
-    Say "Start Menu shortcut created"
+    $places = @{
+        "Start Menu" = Join-Path $env:APPDATA "Microsoft\Windows\Start Menu\Programs"
+        "Desktop"    = [Environment]::GetFolderPath("Desktop")
+    }
+    foreach ($name in $places.Keys) {
+        $lnk = $shell.CreateShortcut((Join-Path $places[$name] "Ferric.lnk"))
+        $lnk.TargetPath = Join-Path $InstallDir "ferric-qt.exe"
+        $lnk.WorkingDirectory = $InstallDir
+        $lnk.Description = "Ferric Download Manager"
+        $lnk.Save()
+        Say "$name shortcut created"
+    }
 }
 
 # Add/Remove Programs entry (per user).
