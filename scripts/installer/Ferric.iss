@@ -42,7 +42,7 @@ Name: "{autodesktop}\Ferric"; Filename: "{app}\ferric-qt.exe"; Comment: "Ferric 
 
 [Run]
 ; Connects the browsers to Ferric (native-messaging host). A failure here must not abort the install.
-Filename: "{app}\ferric-host.exe"; Parameters: "--install"; Flags: runhidden; StatusMsg: "Connecting your browsers..."
+Filename: "{app}\ferric-host.exe"; Parameters: "--install --offer-extension"; Flags: runhidden; StatusMsg: "Connecting your browsers..."
 Filename: "{app}\ferric-qt.exe"; Description: "Start Ferric"; Flags: nowait postinstall skipifsilent
 Filename: "{win}\explorer.exe"; Parameters: """{app}\extension"""; Description: "Open the browser extension folder (to add it to Chrome, Edge or Brave)"; Flags: nowait postinstall skipifsilent unchecked
 

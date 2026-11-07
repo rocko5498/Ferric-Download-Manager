@@ -9,6 +9,12 @@ const DEFAULT_FIREFOX_EXTENSION_ID: &str = "ferric@ferric.local";
 /// The id of the packed (CRX) extension; its registry keys are removed again by `--uninstall`.
 #[cfg(windows)]
 const PACKED_EXTENSION_ID: &str = "gepkkfjfgdcgelcnejpikdeanggknbjo";
+/// (registry key the browser reads for external extensions, package file that browser is offered)
+#[cfg(windows)]
+const OFFERED_PACKAGES: [(&str, &str); 2] = [
+    (r"Software\Google\Chrome\Extensions", "Ferric.crx"),
+    (r"Software\Microsoft\Edge\Extensions", "Ferric-edge.crx"),
+];
 
 /// `ids` are the extension ids the host accepts; the first Chromium id is the packed extension
 /// that the browsers are offered through the external-extension registry key.
@@ -149,12 +155,12 @@ fn stable_config_dir() -> anyhow::Result<PathBuf> {
     ))
 }
 
-/// The packed extension that ships next to the host (`extension\Ferric.crx` and its `manifest.json`),
+/// A packed extension that ships next to the host (`extension\<file>` and its `manifest.json`),
 /// as (path, version). IDM offers its extension the same way: a registry key the browser reads.
 #[cfg(windows)]
-fn packed_extension(host_path: &Path) -> Option<(PathBuf, String)> {
+fn packed_extension(host_path: &Path, file: &str) -> Option<(PathBuf, String)> {
     let dir = host_path.parent()?.join("extension");
-    let crx = dir.join("Ferric.crx");
+    let crx = dir.join(file);
     let manifest: serde_json::Value =
         serde_json::from_slice(&fs::read(dir.join("manifest.json")).ok()?).ok()?;
     let version = manifest.get("version")?.as_str()?.to_string();
@@ -181,18 +187,18 @@ fn install_platform(
         key.set_value("", &manifest_path.to_string_lossy().to_string())?;
     }
 
-    // Offer the packed extension to Chrome, Brave and Edge through the external-extension keys, the way
-    // IDM does. Off by default: the browsers only let such an extension run when it is in their store
-    // (an off-store one is listed but cannot be switched on), so use `--offer-extension` once Ferric is listed.
-    if let (true, Some(id), Some((crx, version))) = (
+    // Offer the packed extension through the external-extension keys, the way IDM does: the browser installs
+    // the package and asks the user to enable it. That only happens when the package's manifest names the
+    // browser's store update address (scripts\pack-extension.ps1 -UpdateUrl); without it the browser takes the
+    // file but never lets the user switch it on. Measured with scripts\ci\extension-offer-test.ps1.
+    if let (true, Some(id)) = (
         offer_extension,
         extension_ids.iter().find(|id| is_chromium_extension_id(id)),
-        packed_extension(host_path),
     ) {
-        for base in [
-            r"Software\Google\Chrome\Extensions",
-            r"Software\Microsoft\Edge\Extensions",
-        ] {
+        for (base, file) in OFFERED_PACKAGES {
+            let Some((crx, version)) = packed_extension(host_path, file) else {
+                continue;
+            };
             let (key, _) = hkcu.create_subkey(format!(r"{base}\{id}"))?;
             key.set_value("path", &crx.to_string_lossy().to_string())?;
             key.set_value("version", &version)?;
@@ -225,10 +231,7 @@ fn uninstall_platform() -> anyhow::Result<()> {
             Err(e) => return Err(e.into()),
         }
     }
-    for base in [
-        r"Software\Google\Chrome\Extensions",
-        r"Software\Microsoft\Edge\Extensions",
-    ] {
+    for (base, _) in OFFERED_PACKAGES {
         match hkcu.delete_subkey_all(format!(r"{base}\{PACKED_EXTENSION_ID}")) {
             Ok(()) => {}
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}

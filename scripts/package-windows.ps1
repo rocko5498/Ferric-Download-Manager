@@ -85,9 +85,14 @@ if (Test-Path $extBuild) {
     Copy-Item "$extBuild\*" "$outPath\extension\" -Recurse
     # Ferric.crx (made by scripts\pack-extension.ps1) is what the installer offers to the browsers
     # through the external-extension registry key, the way IDM does.
-    $crx = Join-Path $root "extension\build\chrome-mv3-prod.crx"
-    if (Test-Path $crx) { Copy-Item $crx "$outPath\extension\Ferric.crx" }
-    else { Write-Host "NOTE: no extension\build\chrome-mv3-prod.crx (run scripts\pack-extension.ps1); browsers will not be offered the extension." -ForegroundColor Yellow }
+    # One package per browser family: each names its own store's update address (see pack-extension.ps1).
+    $crxFiles = @{ "chrome-mv3-prod.crx" = "Ferric.crx"; "chrome-mv3-prod-edge.crx" = "Ferric-edge.crx" }
+    $anyCrx = $false
+    foreach ($name in $crxFiles.Keys) {
+        $crx = Join-Path $root "extension\build\$name"
+        if (Test-Path $crx) { Copy-Item $crx "$outPath\extension\$($crxFiles[$name])"; $anyCrx = $true }
+    }
+    if (-not $anyCrx) { Write-Host "NOTE: no packed extension (run scripts\pack-extension.ps1); browsers will not be offered the extension." -ForegroundColor Yellow }
 } else {
     Write-Host "NOTE: extension not built (run 'npm run build' in extension\); the package has no extension folder." -ForegroundColor Yellow
 }

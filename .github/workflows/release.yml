@@ -73,6 +73,31 @@ jobs:
           npm run build
           npm test
 
+      # Signs the extension with the Ferric key (a repository secret) so the installer can offer it to the
+      # browsers. Without the secret this is skipped and the installer simply does not offer it.
+      - name: Is the extension key available?
+        id: key
+        shell: pwsh
+        env:
+          KEY: ${{ secrets.FERRIC_EXTENSION_KEY }}
+        run: |
+          if ($env:KEY) { "present=true" >> $env:GITHUB_OUTPUT } else { Write-Host "No FERRIC_EXTENSION_KEY secret: the installer will not offer the extension to the browsers." }
+
+      - name: Pack the extension for Chrome and Edge
+        if: steps.key.outputs.present == 'true'
+        shell: pwsh
+        env:
+          FERRIC_EXTENSION_KEY: ${{ secrets.FERRIC_EXTENSION_KEY }}
+        run: |
+          $key = Join-Path $env:RUNNER_TEMP "ferric-extension-key.pem"
+          try {
+            Set-Content $key $env:FERRIC_EXTENSION_KEY -NoNewline
+            .\scripts\pack-extension.ps1 -Key $key -Out extension\build\chrome-mv3-prod.crx -UpdateUrl "https://clients2.google.com/service/update2/crx"
+            .\scripts\pack-extension.ps1 -Key $key -Out extension\build\chrome-mv3-prod-edge.crx -UpdateUrl "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
+          } finally {
+            Remove-Item $key -Force -ErrorAction SilentlyContinue
+          }
+
       - name: Build ferric-qt, ferricd and ferric-host
         run: cargo build --release -p ferric-qt -p ferricd -p ferric-host
 
@@ -99,10 +124,25 @@ jobs:
           & "$dir\ferric-host.exe" --status
           $desktop = Join-Path ([Environment]::GetFolderPath("Desktop")) "Ferric.lnk"
           if (-not (Test-Path $desktop)) { throw "no desktop shortcut after install" }
+          # The extension offer: Chrome's key is also read by Brave (measured), Edge has its own.
+          $offered = @(
+            @{ key = "HKCU:\Software\Google\Chrome\Extensions\gepkkfjfgdcgelcnejpikdeanggknbjo"; file = "Ferric.crx" },
+            @{ key = "HKCU:\Software\Microsoft\Edge\Extensions\gepkkfjfgdcgelcnejpikdeanggknbjo"; file = "Ferric-edge.crx" }
+          )
+          $packed = Test-Path "$dir\extension\Ferric.crx"
+          if ("${{ steps.key.outputs.present }}" -eq "true" -and -not $packed) { throw "the key is set but the installer carries no packed extension" }
+          if ($packed) {
+            foreach ($o in $offered) {
+              $v = Get-ItemProperty $o.key -ErrorAction SilentlyContinue
+              if (-not $v) { throw "extension not offered: missing $($o.key)" }
+              if (-not (Test-Path $v.path) -or -not $v.version) { throw "bad offer at $($o.key): $($v.path) $($v.version)" }
+            }
+          }
           $un = Get-ChildItem $dir -Filter "unins*.exe" | Select-Object -First 1
           $u = Start-Process $un.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" -Wait -PassThru
           if ($u.ExitCode -ne 0) { throw "uninstaller exit code $($u.ExitCode)" }
           if (Test-Path $desktop) { throw "desktop shortcut left behind after uninstall" }
+          foreach ($o in $offered) { if (Test-Path $o.key) { throw "extension offer left behind after uninstall: $($o.key)" } }
 
       - name: Name the files and write checksums
         shell: pwsh
