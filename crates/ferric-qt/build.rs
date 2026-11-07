@@ -1,0 +1,66 @@
+use cxx_qt_build::{CxxQtBuilder, QmlFile, QmlModule};
+
+fn main() {
+    // Taskbar / title-bar / Explorer icon: Qt picks up the IDI_ICON1 resource embedded in the exe.
+    #[cfg(windows)]
+    {
+        println!("cargo:rerun-if-changed=assets/ferric.rc");
+        println!("cargo:rerun-if-changed=assets/ferric.ico");
+        embed_resource::compile("assets/ferric.rc", embed_resource::NONE)
+            .manifest_optional()
+            .expect("embed icon resource");
+    }
+    CxxQtBuilder::new_qml_module(
+        QmlModule::new("com.ferric.app")
+            .qml_file(QmlFile::from("qml/Theme.qml").singleton(true))
+            .qml_file("qml/AppDialog.qml")
+            .qml_file("qml/FormField.qml")
+            .qml_file("qml/main.qml")
+            .qml_file("qml/GrabberWorkspace.qml")
+            .qml_file("qml/TorrentDetailPanel.qml")
+            .qml_file("qml/DownloadDetailPanel.qml")
+            .qml_file("qml/PrefsDialog.qml")
+            .qml_file("qml/ShortcutsDialog.qml")
+            .qml_file("qml/ErrorDialog.qml")
+            .qml_file("qml/AboutDialog.qml")
+            .qml_file("qml/WebhooksDialog.qml")
+            .qml_file("qml/StatsDialog.qml")
+            .qml_file("qml/ColumnChooserDialog.qml")
+            .qml_file("qml/ProxyDialog.qml")
+            .qml_file("qml/ProxyAddDialog.qml")
+            .qml_file("qml/SiteRuleDialog.qml")
+            .qml_file("qml/TorrentPolicyDialog.qml")
+            .qml_file("qml/EditQueueDialog.qml")
+            .qml_file("qml/OverviewWorkspace.qml")
+            .qml_file("qml/MediaWorkspace.qml")
+            .qml_file("qml/AddTorrentDialog.qml")
+            .qml_file("qml/AddCategoryDialog.qml")
+            .qml_file("qml/AddRssDialog.qml")
+            .qml_file("qml/AddRssRuleDialog.qml")
+            .qml_file("qml/TrackersEditDialog.qml")
+            .qml_file("qml/SetLocationDialog.qml")
+            .qml_file("qml/DuplicateUrlDialog.qml")
+            .qml_file("qml/ClipboardOfferToast.qml")
+            .qml_file("qml/SideFilter.qml")
+            .qml_file("qml/RSSWorkspace.qml")
+            .qml_file("qml/DownloadsTable.qml")
+            .qml_file("qml/TorrentsTable.qml")
+            .qml_file("qml/ToolBarComponent.qml")
+            .qml_file("qml/StatusBarComponent.qml")
+            .qml_file("qml/KillSwitchBanner.qml")
+            .qml_file("qml/AddBatchDialog.qml")
+            .qml_file("qml/AddUrlDialog.qml")
+            .qml_file("qml/DeleteTorrentDialog.qml")
+            .qml_file("qml/ExitDialog.qml")
+            .qml_file("qml/DownloadProgressWindow.qml")
+            .qml_file("qml/DownloadCompleteWindow.qml")
+            .qml_file("qml/DownloadInfoDialog.qml")
+            .qml_file("qml/ZipPreviewWindow.qml"),
+    )
+    .qrc("qml/icons.qrc")
+    .file("src/daemon_session.rs")
+    .file("src/progress_hub.rs")
+    .file("src/transfer_models.rs")
+    .file("src/command_bus.rs")
+    .build();
+}

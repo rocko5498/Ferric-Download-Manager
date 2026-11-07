@@ -1,0 +1,92 @@
+# Rust build artifacts
+/target/
+**/target/
+
+# Cargo lock is committed for binaries, not libraries
+# Cargo.lock  ← keep this commented so it IS tracked
+
+# IDE
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+
+# Local AI/agent workspace state
+.claude/
+.claude-flow/
+.qwen/
+.serena/
+.swarm/
+.codebase-memory/
+.superpowers/
+debug-logs/
+diagnostics/
+ruvector.db
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# SQLite databases (dev databases)
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# Node / extension build
+extension/node_modules/
+extension/.plasmo/
+extension/build/
+crates/ferric-ui/ui/node_modules/
+crates/ferric-ui/ui/dist/
+
+# Tauri build outputs (already in target/)
+crates/ferric-ui/gen/
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+
+# Native messaging host build copies
+native-messaging/*.exe
+native-messaging/*.generated.json
+
+# Distribution artifacts (produced by cargo-dist)
+dist/
+
+# TypeScript build artifacts
+extension/tsconfig.tsbuildinfo
+
+# RTK tool cache
+.rtk/
+
+# Dev scratch / QA test artifacts
+tmp/
+
+# Accidental scratch files (shell-redirect artifacts — root only)
+/\{,
+/,-
+/Update
+/8
+/10
+/0
+/0)
+/u64
+/,session_title
+/36)
+/All
+/QString
+/speed_bps`
+/.fq14-*.txt
+/*.tmp.txt
+crates/ferric-ui/ui/,+
+crates/ferric-ui/ui/u64
+scripts/smoke-artifacts/
+
+# Hand-deployed release bundle (Qt DLLs + built exes) — never track binaries
+/release/

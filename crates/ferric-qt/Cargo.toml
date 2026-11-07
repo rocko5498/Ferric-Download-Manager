@@ -1,0 +1,33 @@
+[package]
+name = "ferric-qt"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "ferric-qt"
+path = "src/main.rs"
+
+[dependencies]
+cxx.workspace = true
+cxx-qt.workspace = true
+cxx-qt-lib = { workspace = true, features = ["qt_full"] }
+tokio.workspace = true
+reqwest.workspace = true
+chrono.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+ferric-common.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+futures.workspace = true
+single-instance.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { workspace = true, features = ["Win32_UI_WindowsAndMessaging", "Win32_System_Diagnostics_Debug"] }
+
+[build-dependencies]
+cxx-qt-build.workspace = true
+
+[target.'cfg(windows)'.build-dependencies]
+embed-resource = "3"

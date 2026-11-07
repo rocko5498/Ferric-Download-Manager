@@ -1,0 +1,2 @@
+// IDI_ICON1 is the name Qt looks up for the window/taskbar icon on Windows.
+IDI_ICON1 ICON "ferric.ico"

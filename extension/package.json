@@ -1,0 +1,47 @@
+{
+  "name": "ferric-extension",
+  "displayName": "Ferric Download Manager",
+  "version": "1.0.0",
+  "description": "Intercepts Chrome downloads and accelerates them with parallel chunked transfers via the Ferric daemon.",
+  "scripts": {
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "build:firefox": "plasmo build --target=firefox-mv2 && node scripts/firefox-id.mjs",
+    "build:edge": "plasmo build --target=edge-mv3",
+    "test": "node --test tests/"
+  },
+  "dependencies": {
+    "@plasmohq/messaging": "^0.7.1",
+    "plasmo": "^0.90.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "webextension-polyfill": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.3.7",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/webextension-polyfill": "^0.12.6",
+    "typescript": "^5.4.5"
+  },
+  "manifest": {
+    "name": "Ferric Download Manager",
+    "homepage_url": "https://github.com/rocko5498/Ferric-Download-Manager",
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsjmW0o5LHLDgAOcvysjRzIvLCKi9SLBKRjYZAVyG5/eFQxbEOjVjpGyNtYnmqYaO+Za9McUVw7QTOhWuHUas12MhjVb8qrhaVxzxe/1qSrWS8otxxMRZi6v/FmsypGrdVRGcpRp/R46xEODtWcIvJtvbX51XhoD89v+rrjlCu5A8/e3YMiYXye8H1jenvA58AX8LvoMcgIRnwO2cyseId0S5HwdyENFN5prvK354LS1EW7Ldl9+jjFxTziYc/a2YH+oPZweWxbuYFV8BPFHXuBA4C4d7VGWbl7jPajPHZgwaIOafwVG1ff4Dmb9kIu7F9y65otTKSMQ5YaQ0M9pVswIDAQAB",
+    "permissions": [
+      "downloads",
+      "downloads.ui",
+      "nativeMessaging",
+      "cookies",
+      "contextMenus",
+      "storage",
+      "scripting",
+      "alarms",
+      "webRequest"
+    ],
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "minimum_chrome_version": "116"
+  }
+}

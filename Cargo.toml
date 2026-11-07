@@ -1,0 +1,130 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ferric-common",
+    "crates/ferric-host",
+    "crates/ferricd",
+    "crates/ferric-extract",
+    "crates/ferric-cli",
+    "crates/ferric-qt",
+]
+default-members = [
+    "crates/ferric-common",
+    "crates/ferric-host",
+    "crates/ferricd",
+    "crates/ferric-qt",
+]
+
+[workspace.package]
+version    = "1.0.0-rc.3"
+edition    = "2021"
+license    = "MIT"
+repository = "https://github.com/rocko5498/Ferric-Download-Manager"
+
+# ── Shared dependency versions ───────────────────────────────────────────────
+
+[workspace.dependencies]
+# Async runtime
+tokio      = { version = "1",    features = ["full"] }
+futures    = "0.3"
+
+# HTTP
+reqwest = { version = "0.12", default-features = false, features = [
+    "stream", "rustls-tls", "http2", "gzip", "brotli", "deflate", "cookies", "json", "socks",
+] }
+hyper         = { version = "1", features = ["http1", "http2", "client", "server"] }
+hyper-util    = { version = "0.1", features = ["client", "client-legacy", "http1", "http2", "tokio"] }
+hyper-rustls  = { version = "0.27", default-features = false, features = ["http1", "http2", "rustls-native-certs"] }
+http-body-util = "0.1"
+
+# Serialization
+serde      = { version = "1", features = ["derive"] }
+serde_json = "1"
+postcard   = { version = "1", features = ["use-std"] }
+bytes      = "1"
+m3u8-rs    = "6"
+scraper    = "0.22"
+quick-xml  = "0.41"
+base64     = "0.22"
+
+# Database
+sqlx = { version = "0.8", default-features = false, features = [
+    "sqlite", "runtime-tokio", "macros", "migrate",
+] }
+
+# Web API (daemon → UI)
+axum         = { version = "0.8",  features = ["ws"] }
+tower        = { version = "0.5", features = ["util"] }
+
+# Error handling & logging
+anyhow             = "1"
+thiserror          = "2"
+tracing            = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Utilities
+uuid              = { version = "1", features = ["v4", "serde"] }
+url               = "2"
+sanitize-filename = "0.5"
+globset           = "0.4"
+which             = "6"
+directories       = "5"
+single-instance   = "0.3.3"
+rand              = "0.8"
+regex             = "1"
+winreg            = "0.52"
+chrono            = { version = "0.4", default-features = false, features = ["clock"] }
+windows-sys       = { version = "0.59", features = [
+    "Win32_Foundation",
+    "Win32_System_IO",
+    "Win32_System_Ioctl",
+    "Win32_Security_Cryptography",
+] }
+
+# Rate limiting
+governor = "0.6"
+
+# Crypto
+ring = "0.17"
+sha1 = "0.10"
+sha2 = "0.10"
+md5  = "0.7"
+
+# Pinned >=36 to stay clear of RUSTSEC-2026-0095/0096/0088/0149/0182/0188 etc. (17 advisories
+# closed 2026-07-16, verified via `cargo audit` before/after)
+
+# Internal crates
+ferric-common = { path = "crates/ferric-common" }
+
+# cxx-qt (ferric-qt track — see docs/toolchain-cxx-qt.md for the pinned Qt/MSVC versions)
+cxx          = "1"
+cxx-qt       = "0.9.1"
+cxx-qt-lib   = "0.9.1"
+cxx-qt-build = "0.9.1"
+
+# ── Workspace-level lint config ──────────────────────────────────────────────
+
+[workspace.lints.rust]
+unsafe_code = "warn"
+
+[workspace.lints.clippy]
+# Groups sit at lower priority so the specific allows below override them.
+all      = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Curated allows — pedantic lints that fire pervasively on deliberate code.
+# Byte/throughput math relies on intentional, range-bounded numeric casts:
+cast_possible_truncation = "allow"
+cast_precision_loss      = "allow"
+cast_sign_loss           = "allow"
+cast_possible_wrap       = "allow"
+# Exhaustive, documented match arms are kept explicit for readability:
+match_same_arms          = "allow"
+# `use`/`const` placed next to their point of use reads clearer here:
+items_after_statements   = "allow"
+# sqlx `Row` and tauri `State` are naturally taken by value:
+needless_pass_by_value   = "allow"
+# A few async fns stay async for API symmetry, not for an internal await:
+unused_async             = "allow"
+# IPC/SSE message enums are transient (one per command/event), not bulk-stored;
+# boxing the large variant would complicate wire types for negligible benefit:
+large_enum_variant       = "allow"

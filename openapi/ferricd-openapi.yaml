@@ -1,0 +1,109 @@
+# Task 149 — OpenAPI 3.0 for ferricd local REST API
+openapi: 3.0.3
+info:
+  title: Ferric ferricd API
+  version: 0.1.0
+  description: |
+    Local-only download daemon API. Bound to 127.0.0.1.
+    Auth: header X-Ferric-Auth = token from lock file.
+servers:
+  - url: http://127.0.0.1:{port}
+    variables:
+      port:
+        default: "0"
+paths:
+  /health:
+    get:
+      summary: Health
+      security: []
+      responses:
+        "200":
+          description: OK
+  /downloads:
+    get:
+      summary: List downloads
+      security: [{ FerricAuth: [] }]
+      responses:
+        "200":
+          description: Array of DownloadRecord
+    post:
+      summary: Add download
+      security: [{ FerricAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url: { type: string }
+                filename: { type: string }
+                checksum: { type: string }
+      responses:
+        "201":
+          description: Created
+  /media/extract:
+    post:
+      summary: Extract media formats (pure Rust first)
+      security: [{ FerricAuth: [] }]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url: { type: string }
+                force_ytdlp: { type: boolean }
+                cookie_header: { type: string }
+      responses:
+        "200":
+          description: ExtractResult
+  /media/download:
+    post:
+      summary: Extract + queue best format
+      security: [{ FerricAuth: [] }]
+      responses:
+        "201":
+          description: Queued
+  /privacy/dashboard:
+    get:
+      summary: Privacy dashboard aggregate
+      security: [{ FerricAuth: [] }]
+      responses:
+        "200":
+          description: PrivacyDashboard
+  /privacy/anonymity-score:
+    get:
+      summary: Torrent anonymity score
+      security: [{ FerricAuth: [] }]
+      responses:
+        "200":
+          description: AnonymityScore
+  /audit/export:
+    get:
+      summary: Export audit mode JSON
+      security: [{ FerricAuth: [] }]
+      responses:
+        "200":
+          description: JSON export
+  /settings:
+    get:
+      summary: Get all settings
+      security: [{ FerricAuth: [] }]
+      responses:
+        "200":
+          description: key-value map
+    post:
+      summary: Update settings
+      security: [{ FerricAuth: [] }]
+      responses:
+        "200":
+          description: OK
+components:
+  securitySchemes:
+    FerricAuth:
+      type: apiKey
+      in: header
+      name: X-Ferric-Auth

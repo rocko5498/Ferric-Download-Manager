@@ -1,0 +1,116 @@
+{
+  "failed": 0,
+  "total": 22,
+  "results": [
+    {
+      "ok": true,
+      "name": "daemon_health",
+      "detail": "port=55931"
+    },
+    {
+      "ok": true,
+      "name": "frontend_preview",
+      "detail": ":3000"
+    },
+    {
+      "ok": true,
+      "name": "ui_process_alive",
+      "detail": "pid=22180"
+    },
+    {
+      "ok": true,
+      "name": "daemon_with_ui",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "webview_cdp_page",
+      "detail": "http://localhost:3000/"
+    },
+    {
+      "ok": true,
+      "name": "nav:Grabber",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Queues",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Scheduler",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Media",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Site Rules",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:RSS",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Security",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Privacy",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Proxies",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "nav:Settings",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "settings:General",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "settings:Webhooks",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "settings:Categories",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "site_rules_add_live",
+      "detail": "api_count=2"
+    },
+    {
+      "ok": true,
+      "name": "security_export_click",
+      "detail": "clicked"
+    },
+    {
+      "ok": true,
+      "name": "toolbar_add_url",
+      "detail": "opened+esc"
+    },
+    {
+      "ok": true,
+      "name": "toolbar_pause_attempt",
+      "detail": "clicked if present"
+    }
+  ]
+}

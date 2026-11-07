@@ -1,0 +1,17 @@
+{
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ferric@ferric.dev",
+      "strict_min_version": "109.0"
+    }
+  },
+  "permissions": [
+    "downloads",
+    "nativeMessaging",
+    "cookies",
+    "contextMenus",
+    "storage",
+    "alarms",
+    "<all_urls>"
+  ]
+}

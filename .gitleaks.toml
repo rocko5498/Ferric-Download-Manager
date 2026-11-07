@@ -1,0 +1,14 @@
+title = "Ferric gitleaks config"
+
+[extend]
+useDefault = true
+
+# The "key" in extension/package.json is the extension's PUBLIC key (it only fixes the extension id),
+# and HANDOFF.md is prose that mentions a library name; neither is a secret.
+# ([allowlist] is the form every gitleaks version reads; [[allowlists]] needs 8.25+.)
+[allowlist]
+description = "public extension manifest key and a prose false positive"
+paths = [
+  '''extension/package\.json''',
+  '''HANDOFF\.md''',
+]

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="rust" cx="35%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#f0a064"/>
+      <stop offset="0.35" stop-color="#cf6a28"/>
+      <stop offset="0.75" stop-color="#8f3a12"/>
+      <stop offset="1" stop-color="#4a1c08"/>
+    </radialGradient>
+    <linearGradient id="bolt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff6a8"/>
+      <stop offset="0.5" stop-color="#ffd21f"/>
+      <stop offset="1" stop-color="#ff9d00"/>
+    </linearGradient>
+    <filter id="pits" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.08  0 0 0 0 0.02  0 0 0 1.6 -0.62"/>
+    </filter>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="9" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <clipPath id="globe"><circle cx="256" cy="262" r="214"/></clipPath>
+  </defs>
+  <!-- globe -->
+  <circle cx="256" cy="262" r="214" fill="url(#rust)"/>
+  <g clip-path="url(#globe)">
+    <rect width="512" height="512" filter="url(#pits)"/>
+    <!-- longitude / latitude lines -->
+    <g fill="none" stroke="#3b1505" stroke-opacity="0.75" stroke-width="9">
+      <ellipse cx="256" cy="262" rx="214" ry="214"/>
+      <ellipse cx="256" cy="262" rx="120" ry="214"/>
+      <ellipse cx="256" cy="262" rx="38" ry="214"/>
+      <line x1="42" y1="262" x2="470" y2="262"/>
+      <path d="M62 160 Q256 205 450 160"/>
+      <path d="M62 364 Q256 319 450 364"/>
+    </g>
+    <!-- continents, as darker oxide -->
+    <g fill="#5a2208" fill-opacity="0.6" stroke="#3b1505" stroke-opacity="0.5" stroke-width="4">
+      <path d="M118 150 C150 118 204 128 208 170 C212 206 180 214 190 246 C200 282 236 300 226 342 C216 388 174 402 158 360 C148 330 164 300 138 270 C108 234 92 184 118 150 Z"/>
+      <path d="M300 138 C346 118 408 150 418 196 C426 232 386 236 370 252 C396 282 382 332 340 362 C308 382 294 340 300 304 C304 280 274 270 272 234 C268 194 270 158 300 138 Z"/>
+      <path d="M380 340 C402 332 420 350 408 372 C396 392 372 384 374 362 Z"/>
+    </g>
+    <!-- light rim -->
+    <ellipse cx="190" cy="150" rx="120" ry="70" fill="#ffd9ae" opacity="0.16" transform="rotate(-28 190 150)"/>
+  </g>
+  <circle cx="256" cy="262" r="214" fill="none" stroke="#2e1004" stroke-width="10"/>
+  <!-- lightning bolt -->
+  <g transform="translate(256 262) scale(0.9) translate(-256 -262)">
+  <g filter="url(#glow)">
+    <path d="M300 14 L128 292 L230 292 L178 500 L396 196 L288 196 L366 14 Z"
+          fill="url(#bolt)" stroke="#3a1a00" stroke-width="16" stroke-linejoin="round"/>
+  </g>
+  <path d="M300 14 L128 292 L230 292 L178 500 L396 196 L288 196 L366 14 Z"
+        fill="url(#bolt)" stroke="#fff3b0" stroke-width="3" stroke-linejoin="round" opacity="0.9"/>
+  </g>
+</svg>

@@ -1,0 +1,1 @@
+ALTER TABLE downloads ADD COLUMN speed_limit_bps INTEGER NOT NULL DEFAULT 0;

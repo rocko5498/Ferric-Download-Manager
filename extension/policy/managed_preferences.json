@@ -1,0 +1,12 @@
+{
+  "3rdparty": {
+    "extensions": {
+      "EXTENSION_ID_PLACEHOLDER": {
+        "capturePolicyEnabled": true,
+        "captureExtensions": ["zip", "rar", "7z", "exe", "msi", "mp4", "mkv", "iso", "pdf", "dmg"],
+        "captureMinSizeBytes": 1048576,
+        "daemonAutoStart": true
+      }
+    }
+  }
+}

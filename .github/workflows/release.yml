@@ -1,0 +1,113 @@
+name: Release
+
+# GitHub-hosted runners are not paid for on this account, so these jobs would only fail ("recent account
+# payments have failed ..."). The checks run on the maintainer's machine instead: scripts/ci-local.ps1.
+# To run this workflow anyway: Actions tab > this workflow > Run workflow. To switch the automatic triggers
+# back on, restore the `push` / `pull_request` / `schedule` blocks from git history (commit "Workflows: manual start only").
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  FERRIC_OFFICIAL_BUILD: "1"
+  FERRIC_EXTENSION_ID: ${{ vars.FERRIC_EXTENSION_ID }}
+  FERRIC_FIREFOX_EXTENSION_ID: ${{ vars.FERRIC_FIREFOX_EXTENSION_ID }}
+  QT_VERSION: "6.8.3"
+  QT_ARCH: win64_msvc2022_64
+
+jobs:
+  windows:
+    name: Windows package
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          arch: ${{ env.QT_ARCH }}
+          modules: qtdeclarative qtshadertools
+          cache: true
+
+      - name: Verify official release metadata
+        shell: pwsh
+        run: |
+          if (-not $env:FERRIC_EXTENSION_ID) { throw "FERRIC_EXTENSION_ID repository variable is required for official release builds" }
+          if (-not $env:FERRIC_FIREFOX_EXTENSION_ID) { throw "FERRIC_FIREFOX_EXTENSION_ID repository variable is required for official release builds" }
+
+      - name: Build ferric-qt + ferricd + ferric-host
+        run: cargo build --release -p ferric-qt -p ferricd -p ferric-host
+
+      - name: Package Windows release
+        shell: pwsh
+        run: .\scripts\package-windows.ps1 -Release -OutputDir release
+
+      - name: Generate SHA256 checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem release -File |
+            ForEach-Object {
+              $hash = Get-FileHash -Algorithm SHA256 $_.FullName
+              "$($hash.Hash.ToLowerInvariant())  $($_.Name)" | Out-File -Append -Encoding ascii release/SHA256SUMS.txt
+            }
+
+      - name: Upload Windows artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ferric-windows
+          path: release/*
+          if-no-files-found: error
+
+      - name: Install extension dependencies
+        working-directory: extension
+        run: npm ci
+
+      - name: Build and package extension
+        shell: pwsh
+        working-directory: extension
+        run: |
+          npm run build
+          $version = (Get-Content package.json | ConvertFrom-Json).version
+          Compress-Archive -Path build/chrome-mv3-prod/* -DestinationPath "../ferric-extension-$version.zip"
+
+      - name: Upload extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ferric-extension-zip
+          path: ferric-extension-*.zip
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs:
+      - windows
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+          merge-multiple: true
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-artifacts/*

@@ -1,0 +1,19 @@
+[package]
+name = "ferric-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Ferric / ferricd CLI client (Task 153)"
+
+[[bin]]
+name = "ferric"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+reqwest = { workspace = true }
+serde_json = { workspace = true }
+tokio = { workspace = true }
+anyhow = { workspace = true }
+directories = { workspace = true }
+ferric-common = { workspace = true }

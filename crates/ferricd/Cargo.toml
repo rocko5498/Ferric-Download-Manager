@@ -1,0 +1,111 @@
+[package]
+name    = "ferricd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "ferricd"
+path = "src/main.rs"
+
+[features]
+# Must mirror ferric-extract so `#[cfg(feature = "ytdlp-subprocess")]` in ferricd is true in product builds.
+default = ["ytdlp-subprocess"]
+ytdlp-subprocess = ["ferric-extract/ytdlp-subprocess"]
+# Dev-only: `cargo build -p ferricd --features tokio-console` (needs `RUSTFLAGS="--cfg tokio_unstable"`
+# for full task/resource instrumentation) then `tokio-console` CLI to attach. Never on in default builds.
+tokio-console = ["dep:console-subscriber"]
+
+[dependencies]
+ferric-common = { workspace = true }
+# Product: native IEs + yt-dlp engine (feature-gated; default on)
+ferric-extract = { path = "../ferric-extract", default-features = false }
+
+# Async runtime
+tokio      = { workspace = true }
+futures      = { workspace = true }
+tokio-stream = { version = "0.1", features = ["sync"] }
+
+# HTTP
+reqwest        = { workspace = true }
+hyper          = { workspace = true }
+hyper-util     = { workspace = true }
+hyper-rustls   = { workspace = true }
+http-body-util = { workspace = true }
+bytes          = { workspace = true }
+m3u8-rs        = { workspace = true }
+quick-xml      = { workspace = true }
+base64         = { workspace = true }
+
+# HTTP server (UI API)
+axum        = { workspace = true }
+tower       = { workspace = true }
+
+# Database
+sqlx = { workspace = true }
+
+# Serialization
+serde      = { workspace = true }
+serde_json = { workspace = true }
+postcard   = { workspace = true }
+
+# Error handling & logging
+anyhow             = { workspace = true }
+tracing            = { workspace = true }
+tracing-subscriber = { workspace = true }
+console-subscriber = { version = "0.4", optional = true }
+chrono             = { workspace = true }
+windows-sys        = { workspace = true }
+suppaftp     = { version = "10.0.0", features = ["tokio", "tokio-rustls-aws-lc-rs", "deprecated"] }
+# SFTP (Task 097) — pure-Rust SSH (no OpenSSL/perl)
+russh        = { version = "0.65", default-features = false, features = ["aws-lc-rs", "flate2"] }
+russh-sftp   = "2.3"
+rustls-native-certs = "0.8"
+tokio-rustls = { version = "0.26", default-features = false, features = ["ring", "tls12"] }
+
+# Utils
+uuid         = { workspace = true }
+url          = { workspace = true }
+sanitize-filename = { workspace = true }
+globset      = { workspace = true }
+which        = { workspace = true }
+directories  = { workspace = true }
+single-instance = { workspace = true }
+rand         = { workspace = true }
+governor     = { workspace = true }
+maxminddb    = "0.29"
+
+# Crypto
+ring = { workspace = true }
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
+sha1 = { workspace = true }
+sha2 = { workspace = true }
+md5  = { workspace = true }
+# HLS AES-128 (Task 102)
+aes = "0.9"
+cbc = { version = "0.2", features = ["alloc"] }
+
+# WASM runtime (plugin sandbox)
+
+# qBittorrent .fastresume import (Task: match-GD3 switching-friction reduction)
+serde_bencode = "0.2.4"
+boa_engine = "0.22.0"
+
+[target.'cfg(windows)'.dependencies]
+winreg = { workspace = true }
+# sspi temporarily removed: ecdsa pin (picky rc) conflicts with russh 0.62.
+# NTLM auth falls back to a clear error until sspi/russh ecdsa align.
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+tempfile = "3"
+rcgen = { version = "0.13", default-features = false, features = ["pem", "ring"] }
+
+[lints]
+workspace = true
+
+[target.'cfg(windows)'.build-dependencies]
+embed-resource = "3"

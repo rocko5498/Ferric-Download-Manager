@@ -1,0 +1,11 @@
+{
+  "ExtensionSettings": {
+    "EXTENSION_ID_PLACEHOLDER": {
+      "installation_mode": "force_installed",
+      "update_url": "https://clients2.google.com/service/update2/crx",
+      "toolbar_pin": "force_pinned",
+      "blocked_permissions": [],
+      "minimum_version_required": "0.1.0"
+    }
+  }
+}

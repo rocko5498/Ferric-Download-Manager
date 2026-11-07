@@ -1,0 +1,142 @@
+name: CI
+
+# GitHub-hosted runners are not paid for on this account, so these jobs would only fail ("recent account
+# payments have failed ..."). The checks run on the maintainer's machine instead: scripts/ci-local.ps1.
+# To run this workflow anyway: Actions tab > this workflow > Run workflow. To switch the automatic triggers
+# back on, restore the `push` / `pull_request` / `schedule` blocks from git history (commit "Workflows: manual start only").
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  rust:
+    # ferric-qt needs a Qt toolchain and has its own dedicated Windows job below,
+    # so it is excluded from every cargo invocation here.
+    name: Rust (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+
+      # Shell-artifact files (`0`, `QString`, `speed_bps\``…) kept landing at repo
+      # root via unreviewed `git add .` — fail fast if the root grows a stray file.
+      - name: Root hygiene
+        if: runner.os == 'Linux'
+        run: |
+          allowed='^(\.gitattributes|\.gitignore|\.gitleaks\.toml|AGENTS\.md|ARCHITECTURE\.md|CHANGELOG\.md|CLAUDE\.md|CONTRIBUTING\.md|Cargo\.lock|Cargo\.toml|Dockerfile|HANDOFF\.md|LICENSE|README\.md|ROADMAP\.md|SECURITY\.md|clippy\.toml|deny\.toml|install\.ps1|rustfmt\.toml)$'
+          stray=$(git ls-files | grep -v / | grep -vE "$allowed" || true)
+          if [ -n "$stray" ]; then
+            echo "Unexpected files at repo root (add to allowlist in ci.yml if intentional):"
+            echo "$stray"
+            exit 1
+          fi
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      # Workspace lints opt into clippy::pedantic as warnings (~490 open),
+      # so a blanket -D warnings is not a usable gate yet. Deny the bug-class
+      # groups now; restore -D warnings after a dedicated pedantic burn-down.
+      - name: Check Clippy
+        run: cargo clippy --workspace --exclude ferric-qt --all-targets -- -D clippy::correctness -D clippy::suspicious
+
+      - name: Check workspace
+        run: cargo check --workspace --exclude ferric-qt
+
+      - name: Test workspace
+        run: cargo test --workspace --exclude ferric-qt
+
+  extension:
+    name: Chrome extension
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: extension/package-lock.json
+
+      - name: Build extension
+        working-directory: extension
+        run: |
+          npm ci
+          npm run build
+
+  security:
+    name: Security audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check advisories
+
+  ferric-qt:
+    name: ferric-qt (Windows)
+    runs-on: windows-latest
+    env:
+      # Pinned in docs/toolchain-cxx-qt.md — keep these two in sync with it.
+      QT_VERSION: "6.8.3"
+      QT_ARCH: win64_msvc2022_64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache Rust
+        uses: Swatinem/rust-cache@v2
+
+      # qtdeclarative ships inside the base desktop install for Qt 6.8 — listing
+      # it as an aqt module made the install fail before any code compiled.
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          arch: ${{ env.QT_ARCH }}
+          modules: qtshadertools
+          cache: true
+
+      # install-qt-action v4 stopped exporting Qt6_DIR; QT_ROOT_DIR is the
+      # supported variable (cxx-qt-build finds Qt via qmake on PATH anyway).
+      - name: Report Qt env
+        run: |
+          Write-Host "QT_ROOT_DIR=$env:QT_ROOT_DIR"
+          if (-not $env:QT_ROOT_DIR) { throw "QT_ROOT_DIR not set by install-qt-action" }
+
+      - name: Build ferric-qt
+        run: cargo check -p ferric-qt
+
+      - name: Wire audit (FQT-018 — QML action ids must be in catalog/actions.json)
+        run: python tasks/cxx-qt/tools/wire_audit.py

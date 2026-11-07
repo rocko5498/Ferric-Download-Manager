@@ -1,0 +1,133 @@
+{
+  "lock": {
+    "port": 63953
+  },
+  "failed": 0,
+  "results": [
+    {
+      "ok": true,
+      "name": "reuse_running_daemon",
+      "detail": "port 63953"
+    },
+    {
+      "ok": true,
+      "name": "daemon_up",
+      "detail": "port=63953"
+    },
+    {
+      "ok": true,
+      "name": "health",
+      "detail": "v=0.1.0"
+    },
+    {
+      "ok": true,
+      "name": "settings_get",
+      "detail": "keys=61"
+    },
+    {
+      "ok": true,
+      "name": "settings_set_onboarding",
+      "detail": "ok"
+    },
+    {
+      "ok": true,
+      "name": "list_downloads",
+      "detail": "n=54"
+    },
+    {
+      "ok": true,
+      "name": "list_queues",
+      "detail": "n=1"
+    },
+    {
+      "ok": true,
+      "name": "site_rules_crud",
+      "detail": "id=89e5c172-02b4-4c64-affd-facf31f6bf27"
+    },
+    {
+      "ok": true,
+      "name": "rss_list_add",
+      "detail": "feeds=6+1 id=1f89a104-295c-4331-85e7-71b0f64953e1"
+    },
+    {
+      "ok": true,
+      "name": "webhooks_list",
+      "detail": "n=0"
+    },
+    {
+      "ok": true,
+      "name": "categories_list",
+      "detail": "n=0"
+    },
+    {
+      "ok": true,
+      "name": "plugins_list",
+      "detail": "n=0"
+    },
+    {
+      "ok": true,
+      "name": "audit_export",
+      "detail": "keys=download_audit,exported_at,note,torrent_audit"
+    },
+    {
+      "ok": true,
+      "name": "privacy_dashboard",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "anonymity_score",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "merge_jobs",
+      "detail": "n=0"
+    },
+    {
+      "ok": true,
+      "name": "torrents_list",
+      "detail": "n=2"
+    },
+    {
+      "ok": true,
+      "name": "proxies_list",
+      "detail": "n=0"
+    },
+    {
+      "ok": true,
+      "name": "ytdlp_status",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "ffmpeg_status",
+      "detail": "status=200"
+    },
+    {
+      "ok": true,
+      "name": "cookies_from_browser_disabled",
+      "detail": "Browser cookie DB access is disabled. Pass cookies from the extension capture pa"
+    },
+    {
+      "ok": true,
+      "name": "extract_login_disabled",
+      "detail": "410 as expected"
+    },
+    {
+      "ok": true,
+      "name": "add_download_reject_private",
+      "detail": "blocked private IP"
+    },
+    {
+      "ok": true,
+      "name": "add_download_public_ok",
+      "detail": "id=223b299f-d499-4e5b-9ed2-3bcd7a60dbea"
+    },
+    {
+      "ok": true,
+      "name": "auth_reject_bad_token",
+      "detail": "401"
+    }
+  ]
+}

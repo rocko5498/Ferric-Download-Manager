@@ -1,0 +1,20 @@
+{
+  "extends": "plasmo/templates/tsconfig.base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "jsx": "react-jsx",
+    "strict": true,
+    "types": [
+      "chrome"
+    ]
+  },
+  "include": [
+    ".plasmo/index.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}

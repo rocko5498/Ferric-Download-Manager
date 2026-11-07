@@ -1,0 +1,43 @@
+name: Security
+
+# GitHub-hosted runners are not paid for on this account, so these jobs would only fail ("recent account
+# payments have failed ..."). The checks run on the maintainer's machine instead: scripts/ci-local.ps1.
+# To run this workflow anyway: Actions tab > this workflow > Run workflow. To switch the automatic triggers
+# back on, restore the `push` / `pull_request` / `schedule` blocks from git history (commit "Workflows: manual start only").
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    # On pull requests the action lists the PR's commits through the API, which needs this.
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_COMMENTS: "false"
+
+  audit:
+    name: Dependency advisories (cargo-audit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo install cargo-audit --locked
+      # RUSTSEC-2023-0071 (rsa, Marvin timing attack) has no fixed release and the crate is not part of any
+      # binary we build (only in Cargo.lock through an optional dependency); revisit when a fix exists.
+      - run: cargo audit --ignore RUSTSEC-2023-0071
+
+# CodeQL and the OpenSSF Scorecard were removed: on a private repository CodeQL needs GitHub Advanced
+# Security and the Scorecard action needs a billed Google registry, so both failed on every push.
+# Add them back if the repository becomes public.

@@ -1,0 +1,33 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="icons/ferric-tray.png">icons/ferric-tray.png</file>
+        <file alias="icons/application-exit-32.png">icons/application-exit-32.png</file>
+        <file alias="icons/application-exit-48.png">icons/application-exit-48.png</file>
+        <file alias="icons/configure-32.png">icons/configure-32.png</file>
+        <file alias="icons/configure-48.png">icons/configure-48.png</file>
+        <file alias="icons/dialog-cancel-32.png">icons/dialog-cancel-32.png</file>
+        <file alias="icons/dialog-cancel-48.png">icons/dialog-cancel-48.png</file>
+        <file alias="icons/dialog-ok-apply-32.png">icons/dialog-ok-apply-32.png</file>
+        <file alias="icons/dialog-ok-apply-48.png">icons/dialog-ok-apply-48.png</file>
+        <file alias="icons/document-open-32.png">icons/document-open-32.png</file>
+        <file alias="icons/document-open-48.png">icons/document-open-48.png</file>
+        <file alias="icons/edit-copy-32.png">icons/edit-copy-32.png</file>
+        <file alias="icons/edit-copy-48.png">icons/edit-copy-48.png</file>
+        <file alias="icons/edit-delete-32.png">icons/edit-delete-32.png</file>
+        <file alias="icons/edit-delete-48.png">icons/edit-delete-48.png</file>
+        <file alias="icons/folder-open-32.png">icons/folder-open-32.png</file>
+        <file alias="icons/folder-open-48.png">icons/folder-open-48.png</file>
+        <file alias="icons/go-down-32.png">icons/go-down-32.png</file>
+        <file alias="icons/go-down-48.png">icons/go-down-48.png</file>
+        <file alias="icons/list-add-32.png">icons/list-add-32.png</file>
+        <file alias="icons/list-add-48.png">icons/list-add-48.png</file>
+        <file alias="icons/media-playback-pause-32.png">icons/media-playback-pause-32.png</file>
+        <file alias="icons/media-playback-pause-48.png">icons/media-playback-pause-48.png</file>
+        <file alias="icons/media-playback-start-32.png">icons/media-playback-start-32.png</file>
+        <file alias="icons/media-playback-start-48.png">icons/media-playback-start-48.png</file>
+        <file alias="icons/media-playback-stop-32.png">icons/media-playback-stop-32.png</file>
+        <file alias="icons/media-playback-stop-48.png">icons/media-playback-stop-48.png</file>
+        <file alias="icons/view-refresh-32.png">icons/view-refresh-32.png</file>
+        <file alias="icons/view-refresh-48.png">icons/view-refresh-48.png</file>
+    </qresource>
+</RCC>
