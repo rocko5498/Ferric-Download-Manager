@@ -1883,7 +1883,7 @@ dependencies = [
  "serde_bencode",
  "serde_json",
  "sha1 0.10.7",
- "sha2 0.10.9",
+ "sha2 0.11.0",
  "single-instance",
  "sqlx",
  "suppaftp",
