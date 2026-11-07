@@ -53,7 +53,7 @@ Rectangle {
         signal doubleClicked()
         width: sideFilter.width - 2 * Theme.sp2; height: Theme.controlH; radius: Theme.radius
         color: selected ? Theme.accentSoft : (itArea.containsMouse ? Theme.rowHover : "transparent")
-        Rectangle { visible: it.selected; width: 3; height: parent.height - 2 * Theme.sp1; radius: Theme.radius; color: Theme.accent; anchors.verticalCenter: parent.verticalCenter }
+        Rectangle { opacity: it.selected ? 1 : 0; Behavior on opacity { enabled: Theme.motion; NumberAnimation { duration: Theme.animMs } } visible: opacity > 0; width: 3; height: parent.height - 2 * Theme.sp1; radius: Theme.radius; color: Theme.accent; anchors.verticalCenter: parent.verticalCenter }
         Row {
             anchors.left: parent.left; anchors.leftMargin: Theme.sp3; anchors.verticalCenter: parent.verticalCenter
             spacing: Theme.sp2

@@ -2962,6 +2962,7 @@ Window {
                     return;
                 }
                 root.prefsData = parsed;
+        Theme.motion = (parsed["reduce_motion"] || "0") !== "1";
                 if (root.autostartLaunch && !root.autostartResolved) {
                     root.autostartResolved = true;
                     if (parsed["start_minimized"] !== "1") { root.visible = true; root.raise(); root.requestActivate(); }

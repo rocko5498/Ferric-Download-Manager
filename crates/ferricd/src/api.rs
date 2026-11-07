@@ -60,6 +60,7 @@ const ALLOWED_SETTINGS_KEYS: &[&str] = &[
     "pac_url",
     "pac_from_windows",
     "start_while_info_dialog",
+    "reduce_motion",
     "quota_mb",
     "quota_hours",
     "user_agent",

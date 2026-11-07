@@ -111,8 +111,10 @@ Flickable {
                          downloadHFlick.queueMatches(model.queue) &&
                          downloadHFlick.findMatches(model.name || "", model.urlHost || "", model.savePath || "", model.description || "")
                 readonly property bool isSelected: downloadHFlick.selectedDownloads.some(function(s) { return s.id === model.id; })
-                color: isSelected ? Theme.accentSoft : (rowHover.hovered ? Theme.rowHover : "transparent")
+                color: isSelected ? Theme.accentSoft : "transparent"
+                Behavior on color { enabled: Theme.motion; ColorAnimation { duration: Theme.animMs } }
                 HoverHandler { id: rowHover }
+                Rectangle { anchors.fill: parent; visible: rowHover.hovered && !rowRoot.isSelected; color: Theme.rowHover }   // instant: a fade here redraws the list for every pass of the mouse
                 Rectangle { visible: rowRoot.isSelected; width: 3; height: parent.height - 2 * Theme.sp1; radius: Theme.radius; color: Theme.accent; anchors.verticalCenter: parent.verticalCenter }
 
                 // Captured once per row so the Repeater below (which shadows the
@@ -193,6 +195,7 @@ Flickable {
                                 visible: cell.role === "status"
                                 anchors.verticalCenter: parent.verticalCenter
                                 height: Theme.sp4; width: pillText.implicitWidth + 2 * Theme.sp3; radius: height / 2
+                                Behavior on color { enabled: Theme.motion; ColorAnimation { duration: Theme.animMs } }
                                 color: cell.st === "completed" ? Theme.successSoft : cell.st === "downloading" ? Theme.accentSoft
                                      : cell.st === "paused" ? Theme.warningSoft : cell.st === "error" ? Theme.dangerSoft : Theme.surfaceAlt
                                 Text {
@@ -217,7 +220,7 @@ Flickable {
                                     Rectangle {
                                         width: parent.width * (cell.pct / 100); height: parent.height; radius: parent.radius
                                         color: cell.st === "completed" ? Theme.success : cell.st === "error" ? Theme.danger : Theme.accent
-                                        Behavior on width { NumberAnimation { duration: 300; easing.type: Easing.Linear } }
+                                        Behavior on width { enabled: Theme.motion; NumberAnimation { duration: 300; easing.type: Easing.Linear } }
                                     }
                                 }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: cell.val; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; textFormat: Text.PlainText }
@@ -229,7 +232,7 @@ Flickable {
                                 anchors.verticalCenter: parent.verticalCenter
                                 width: parent.width - Theme.sp2
                                 elide: Text.ElideRight
-                                text: cell.val
+                                text: cell.role === "error" ? Theme.friendlyError(cell.val) : cell.val
                                 font.pixelSize: Theme.fontSizeNormal
                                 color: cell.role === "error" ? Theme.danger
                                      : (cell.role === "size" || cell.role === "speed" || cell.role === "eta") ? Theme.text : Theme.textDim

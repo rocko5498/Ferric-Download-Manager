@@ -37,6 +37,7 @@ Rectangle {
         width: toolBar.small ? 34 : Theme.toolBtnW; height: toolBar.small ? 32 : Theme.toolBtnH; radius: Theme.radius
         color: !btnEnabled ? "transparent" : primary ? (btnArea.containsMouse ? Theme.border : Theme.accentSoft) : (btnArea.containsMouse ? Theme.surfaceAlt : "transparent")
         opacity: btnEnabled ? 1.0 : 0.38
+        Behavior on opacity { enabled: Theme.motion; NumberAnimation { duration: Theme.animMs } }
 
         Column {
             anchors.centerIn: parent

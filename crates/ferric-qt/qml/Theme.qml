@@ -63,7 +63,31 @@ QtObject {
     readonly property int btnL: 144         // long label
     readonly property int dialogW: 610      // dialog card width (610 / 377 = phi)
 
+    // Turns an engine error message into something a person can act on; anything unknown passes through unchanged.
+    function friendlyError(raw) {
+        var s = (raw || "").toString()
+        var l = s.toLowerCase()
+        if (l === "") return ""
+        if (l.indexOf("error sending request") >= 0 || l.indexOf("dns error") >= 0 || l.indexOf("failed to lookup") >= 0 || l.indexOf("connection refused") >= 0)
+            return qsTr("Can't reach the server. Check the address and your connection.")
+        if (l.indexOf("timed out") >= 0 || l.indexOf("timeout") >= 0)
+            return qsTr("The server took too long to answer.")
+        if (l.indexOf("no space") >= 0 || l.indexOf("disk full") >= 0)
+            return qsTr("The disk is full.")
+        var m = /http error (\d{3})/.exec(l)
+        if (m) {
+            var c = parseInt(m[1])
+            if (c === 401 || c === 403) return qsTr("The server refused access (%1). A login may be needed.").arg(c)
+            if (c === 404 || c === 410) return qsTr("The file is no longer there (%1).").arg(c)
+            if (c === 429) return qsTr("Too many requests (429). Try again later.")
+            if (c >= 500) return qsTr("The server had a problem (%1). Try again later.").arg(c)
+        }
+        return s
+    }
+
     // Misc
     readonly property int radius: 5
-    readonly property int animMs: 120
+    readonly property int animMs: 120      // fades and colour changes
+    readonly property int animSlow: 220    // a dialog settling
+    property bool motion: true             // master switch (Preferences > Reduce animations turns it off)
 }

@@ -26,10 +26,35 @@ Rectangle {
     function open() { visible = true; forceActiveFocus() }
     function close() { visible = false; closed() }
 
-    onVisibleChanged: if (visible) Qt.callLater(function() {
-        if (dialog.visible)
-            dialog.forceActiveFocus()
-    })
+    // The content's height, measured once the layout settles (a live binding to it loops: the card's size
+    // feeds back into what the content lays out).
+    property real contentH: 0
+    Timer {
+        id: measure
+        interval: 0
+        onTriggered: {
+            var h = Math.max(contentColumn.implicitHeight, contentColumn.childrenRect.height)
+            if (Math.abs(h - dialog.contentH) > 1) dialog.contentH = h
+        }
+    }
+    Connections {
+        target: contentColumn
+        function onChildrenRectChanged() { measure.restart() }
+        function onImplicitHeightChanged() { measure.restart() }
+    }
+
+    ParallelAnimation {
+        id: openAnim
+        NumberAnimation { target: card; property: "opacity"; from: 0; to: 1; duration: Theme.animMs; easing.type: Easing.OutCubic }
+    }
+    onVisibleChanged: {
+        if (visible) measure.restart()
+        if (visible && Theme.motion) openAnim.restart()
+        if (visible) Qt.callLater(function() {
+            if (dialog.visible)
+                dialog.forceActiveFocus()
+        })
+    }
     Keys.onEscapePressed: dialog.visible = false
 
     // Focus trap: click on scrim closes dialog
@@ -39,8 +64,8 @@ Rectangle {
     }
 
     // Soft shadow: two translucent layers under the card
-    Rectangle { x: card.x - Theme.sp1; y: card.y + Theme.sp2; width: card.width + 2 * Theme.sp1; height: card.height + Theme.sp1; radius: card.radius + Theme.sp1; color: "#14000000" }
-    Rectangle { x: card.x; y: card.y + Theme.sp1; width: card.width; height: card.height; radius: card.radius; color: Theme.shadow }
+    Rectangle { x: card.x - Theme.sp1; y: card.y + Theme.sp2; width: card.width + 2 * Theme.sp1; height: card.height + Theme.sp1; radius: card.radius + Theme.sp1; color: "#14000000"; opacity: card.opacity }
+    Rectangle { x: card.x; y: card.y + Theme.sp1; width: card.width; height: card.height; radius: card.radius; color: Theme.shadow; opacity: card.opacity }
 
     // Centered dialog card — fixed width, no height binding cycle
     Rectangle {
@@ -48,7 +73,7 @@ Rectangle {
         width: Math.min(parent.width - 2 * Theme.sp5, dialog.cardWidth)
         // as tall as its content needs (never shorter than 233, never taller than the window or cardMaxHeight)
         height: Math.max(233, Math.min(parent.height - 2 * Theme.sp5, dialog.cardMaxHeight,
-            titleRow.height + Math.max(contentColumn.implicitHeight, contentColumn.childrenRect.height) + buttonRow.height + 3 * Theme.sp4 + Theme.sp3))
+            titleRow.height + dialog.contentH + buttonRow.height + 3 * Theme.sp4 + Theme.sp3))
         anchors.centerIn: parent
         radius: Theme.radiusCard
         color: Theme.surface

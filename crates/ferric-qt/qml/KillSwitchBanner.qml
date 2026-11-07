@@ -24,6 +24,7 @@ Rectangle {
             color: Theme.danger
             anchors.verticalCenter: parent.verticalCenter
             SequentialAnimation on opacity {
+                running: killSwitchBanner.active   // an animation that never stops keeps Qt drawing frames, even when hidden
                 loops: Animation.Infinite
                 NumberAnimation { to: 0.3; duration: 800 }
                 NumberAnimation { to: 1.0; duration: 800 }

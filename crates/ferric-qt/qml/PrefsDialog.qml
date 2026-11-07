@@ -14,6 +14,7 @@ Rectangle {
     focus: true
 
     onVisibleChanged: if (visible) {
+        if (Theme.motion) prefsOpen.restart()
         loadSiteLogins()
         Qt.callLater(function() {
             if (prefsDialog.visible)
@@ -21,6 +22,10 @@ Rectangle {
         })
     }
 
+    ParallelAnimation {
+        id: prefsOpen
+        NumberAnimation { target: prefsCard; property: "opacity"; from: 0; to: 1; duration: Theme.animMs; easing.type: Easing.OutCubic }
+    }
     property var siteLogins: []
     function loadSiteLogins() {
         if (!requestBus) return
@@ -61,8 +66,8 @@ Rectangle {
     property var toggleClipboardMonitor
 
     // formatAnonymityScore removed \u2014 use inline: (anonymityScore ?? "...") + "/100"
-        Rectangle { x: prefsCard.x - Theme.sp1; y: prefsCard.y + Theme.sp2; width: prefsCard.width + 2 * Theme.sp1; height: prefsCard.height + Theme.sp1; radius: prefsCard.radius + Theme.sp1; color: "#14000000" }
-        Rectangle { x: prefsCard.x; y: prefsCard.y + Theme.sp1; width: prefsCard.width; height: prefsCard.height; radius: prefsCard.radius; color: Theme.shadow }
+        Rectangle { x: prefsCard.x - Theme.sp1; y: prefsCard.y + Theme.sp2; width: prefsCard.width + 2 * Theme.sp1; height: prefsCard.height + Theme.sp1; radius: prefsCard.radius + Theme.sp1; color: "#14000000"; opacity: prefsCard.opacity }
+        Rectangle { x: prefsCard.x; y: prefsCard.y + Theme.sp1; width: prefsCard.width; height: prefsCard.height; radius: prefsCard.radius; color: Theme.shadow; opacity: prefsCard.opacity }
         Rectangle {
             id: prefsCard
             width: Math.min(parent.width - 2 * Theme.sp5, Theme.dialogW)
@@ -177,6 +182,16 @@ Rectangle {
                                     MouseArea { anchors.fill: parent; onClicked: savePref("single_instance", parent.checked ? "0" : "1") }
                                 }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Allow only one instance of Ferric"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                            }
+
+                            Row { spacing: Theme.sp2; height: Theme.rowH
+                                Rectangle { width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; anchors.verticalCenter: parent.verticalCenter
+                                    property bool checked: (prefsData["reduce_motion"] || "0") === "1"
+                                    color: checked ? Theme.accent : Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+                                    Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
+                                    MouseArea { anchors.fill: parent; onClicked: savePref("reduce_motion", parent.checked ? "0" : "1") }
+                                }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Reduce animations"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                             }
 
                             // ── FQT-086: Portable mode ─────────────────
@@ -680,7 +695,7 @@ Rectangle {
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("bytes/sec (0 = unlimited)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                             }
 
-                            Text { text: qsTr("Alternative speed limits (turtle mode)"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
+                            Text { text: qsTr("Alternative speed limits"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
                             Row { spacing: Theme.sp2; height: Theme.rowH
                                 Rectangle { width: Theme.sp4; height: Theme.sp4; radius: Theme.radius

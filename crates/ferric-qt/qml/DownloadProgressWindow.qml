@@ -57,7 +57,7 @@ Window {
         case "queued": return qsTr("Queued");
         case "merging": return qsTr("Merging...");
         case "completed": return qsTr("Download complete");
-        case "error": return (dl && dl.error_msg) ? dl.error_msg : qsTr("Error");
+        case "error": return (dl && dl.error_msg) ? Theme.friendlyError(dl.error_msg) : qsTr("Error");
         case "cancelled": return qsTr("Cancelled");
         }
         return "";
