@@ -1,0 +1,30 @@
+name: Extension offer test
+
+# Experiment, started by hand: does a browser accept the extension from the external-extension registry key,
+# with and without the store's update address in its manifest? Throwaway key, nothing is published.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the extension
+        shell: pwsh
+        working-directory: extension
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install Brave
+        shell: pwsh
+        run: choco install brave -y --no-progress
+
+      - name: Run the experiment
+        shell: pwsh
+        run: .\scripts\ci\extension-offer-test.ps1
