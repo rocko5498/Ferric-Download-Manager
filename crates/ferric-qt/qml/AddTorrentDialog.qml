@@ -43,8 +43,8 @@ AppDialog {
             width: parent.width
             spacing: Theme.sp1
             Rectangle {
-                width: parent.width - 74; height: 28; color: Theme.bg
-                border.color: torrentInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                width: parent.width - 74; height: Theme.controlH; color: Theme.bg
+                border.color: torrentInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                 TextInput {
                     id: torrentInput
                     anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: Theme.sp1; rightMargin: Theme.sp1 }
@@ -56,7 +56,7 @@ AppDialog {
                 }
             }
             Rectangle {
-                width: 68; height: 28; radius: 3; color: Theme.surfaceAlt
+                width: 68; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Browse\u2026"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: torrentFileDialog.open() }
             }
@@ -72,7 +72,7 @@ AppDialog {
                 fieldWidth: parent.width - 74
             }
             Rectangle {
-                width: 68; height: 28; radius: 3; color: Theme.surfaceAlt
+                width: 68; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 anchors.bottom: parent.bottom
                 Text { anchors.centerIn: parent; text: qsTr("Browse…"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: saveFolderDialog.open() }
@@ -80,7 +80,7 @@ AppDialog {
         },
 
         Rectangle {
-            width: parent.width; height: 90; radius: 4; color: Theme.bg
+            width: parent.width; height: 90; radius: Theme.radius; color: Theme.bg
             visible: addTorrentDialog.probeResult !== null
 
             Column {

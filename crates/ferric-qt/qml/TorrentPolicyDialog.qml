@@ -20,85 +20,85 @@ AppDialog {
                 Text { text: qsTr("Discovery"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
                 Row {
-                    spacing: Theme.sp2; height: 22
+                    spacing: Theme.sp2; height: Theme.rowH
                     Rectangle {
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         property bool checked: torrentPolicyDialog.policyData ? !!torrentPolicyDialog.policyData.dht_enabled : false
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: togglePolicyField("dht_enabled") }
                     }
-                    Text { text: qsTr("DHT (distributed hash table)"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("DHT (distributed hash table)"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
 
                 Row {
-                    spacing: Theme.sp2; height: 22
+                    spacing: Theme.sp2; height: Theme.rowH
                     Rectangle {
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         property bool checked: torrentPolicyDialog.policyData ? !!torrentPolicyDialog.policyData.pex_enabled : false
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: togglePolicyField("pex_enabled") }
                     }
-                    Text { text: qsTr("PEX (peer exchange)"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("PEX (peer exchange)"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
 
                 Row {
-                    spacing: Theme.sp2; height: 22
+                    spacing: Theme.sp2; height: Theme.rowH
                     Rectangle {
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         property bool checked: torrentPolicyDialog.policyData ? !!torrentPolicyDialog.policyData.lsd_enabled : false
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: togglePolicyField("lsd_enabled") }
                     }
-                    Text { text: qsTr("LSD (local service discovery)"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("LSD (local service discovery)"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
 
                 Text { text: qsTr("Privacy"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
                 Row {
-                    spacing: Theme.sp2; height: 22
+                    spacing: Theme.sp2; height: Theme.rowH
                     Rectangle {
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         property bool checked: torrentPolicyDialog.policyData ? !!torrentPolicyDialog.policyData.proxy_required : false
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: togglePolicyField("proxy_required") }
                     }
-                    Text { text: qsTr("Require proxy"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Require proxy"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
 
                 Row {
-                    spacing: Theme.sp2; height: 22
+                    spacing: Theme.sp2; height: Theme.rowH
                     Rectangle {
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         property bool checked: torrentPolicyDialog.policyData ? !!torrentPolicyDialog.policyData.blocklist_enabled : false
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: togglePolicyField("blocklist_enabled") }
                     }
-                    Text { text: qsTr("Enable blocklist"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Enable blocklist"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
 
                 Text { text: qsTr("Seeding"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
                 Row {
-                    spacing: Theme.sp2; height: 22
+                    spacing: Theme.sp2; height: Theme.rowH
                     Rectangle {
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         property bool checked: torrentPolicyDialog.policyData ? !!torrentPolicyDialog.policyData.seed_enabled : false
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: togglePolicyField("seed_enabled") }
                     }
-                    Text { text: qsTr("Seed after completion"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Seed after completion"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
             }
         }
@@ -113,7 +113,7 @@ AppDialog {
         },
         Rectangle {
             width: Theme.btnS; height: Theme.controlH; radius: Theme.radius
-            color: policySaveArea.containsMouse ? Theme.accent : Theme.accentDark
+            color: policySaveArea.containsMouse ? Theme.accentDark : Theme.accent
             Text { anchors.centerIn: parent; text: qsTr("Save"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { id: policySaveArea; anchors.fill: parent; hoverEnabled: true; onClicked: if (saveTorrentPolicy) saveTorrentPolicy() }
         },

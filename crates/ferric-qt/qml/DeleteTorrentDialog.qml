@@ -21,7 +21,7 @@ AppDialog {
         Row {
             spacing: Theme.sp1
             Rectangle {
-                width: 16; height: 16; radius: 3
+                width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                 color: deleteTorrentDialog.deleteFiles ? Theme.danger : Theme.bg
                 border.color: Theme.surfaceAlt; border.width: 1
                 Text { anchors.centerIn: parent; text: deleteTorrentDialog.deleteFiles ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }

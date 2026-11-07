@@ -4,7 +4,8 @@ Rectangle {
     id: toolBar
 
     property bool small: false
-    height: small ? 38 : Theme.toolbarH
+    height: workspaceIndex > 1 ? 0 : (small ? 38 : Theme.toolbarH)   // nothing to show on Grabber, Media and RSS
+    visible: height > 0
     color: Theme.surface
     border.color: Theme.border
     border.width: 1
@@ -27,13 +28,14 @@ Rectangle {
         property string label: ""
         property string icon: ""
         property bool btnEnabled: true
+        property bool primary: false   // the main action: tinted, bold orange label
         property var onAction: function(id) {}
         // Oxygen icon name (LGPL, see icons/LICENSE-NOTE.md); the glyph stays as fallback.
         property string iconName: ""
         readonly property string iconFile: iconName
 
         width: toolBar.small ? 34 : Theme.toolBtnW; height: toolBar.small ? 32 : Theme.toolBtnH; radius: Theme.radius
-        color: btnEnabled ? (btnArea.containsMouse ? Theme.surfaceAlt : "transparent") : "transparent"
+        color: !btnEnabled ? "transparent" : primary ? (btnArea.containsMouse ? Theme.border : Theme.accentSoft) : (btnArea.containsMouse ? Theme.surfaceAlt : "transparent")
         opacity: btnEnabled ? 1.0 : 0.38
 
         Column {
@@ -58,7 +60,8 @@ Rectangle {
                 visible: !toolBar.small
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: btn.label
-                color: Theme.text
+                color: btn.primary ? Theme.accentDark : Theme.text
+                font.weight: btn.primary ? Font.DemiBold : Font.Normal
                 font.pixelSize: Theme.fontSizeNormal
             }
         }
@@ -81,7 +84,7 @@ Rectangle {
         Row {
             visible: toolBar.workspaceIndex === 1
             spacing: 2
-            ToolBtn { actionId: "dl.add"; iconName: "tb-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.add"; primary: true; iconName: "tb-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
             ToolBtn { actionId: "dl.resume"; iconName: "tb-resume"; label: qsTr("Resume"); icon: "▶"; btnEnabled: toolBar.canResume; onAction: toolBar.onAction }
             ToolBtn { actionId: "dl.stop"; iconName: "tb-stop"; label: qsTr("Stop"); icon: "■"; btnEnabled: toolBar.selectedDownloads.length > 0; onAction: toolBar.onAction }
             ToolBtn { actionId: "dl.stopAll"; iconName: "tb-stopall"; label: qsTr("Stop All"); icon: "■■"; onAction: toolBar.onAction }
@@ -112,7 +115,7 @@ Rectangle {
         Row {
             visible: toolBar.workspaceIndex === 0
             spacing: 2
-            ToolBtn { actionId: "dl.add"; iconName: "tb-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.add"; primary: true; iconName: "tb-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
         }
     }
 
@@ -124,11 +127,13 @@ Rectangle {
         spacing: Theme.sp2
 
         Text {
+            anchors.verticalCenter: parent.verticalCenter
             visible: toolBar.workspaceIndex === 1 && toolBar.selectedDownloads.length > 0
             text: toolBar.selectedDownloads.length + qsTr(" selected")
             color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
         }
         Text {
+            anchors.verticalCenter: parent.verticalCenter
             visible: toolBar.workspaceIndex === 2 && toolBar.selectedTorrents.length > 0
             text: toolBar.selectedTorrents.length + qsTr(" selected")
             color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall

@@ -39,5 +39,19 @@
         <file>icons/tb-scheduler-48.png</file>
         <file>icons/tb-startq-48.png</file>
         <file>icons/tb-stopq-48.png</file>
+        <file>icons/empty-downloads.png</file>
+        <file>icons/ferric-logo-96.png</file>
+        <file>icons/ft-archive.png</file>
+        <file>icons/ft-document.png</file>
+        <file>icons/ft-image.png</file>
+        <file>icons/ft-music.png</file>
+        <file>icons/ft-other.png</file>
+        <file>icons/ft-program.png</file>
+        <file>icons/ft-video.png</file>
+        <file>icons/sb-all.png</file>
+        <file>icons/sb-completed.png</file>
+        <file>icons/sb-downloading.png</file>
+        <file>icons/sb-error.png</file>
+        <file>icons/sb-paused.png</file>
     </qresource>
 </RCC>

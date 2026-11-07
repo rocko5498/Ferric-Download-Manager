@@ -154,37 +154,37 @@ Rectangle {
                 y: 2
                 spacing: Theme.sp1
                 Rectangle {
-                    width: 60; height: 20; radius: 3; color: torOpenFolderArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 60; height: 20; radius: Theme.radius; color: torOpenFolderArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Folder"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torOpenFolderArea; anchors.fill: parent; hoverEnabled: true; onClicked: doOpenTorrentFolder() }
                 }
                 Rectangle {
-                    width: 62; height: 20; radius: 3; color: torCopyHashArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 62; height: 20; radius: Theme.radius; color: torCopyHashArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Copy Hash"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torCopyHashArea; anchors.fill: parent; hoverEnabled: true; onClicked: doCopyInfoHash() }
                 }
                 Rectangle {
-                    width: 68; height: 20; radius: 3; color: torCopyMagnetArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 68; height: 20; radius: Theme.radius; color: torCopyMagnetArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Copy Magnet"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torCopyMagnetArea; anchors.fill: parent; hoverEnabled: true; onClicked: doCopyMagnet() }
                 }
                 Rectangle {
-                    width: 56; height: 20; radius: 3; color: torRecheckArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 56; height: 20; radius: Theme.radius; color: torRecheckArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Recheck"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torRecheckArea; anchors.fill: parent; hoverEnabled: true; onClicked: doTorrentRecheck() }
                 }
                 Rectangle {
-                    width: 72; height: 20; radius: 3; color: torReannounceArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 72; height: 20; radius: Theme.radius; color: torReannounceArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Reannounce"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torReannounceArea; anchors.fill: parent; hoverEnabled: true; onClicked: doTorrentReannounce() }
                 }
                 Rectangle {
-                    width: 56; height: 20; radius: 3; color: torLocArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 56; height: 20; radius: Theme.radius; color: torLocArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Location"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torLocArea; anchors.fill: parent; hoverEnabled: true; onClicked: doShowSetLocation() }
                 }
                 Rectangle {
-                    width: 62; height: 20; radius: 3; color: torTrackersArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 62; height: 20; radius: Theme.radius; color: torTrackersArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Trackers"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         id: torTrackersArea
@@ -193,19 +193,19 @@ Rectangle {
                     }
                 }
                 Rectangle {
-                    width: 20; height: 20; radius: 3; color: selectionCanQueueMove ? (torUpArea.containsMouse ? Theme.surfaceAlt : Theme.surface) : Theme.bg
+                    width: 20; height: 20; radius: Theme.radius; color: selectionCanQueueMove ? (torUpArea.containsMouse ? Theme.surfaceAlt : Theme.surface) : Theme.bg
                     opacity: selectionCanQueueMove ? 1.0 : 0.4
                     Text { anchors.centerIn: parent; text: qsTr("\u25b2"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torUpArea; anchors.fill: parent; hoverEnabled: true; enabled: selectionCanQueueMove; onClicked: { if (selectedTorrents.length === 1 && requestBus) requestBus("set_torrent_queue", { id: selectedTorrents[0].id, position: "up" }, function() {}); } }
                 }
                 Rectangle {
-                    width: 20; height: 20; radius: 3; color: selectionCanQueueMove ? (torDownArea.containsMouse ? Theme.surfaceAlt : Theme.surface) : Theme.bg
+                    width: 20; height: 20; radius: Theme.radius; color: selectionCanQueueMove ? (torDownArea.containsMouse ? Theme.surfaceAlt : Theme.surface) : Theme.bg
                     opacity: selectionCanQueueMove ? 1.0 : 0.4
                     Text { anchors.centerIn: parent; text: qsTr("\u25bc"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torDownArea; anchors.fill: parent; hoverEnabled: true; enabled: selectionCanQueueMove; onClicked: { if (selectedTorrents.length === 1 && requestBus) requestBus("set_torrent_queue", { id: selectedTorrents[0].id, position: "down" }, function() {}); } }
                 }
                 Rectangle {
-                    width: 50; height: 20; radius: 3; color: policyArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 50; height: 20; radius: Theme.radius; color: policyArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Policy"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         id: policyArea
@@ -214,7 +214,7 @@ Rectangle {
                     }
                 }
                 Rectangle {
-                    width: 50; height: 20; radius: 3; color: syncArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 50; height: 20; radius: Theme.radius; color: syncArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Sync"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         id: syncArea
@@ -290,14 +290,14 @@ Rectangle {
                 id: tagRow
                 anchors { top: torrentGeneralGrid.bottom; left: parent.left; right: parent.right; margins: Theme.sp2; topMargin: Theme.sp1 }
                 spacing: Theme.sp1
-                Text { text: qsTr("Add tag:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Add tag:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 120; height: 20; radius: 3; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+                    width: 120; height: 20; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                     TextInput { id: tagInput; anchors.fill: parent; anchors.margins: Theme.sp1; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; clip: true }
                 clip: true
                 }
                 Rectangle {
-                    width: 40; height: 20; radius: 3; color: tagAddArea.containsMouse ? Theme.border : Theme.surfaceAlt
+                    width: 40; height: 20; radius: Theme.radius; color: tagAddArea.containsMouse ? Theme.border : Theme.surfaceAlt
                     Text { anchors.centerIn: parent; text: qsTr("Add"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: tagAddArea; anchors.fill: parent; hoverEnabled: true
                         onClicked: {
@@ -320,9 +320,9 @@ Rectangle {
                 Repeater {
                     model: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.tags || []) : []
                     Rectangle {
-                        width: tagLabel.width + 20; height: 18; radius: 3; color: Theme.surfaceAlt
+                        width: tagLabel.width + 20; height: 18; radius: Theme.radius; color: Theme.surfaceAlt
                         Row { anchors.centerIn: parent; spacing: Theme.sp1
-                            Text { id: tagLabel; text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                            Text { anchors.verticalCenter: parent.verticalCenter; id: tagLabel; text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                             Text { text: qsTr("\u00d7"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall
                                 MouseArea { anchors.fill: parent; onClicked: {
                                     if (requestBus) requestBus("remove_torrent_tag", { id: selectedTorrents[0].id, tag: modelData }, function() {
@@ -340,9 +340,9 @@ Rectangle {
                 id: proxyRow
                 anchors { top: tagFlow.bottom; left: parent.left; right: parent.right; margins: Theme.sp2; topMargin: Theme.sp1 }
                 spacing: Theme.sp1
-                Text { text: qsTr("Proxy:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Proxy:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 180; height: 20; radius: 3; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+                    width: 180; height: 20; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                     property var proxyList: []
                     Component.onCompleted: {
                         if (!requestBus) return;
@@ -389,15 +389,15 @@ Rectangle {
                 id: proxyChooser
                 visible: false; z: 100
                 x: 60; y: proxyRow.y + proxyRow.height
-                width: 200; height: proxyColumn.height + 8; radius: 4; color: Theme.surface; border.color: Theme.border; border.width: 1
+                width: 200; height: proxyColumn.height + 8; radius: Theme.radius; color: Theme.surface; border.color: Theme.border; border.width: 1
                 property var items: []
                 property var proxyIds: []
                 Column { id: proxyColumn; anchors { left: parent.left; right: parent.right; margins: Theme.sp1 } spacing: 2
                     Repeater {
                         model: proxyChooser.items
                         Rectangle {
-                            width: proxyColumn.width; height: 22; radius: 3; color: proxyMouse.containsMouse ? Theme.surfaceAlt : "transparent"
-                            Text { anchors { left: parent.left; margins: Theme.sp1; verticalCenter: parent.verticalCenter } text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                            width: proxyColumn.width; height: 22; radius: Theme.radius; color: proxyMouse.containsMouse ? Theme.surfaceAlt : "transparent"
+                            Text { anchors.verticalCenter: parent.verticalCenter; anchors { left: parent.left; margins: Theme.sp1; verticalCenter: parent.verticalCenter } text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { id: proxyMouse; anchors.fill: parent; hoverEnabled: true
                                 onClicked: {
                                     var tid = selectedTorrents.length ? selectedTorrents[0].id : "";
@@ -429,7 +429,7 @@ Rectangle {
                     spacing: Theme.sp2; height: 20; width: ListView.view.width
 
                     Rectangle {
-                        width: 14; height: 14; radius: 2
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         anchors.verticalCenter: parent.verticalCenter
                         color: modelData.selected ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
@@ -574,7 +574,7 @@ Rectangle {
             Rectangle {
                 id: piecesCanvas
                 anchors { fill: parent; margins: Theme.sp2 }
-                color: Theme.bg; radius: 3
+                color: Theme.bg; radius: Theme.radius
 
                 // FQT-075 honesty: use real piece rows from detail when present.
                 readonly property var pieceList: (torrentDetailGeneral.tdData && torrentDetailGeneral.tdData.pieces)
@@ -722,7 +722,7 @@ Rectangle {
 
                 // Speed history placeholder
                 Rectangle {
-                    width: parent.width; height: 80; radius: 4
+                    width: parent.width; height: 80; radius: Theme.radius
                     color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                     Text {
                         anchors.centerIn: parent

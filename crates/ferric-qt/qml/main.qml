@@ -1596,14 +1596,14 @@ Window {
     // T2 honesty: Conn has no live source \u2014 default width 0 (hidden), not fake "-".
     // Reorderable freely: DownloadsTable's delegate resolves cells by role, not index.
     property var downloadColumnsAll: [
-        { title: qsTr("Name"), width: 220, role: "name" },
-        { title: qsTr("Size"), width: 80, role: "size" },
-        { title: qsTr("Progress"), width: 92, role: "progress" },
-        { title: qsTr("Status"), width: 90, role: "status" },
-        { title: qsTr("Speed"), width: 60, role: "speed" },
-        { title: qsTr("ETA"), width: 60, role: "eta" },
-        { title: qsTr("Category"), width: 90, role: "category" },
-        { title: qsTr("Added"), width: 140, role: "added" },
+        { title: qsTr("Name"), width: 377, role: "name" },
+        { title: qsTr("Size"), width: 89, role: "size" },
+        { title: qsTr("Progress"), width: 144, role: "progress" },
+        { title: qsTr("Status"), width: 110, role: "status" },
+        { title: qsTr("Speed"), width: 89, role: "speed" },
+        { title: qsTr("ETA"), width: 89, role: "eta" },
+        { title: qsTr("Category"), width: 110, role: "category" },
+        { title: qsTr("Added"), width: 144, role: "added" },
         { title: qsTr("Save path"), width: 220, role: "savePath" },
         { title: qsTr("Done"), width: 80, role: "done" },
         { title: qsTr("Queue"), width: 70, role: "queue" },
@@ -2004,8 +2004,8 @@ Window {
                 Rectangle {
                     visible: modelData !== "Torrents" || root.torrentsEnabled
                     width: 90
-                    height: 24
-                    radius: 4
+                    height: Theme.controlH
+                    radius: Theme.radius
                     color: root.workspaceIndex === index ? Theme.surfaceAlt : "transparent"
                     Text {
                         anchors.centerIn: parent
@@ -2025,8 +2025,9 @@ Window {
             }
         }
 
-        // Global toolbar buttons (always visible)
+        // Buttons that act on the download list: shown on the Downloads tab only
         Row {
+            visible: root.workspaceIndex === 1
             anchors.right: parent.right
             anchors.rightMargin: Theme.sp2
             anchors.top: workspaceTabs.compact ? workspaceTabRow.bottom : parent.top
@@ -2034,19 +2035,19 @@ Window {
             spacing: Theme.sp1
             Rectangle {
                 property string actionId: "shell.columns"
-                width: 70; height: 24; radius: 4; color: Theme.surfaceAlt
+                width: 70; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Columns"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { anchors.fill: parent; onClicked: columnChooserDialog.visible = true }
             }
             Rectangle {
                 property string actionId: "shell.speed_graph"
-                width: 90; height: 24; radius: 4; color: root.showSpeedGraph ? Theme.border : Theme.surfaceAlt
+                width: 90; height: Theme.controlH; radius: Theme.radius; color: root.showSpeedGraph ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Speed Graph"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { anchors.fill: parent; onClicked: root.showSpeedGraph = !root.showSpeedGraph }
             }
             Rectangle {
                 property string actionId: "shell.log"
-                width: 60; height: 24; radius: 4; color: root.showLogDrawer ? Theme.border : Theme.surfaceAlt
+                width: 60; height: Theme.controlH; radius: Theme.radius; color: root.showLogDrawer ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Log"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { anchors.fill: parent; onClicked: root.showLogDrawer = !root.showLogDrawer }
             }
@@ -2068,9 +2069,9 @@ Window {
             spacing: Theme.sp1
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Speed"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Speed"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true }
                 Rectangle {
-                    width: 14; height: 14; radius: 2; color: Theme.surfaceAlt
+                    width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; color: Theme.surfaceAlt
                     Text { anchors.centerIn: parent; text: qsTr("✕"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: root.showSpeedGraph = false }
                 }
@@ -2109,9 +2110,9 @@ Window {
             spacing: Theme.sp1
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Log"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Log"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true }
                 Rectangle {
-                    width: 14; height: 14; radius: 2; color: Theme.surfaceAlt
+                    width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; color: Theme.surfaceAlt
                     Text { anchors.centerIn: parent; text: qsTr("✕"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: root.showLogDrawer = false }
                 }
@@ -2394,10 +2395,10 @@ Window {
         id: findBar
         visible: root.findOpen && root.workspaceIndex === 1
         z: 20
-        width: 520; height: 30; radius: 4
+        width: 520; height: Theme.controlH; radius: Theme.radius
         anchors { right: parent.right; bottom: parent.bottom; rightMargin: Theme.sp4; bottomMargin: Theme.sp5 }
         color: Theme.surface; border.color: findInput.activeFocus ? Theme.accent : Theme.surfaceAlt; border.width: 1
-        Text { id: findLabel; text: qsTr("Find"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors { left: parent.left; leftMargin: Theme.sp2; verticalCenter: parent.verticalCenter } }
+        Text { anchors.verticalCenter: parent.verticalCenter; id: findLabel; text: qsTr("Find"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors { left: parent.left; leftMargin: Theme.sp2; verticalCenter: parent.verticalCenter } }
         TextInput {
             id: findInput
             anchors { left: findLabel.right; leftMargin: Theme.sp2; right: findOptions.left; rightMargin: Theme.sp1; verticalCenter: parent.verticalCenter }
@@ -2421,7 +2422,7 @@ Window {
                 Rectangle {
                     property bool on: modelData.kind === "scope" ? root.findScope === modelData.id
                                     : modelData.kind === "case" ? root.findMatchCase : root.findWhole
-                    width: optLabel.implicitWidth + 12; height: 20; radius: 3
+                    width: optLabel.implicitWidth + 12; height: Theme.rowH; radius: Theme.radius
                     color: on ? Theme.accent : Theme.surfaceAlt
                     Text { id: optLabel; anchors.centerIn: parent; text: modelData.label; font.pixelSize: Theme.fontSizeSmall; color: parent.on ? "white" : Theme.text }
                     MouseArea { anchors.fill: parent; onClicked: {
@@ -2693,7 +2694,7 @@ Window {
         Rectangle {
             width: 320; height: 168
             anchors.centerIn: parent
-            color: Theme.surface; radius: 6
+            color: Theme.surface; radius: Theme.radius
             Column {
                 anchors { fill: parent; margins: Theme.sp4 }
                 spacing: Theme.sp3
@@ -2703,8 +2704,8 @@ Window {
                 }
                 Text { text: qsTr("0 = unlimited"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: parent.width; height: 30; color: Theme.bg
-                    border.color: speedLimitInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg
+                    border.color: speedLimitInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: speedLimitInput
@@ -2718,13 +2719,13 @@ Window {
                 Row {
                     spacing: Theme.sp2
                     Rectangle {
-                        width: 70; height: 26; radius: 3
-                        color: slApplyArea.containsMouse ? Theme.accent : Theme.accentDark
+                        width: 70; height: Theme.controlH; radius: Theme.radius
+                        color: slApplyArea.containsMouse ? Theme.accentDark : Theme.accent
                         Text { anchors.centerIn: parent; text: qsTr("Apply"); color: "white"; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea { id: slApplyArea; anchors.fill: parent; hoverEnabled: true; onClicked: doApplySpeedLimit() }
                     }
                     Rectangle {
-                        width: 70; height: 26; radius: 3
+                        width: 70; height: Theme.controlH; radius: Theme.radius
                         color: slCancelArea.containsMouse ? Theme.border : Theme.surfaceAlt
                         Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea { id: slCancelArea; anchors.fill: parent; hoverEnabled: true; onClicked: speedLimitDialog.visible = false }
@@ -2742,14 +2743,14 @@ Window {
         Rectangle {
             width: 340; height: 266
             anchors.centerIn: parent
-            color: Theme.surface; radius: 6
+            color: Theme.surface; radius: Theme.radius
             Column {
                 anchors { fill: parent; margins: Theme.sp4 }
                 spacing: Theme.sp2
                 Text { text: root.loginIsProxy ? qsTr("The proxy asks for a user name and password.") : qsTr("Type your user name and password."); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
                 Text { text: qsTr("User name"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: parent.width; height: 30; color: Theme.bg; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg; radius: Theme.radius
                     border.color: loginUser.activeFocus ? Theme.accent : Theme.surfaceAlt
                     TextInput { id: loginUser; clip: true; anchors { fill: parent; margins: Theme.sp1 }
                         color: Theme.text; font.pixelSize: Theme.fontSizeNormal
@@ -2758,7 +2759,7 @@ Window {
                 }
                 Text { text: qsTr("Password"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: parent.width; height: 30; color: Theme.bg; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg; radius: Theme.radius
                     border.color: loginPass.activeFocus ? Theme.accent : Theme.surfaceAlt
                     TextInput { id: loginPass; clip: true; echoMode: TextInput.Password; anchors { fill: parent; margins: Theme.sp1 }
                         color: Theme.text; font.pixelSize: Theme.fontSizeNormal
@@ -2766,21 +2767,21 @@ Window {
                         Keys.onEscapePressed: loginDialog.visible = false }
                 }
                 Row { spacing: Theme.sp2; height: root.loginIsProxy ? 0 : 22; visible: !root.loginIsProxy
-                    Rectangle { id: loginSave; property bool checked: false; width: 16; height: 16; radius: 3
+                    Rectangle { id: loginSave; property bool checked: false; width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         color: checked ? Theme.accent : Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: parent.checked = !parent.checked } }
-                    Text { text: qsTr("Save this password in the site logins list"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Save this password in the site logins list"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Row {
                     spacing: Theme.sp2
                     Rectangle {
-                        width: 70; height: 26; radius: 3; color: Theme.accentDark
+                        width: 70; height: Theme.controlH; radius: Theme.radius; color: Theme.accentDark
                         Text { anchors.centerIn: parent; text: qsTr("OK"); color: "white"; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea { anchors.fill: parent; onClicked: doApplyLogin() }
                     }
                     Rectangle {
-                        width: 70; height: 26; radius: 3; color: Theme.surfaceAlt
+                        width: 70; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                         Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea { anchors.fill: parent; onClicked: loginDialog.visible = false }
                     }
@@ -2799,14 +2800,14 @@ Window {
         Rectangle {
             width: 440; height: 148
             anchors.centerIn: parent
-            color: Theme.surface; radius: 6
+            color: Theme.surface; radius: Theme.radius
             Column {
                 anchors { fill: parent; margins: Theme.sp4 }
                 spacing: Theme.sp3
                 Text { text: qsTr("Refresh download URL"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
                 Rectangle {
-                    width: parent.width; height: 30; color: Theme.bg
-                    border.color: refreshUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg
+                    border.color: refreshUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: refreshUrlInput
@@ -2819,13 +2820,13 @@ Window {
                 Row {
                     spacing: Theme.sp2
                     Rectangle {
-                        width: 70; height: 26; radius: 3
-                        color: ruApplyArea.containsMouse ? Theme.accent : Theme.accentDark
+                        width: 70; height: Theme.controlH; radius: Theme.radius
+                        color: ruApplyArea.containsMouse ? Theme.accentDark : Theme.accent
                         Text { anchors.centerIn: parent; text: qsTr("Apply"); color: "white"; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea { id: ruApplyArea; anchors.fill: parent; hoverEnabled: true; onClicked: doApplyRefreshUrl() }
                     }
                     Rectangle {
-                        width: 70; height: 26; radius: 3
+                        width: 70; height: Theme.controlH; radius: Theme.radius
                         color: ruCancelArea.containsMouse ? Theme.border : Theme.surfaceAlt
                         Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea { id: ruCancelArea; anchors.fill: parent; hoverEnabled: true; onClicked: refreshUrlDialog.visible = false }
@@ -2846,7 +2847,7 @@ Window {
         Rectangle {
             anchors.centerIn: parent
             width: 340; height: 150
-            radius: 6
+            radius: Theme.radius
             color: Theme.surface
 
             Column {
@@ -2864,7 +2865,7 @@ Window {
                     spacing: Theme.sp2
 
                     Rectangle {
-                        width: 110; height: 28; radius: 4; color: Theme.surfaceAlt
+                        width: 110; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                         Text { anchors.centerIn: parent; text: qsTr("Record only"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea {
                             anchors.fill: parent
@@ -2872,7 +2873,7 @@ Window {
                         }
                     }
                     Rectangle {
-                        width: 120; height: 28; radius: 4; color: Theme.danger
+                        width: 120; height: Theme.controlH; radius: Theme.radius; color: Theme.danger
                         Text { anchors.centerIn: parent; text: qsTr("Record + File"); color: "#ffffff"; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea {
                             anchors.fill: parent
@@ -2880,7 +2881,7 @@ Window {
                         }
                     }
                     Rectangle {
-                        width: 64; height: 28; radius: 4; color: Theme.bg
+                        width: 64; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
                         Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                         MouseArea {
                             anchors.fill: parent
@@ -3011,16 +3012,16 @@ Window {
             property string prefKey
             property string label
             property string tooltip
-            spacing: Theme.sp2; height: 22
+            spacing: Theme.sp2; height: Theme.rowH
             Rectangle {
-                width: 16; height: 16; radius: 3
+                width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                 property bool checked: (root.prefsData[prefKey] || "0") === "1"
                 color: checked ? Theme.accent : Theme.bg
                 border.color: Theme.surfaceAlt; border.width: 1
                 Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: root.savePref(prefKey, parent.checked ? "0" : "1") }
             }
-            Text { text: label; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: label; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
         }
     }
 
@@ -3228,7 +3229,7 @@ Window {
         visible: false; z: 110
         anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: Theme.sp5 }
         width: Math.min(680, Math.max(300, privacyCheckText.implicitWidth + 40))
-        height: Math.max(40, privacyCheckText.implicitHeight + 20); radius: 6
+        height: Math.max(40, privacyCheckText.implicitHeight + 20); radius: Theme.radius
         color: Theme.surface
         border.color: statusColor; border.width: 1
 

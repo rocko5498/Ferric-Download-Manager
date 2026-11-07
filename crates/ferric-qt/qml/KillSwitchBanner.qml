@@ -37,7 +37,7 @@ Rectangle {
         }
 
         Rectangle {
-            width: 120; height: 22; radius: 3
+            width: 120; height: Theme.rowH; radius: Theme.radius
             color: resumeBtnArea.containsMouse ? Theme.accent : Theme.danger
             Text { anchors.centerIn: parent; text: qsTr("Wait for proxy"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
             MouseArea {
@@ -49,7 +49,7 @@ Rectangle {
         }
 
         Rectangle {
-            width: 100; height: 22; radius: 3
+            width: 100; height: Theme.rowH; radius: Theme.radius
             color: dismissBtnArea.containsMouse ? Theme.border : Theme.surfaceAlt
             Text { anchors.centerIn: parent; text: qsTr("Continue exposed"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea {

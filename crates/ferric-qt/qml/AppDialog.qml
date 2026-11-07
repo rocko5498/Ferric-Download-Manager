@@ -38,6 +38,10 @@ Rectangle {
         onClicked: dialog.visible = false
     }
 
+    // Soft shadow: two translucent layers under the card
+    Rectangle { x: card.x - Theme.sp1; y: card.y + Theme.sp2; width: card.width + 2 * Theme.sp1; height: card.height + Theme.sp1; radius: card.radius + Theme.sp1; color: "#14000000" }
+    Rectangle { x: card.x; y: card.y + Theme.sp1; width: card.width; height: card.height; radius: card.radius; color: Theme.shadow }
+
     // Centered dialog card — fixed width, no height binding cycle
     Rectangle {
         id: card
@@ -46,7 +50,7 @@ Rectangle {
         height: Math.max(233, Math.min(parent.height - 2 * Theme.sp5, dialog.cardMaxHeight,
             titleRow.height + Math.max(contentColumn.implicitHeight, contentColumn.childrenRect.height) + buttonRow.height + 3 * Theme.sp4 + Theme.sp3))
         anchors.centerIn: parent
-        radius: Theme.sp2
+        radius: Theme.radiusCard
         color: Theme.surface
 
         // Block clicks from propagating to scrim

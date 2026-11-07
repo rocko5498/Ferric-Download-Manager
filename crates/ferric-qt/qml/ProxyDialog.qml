@@ -15,9 +15,9 @@ AppDialog {
     title: qsTr("Proxy Manager")
 
     contentItem: [
-        Row { spacing: Theme.sp2; width: parent.width; height: 28
+        Row { spacing: Theme.sp2; width: parent.width; height: Theme.controlH
             Rectangle {
-                width: 70; height: 24; radius: 3
+                width: 70; height: Theme.controlH; radius: Theme.radius
                 color: addProxyArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: addProxyArea; anchors.fill: parent; hoverEnabled: true
@@ -25,7 +25,7 @@ AppDialog {
                 }
             }
             Rectangle {
-                width: 50; height: 24; radius: 3
+                width: 50; height: Theme.controlH; radius: Theme.radius
                 color: proxyRefreshArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: proxyRefreshArea; anchors.fill: parent; hoverEnabled: true
@@ -38,14 +38,15 @@ AppDialog {
             Column { id: proxyCol; width: parent.width; spacing: Theme.sp1
                 Repeater {
                     model: proxyDialog.proxyList
-                    Row { spacing: Theme.sp1; height: 28; width: proxyCol.width
-                        Rectangle { width: 8; height: 8; radius: 4; color: Theme.accent }
+                    Row { spacing: Theme.sp1; height: Theme.controlH; width: proxyCol.width
+                        Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: Theme.accent }
                         Column { width: parent.width - 130
                             Text { text: modelData.name + " (" + modelData.proxy_type + ")"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                             Text { text: modelData.host + ":" + modelData.port; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                         }
                         Rectangle {
-                            width: 45; height: 20; radius: 3
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 45; height: Theme.rowH; radius: Theme.radius
                             color: proxyTestBtn.containsMouse ? Theme.border : Theme.surfaceAlt
                             Text { anchors.centerIn: parent; text: qsTr("Test"); color: Theme.success; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { id: proxyTestBtn; anchors.fill: parent; hoverEnabled: true
@@ -66,7 +67,8 @@ AppDialog {
                             }
                         }
                         Rectangle {
-                            width: 45; height: 20; radius: 3
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 45; height: Theme.rowH; radius: Theme.radius
                             color: proxyDelBtn.containsMouse ? Theme.border : Theme.surfaceAlt
                             Text { anchors.centerIn: parent; text: qsTr("Delete"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { id: proxyDelBtn; anchors.fill: parent; hoverEnabled: true

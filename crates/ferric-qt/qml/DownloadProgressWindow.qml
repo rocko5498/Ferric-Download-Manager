@@ -149,10 +149,10 @@ Window {
 
         // overall progress bar
         Rectangle {
-            width: parent.width; height: 18; radius: 2
+            width: parent.width; height: Theme.rowH; radius: Theme.radius
             color: Theme.surface; border.color: Theme.border
             Rectangle {
-                width: parent.width * win.fraction; height: parent.height; radius: 2
+                width: parent.width * win.fraction; height: parent.height; radius: Theme.radius
                 color: win.status === "error" ? Theme.danger : Theme.accent
                 Behavior on width { NumberAnimation { duration: 260; easing.type: Easing.Linear } }
             }
@@ -166,9 +166,9 @@ Window {
 
         // IDM keeps "Hide details" and the two action buttons on one row
         Item {
-            width: parent.width; height: 28
+            width: parent.width; height: Theme.controlH
             Rectangle {
-                width: 110; height: 26; radius: 3; color: Theme.surfaceAlt
+                width: 110; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: win.detailsShown ? qsTr("<< Hide details") : qsTr("Show details >>"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: { win.detailsShown = !win.detailsShown; if (win.detailsShown) win.refresh(); } }
             }
@@ -176,7 +176,7 @@ Window {
                 anchors.right: parent.right
                 spacing: Theme.sp2
                 Rectangle {
-                    width: 80; height: 26; radius: 3; color: Theme.surfaceAlt
+                    width: 80; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                     visible: win.status !== "completed"
                     Text { anchors.centerIn: parent; text: win.status === "paused" || win.status === "error" ? qsTr("Resume") : qsTr("Pause"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
@@ -188,7 +188,7 @@ Window {
                     }
                 }
                 Rectangle {
-                    width: 80; height: 26; radius: 3; color: Theme.accent
+                    width: 80; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
                     Text { anchors.centerIn: parent; text: win.status === "completed" ? qsTr("Close") : qsTr("Cancel"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         anchors.fill: parent
@@ -209,7 +209,8 @@ Window {
             spacing: Theme.sp2
             Text { text: qsTr("Maximum download speed (KB/sec, 0 = no limit):"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             Rectangle {
-                width: 70; height: 24; color: Theme.surface; border.color: limitInput.activeFocus ? Theme.accent : Theme.border
+                anchors.verticalCenter: parent.verticalCenter
+                width: 70; height: Theme.controlH; color: Theme.surface; border.color: limitInput.activeFocus ? Theme.accent : Theme.border
                 TextInput {
                     id: limitInput
                     anchors { fill: parent; margins: Theme.sp1 }
@@ -234,7 +235,7 @@ Window {
         Rectangle {
             id: segMap
             visible: win.detailsShown
-            width: parent.width; height: 22
+            width: parent.width; height: Theme.rowH
             color: "white"; border.color: Theme.border
             clip: true
             Repeater {
@@ -265,7 +266,7 @@ Window {
             clip: true
             Row {
                 id: connHeader
-                height: 22
+                height: Theme.rowH
                 Text { text: qsTr("N."); width: 40; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; leftPadding: Theme.sp1; verticalAlignment: Text.AlignVCenter; height: parent.height }
                 Text { text: qsTr("Downloaded"); width: 130; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; verticalAlignment: Text.AlignVCenter; height: parent.height }
                 Text { text: qsTr("Info"); width: 200; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; verticalAlignment: Text.AlignVCenter; height: parent.height }
@@ -276,7 +277,7 @@ Window {
                 model: win.chunks.length
                 delegate: Row {
                     readonly property var c: win.chunks[index]
-                    height: 20
+                    height: Theme.rowH
                     Text { text: c ? (c.chunk_index + 1) + "." : ""; width: 40; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; leftPadding: Theme.sp1 }
                     Text { text: c ? (c.downloaded / 1024).toFixed(3) + " KB" : ""; width: 130; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     Text {

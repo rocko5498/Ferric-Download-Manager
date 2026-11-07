@@ -40,6 +40,19 @@ Flickable {
 
     // The model's `queue` is the first 8 chars of the queue id ("" = default queue), while the
     // sidebar filter holds the full id, so the queue filter never matched and showed nothing.
+    // file-type badge for a row: by category, then by extension
+    function fileIcon(category, name) {
+        var c = (category || "").toLowerCase()
+        if (c === "video") return "ft-video"
+        if (c === "compressed") return "ft-archive"
+        if (c === "documents") return "ft-document"
+        if (c === "music") return "ft-music"
+        if (c === "programs") return "ft-program"
+        var e = (name || "").split(".").pop().toLowerCase()
+        if (["png", "jpg", "jpeg", "gif", "webp", "bmp", "svg"].indexOf(e) >= 0) return "ft-image"
+        return "ft-other"
+    }
+    readonly property int leadW: 28 + Theme.sp2   // row number + file icon cell + gap: header and rows share it
     function queueLabel(id) {
         for (var i = 0; i < queues.length; i++) if (queues[i].id === id) return queues[i].name
         return ""
@@ -63,13 +76,14 @@ Flickable {
             id: downloadHeaderRow
             height: Theme.rowH
             Text { width: 28; height: parent.height; verticalAlignment: Text.AlignVCenter; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: Theme.sp4 + Theme.sp2 - 5; height: parent.height; verticalAlignment: Text.AlignVCenter; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Item { width: downloadHFlick.leadW; height: parent.height }
             Repeater {
                 model: downloadHFlick.columns
                 Text {
                     width: modelData.width
                     height: Theme.rowH
                     verticalAlignment: Text.AlignVCenter
+                    font.weight: Font.DemiBold
                     text: modelData.title
                     color: Theme.textDim
                     font.pixelSize: Theme.fontSizeSmall
@@ -91,12 +105,15 @@ Flickable {
                 height: ((downloadHFlick.categoryFilter !== "" && model.category !== downloadHFlick.categoryFilter) ||
                          downloadHFlick.hiddenIds[model.id] === true ||
                          !downloadHFlick.queueMatches(model.queue) ||
-                         !downloadHFlick.findMatches(model.name || "", model.urlHost || "", model.savePath || "", model.description || "")) ? 0 : Theme.rowH
+                         !downloadHFlick.findMatches(model.name || "", model.urlHost || "", model.savePath || "", model.description || "")) ? 0 : Theme.listRowH
                 visible: (downloadHFlick.categoryFilter === "" || model.category === downloadHFlick.categoryFilter) &&
                          downloadHFlick.hiddenIds[model.id] !== true &&
                          downloadHFlick.queueMatches(model.queue) &&
                          downloadHFlick.findMatches(model.name || "", model.urlHost || "", model.savePath || "", model.description || "")
-                color: downloadHFlick.selectedDownloads.some(function(s) { return s.id === model.id; }) ? Theme.surfaceAlt : "transparent"
+                readonly property bool isSelected: downloadHFlick.selectedDownloads.some(function(s) { return s.id === model.id; })
+                color: isSelected ? Theme.accentSoft : (rowHover.hovered ? Theme.rowHover : "transparent")
+                HoverHandler { id: rowHover }
+                Rectangle { visible: rowRoot.isSelected; width: 3; height: parent.height - 2 * Theme.sp1; radius: Theme.radius; color: Theme.accent; anchors.verticalCenter: parent.verticalCenter }
 
                 // Captured once per row so the Repeater below (which shadows the
                 // ListView's `model` context property with its own) can still reach
@@ -140,66 +157,82 @@ Flickable {
                 Row {
                     anchors.fill: parent
                     Text { width: 28; height: parent.height; verticalAlignment: Text.AlignVCenter; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                    Rectangle {
-                        width: Theme.dotSize; height: Theme.dotSize; radius: Theme.dotSize / 2
-                        anchors.verticalCenter: parent.verticalCenter
-                        color: rowRoot.rStatus === "downloading" ? Theme.success
-                            : rowRoot.rStatus === "error" ? Theme.danger
-                            : rowRoot.rStatus === "paused" ? Theme.warning
-                            : Theme.textDim
+                    Item {
+                        width: 28; height: parent.height
+                        Image {
+                            anchors.centerIn: parent
+                            width: 24; height: 24; sourceSize: Qt.size(72, 72); smooth: true
+                            source: "qrc:/icons/" + downloadHFlick.fileIcon(rowRoot.rCategory, rowRoot.rName) + ".png"
+                        }
                     }
-                    Item { width: Theme.sp3 + 1; height: 1 }
+                    Item { width: Theme.sp2; height: 1 }
 
                     Repeater {
                         model: downloadHFlick.columns
                         delegate: Item {
                             id: cell
                             width: modelData.width
-                            height: Theme.rowH
+                            height: Theme.listRowH
                             property string role: modelData.role
                             property string val: rowRoot.roleValue(role)
+                            property string st: rowRoot.rStatus
+                            property real pct: { var n = parseFloat(val); return isNaN(n) ? 0 : Math.max(0, Math.min(100, n)) }
 
-                            // Loader: only the progress column pays for the bar objects;
-                            // plain cells stay one Text each.
-                            Loader {
-                                active: cell.role === "progress"
+                            // Name: the file name over the site it comes from
+                            Column {
+                                visible: cell.role === "name"
                                 anchors.verticalCenter: parent.verticalCenter
-                                sourceComponent: Row {
-                                    spacing: Theme.sp1
-                                    property real pct: {
-                                        var n = parseFloat(cell.val);
-                                        return isNaN(n) ? 0 : Math.max(0, Math.min(100, n));
-                                    }
-                                    Rectangle {
-                                        width: 42; height: 5; radius: 3
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        color: Theme.border
-                                        visible: cell.val && cell.val !== "-"
-                                        Rectangle {
-                                            width: parent.width * (parent.parent.pct / 100)
-                                            height: parent.height; radius: parent.radius
-                                            color: rowRoot.rStatus === "completed" ? Theme.textDim : Theme.accent
-                                            Behavior on width { NumberAnimation { duration: 300; easing.type: Easing.Linear } }
-                                        }
-                                    }
-                                    Text {
-                                        anchors.verticalCenter: parent.verticalCenter
-                                        color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
-                                        text: cell.val
-                                textFormat: Text.PlainText
-                                    }
+                                width: parent.width - Theme.sp2
+                                spacing: 1
+                                Text { width: parent.width; elide: Text.ElideRight; text: cell.val; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.weight: Font.Medium; textFormat: Text.PlainText }
+                                Text { width: parent.width; elide: Text.ElideRight; visible: rowRoot.rUrlHost !== ""; text: rowRoot.rUrlHost; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; textFormat: Text.PlainText }
+                            }
+
+                            // Status: a coloured pill
+                            Rectangle {
+                                visible: cell.role === "status"
+                                anchors.verticalCenter: parent.verticalCenter
+                                height: Theme.sp4; width: pillText.implicitWidth + 2 * Theme.sp3; radius: height / 2
+                                color: cell.st === "completed" ? Theme.successSoft : cell.st === "downloading" ? Theme.accentSoft
+                                     : cell.st === "paused" ? Theme.warningSoft : cell.st === "error" ? Theme.dangerSoft : Theme.surfaceAlt
+                                Text {
+                                    id: pillText
+                                    anchors.centerIn: parent
+                                    text: cell.val.charAt(0).toUpperCase() + cell.val.slice(1)
+                                    font.pixelSize: Theme.fontSizeSmall; font.weight: Font.DemiBold
+                                    color: cell.st === "completed" ? Theme.success : cell.st === "downloading" ? Theme.accent
+                                         : cell.st === "paused" ? Theme.warningText : cell.st === "error" ? Theme.danger : Theme.textDim
                                 }
                             }
-                            Text {
-                                visible: cell.role !== "progress"
+
+                            // Progress: a bar as wide as its column, and the percentage
+                            Row {
+                                visible: cell.role === "progress" && cell.val !== "" && cell.val !== "-"
                                 anchors.verticalCenter: parent.verticalCenter
-                                width: parent.width
+                                spacing: Theme.sp2
+                                Rectangle {
+                                    anchors.verticalCenter: parent.verticalCenter
+                                    width: Math.max(Theme.sp5, cell.width - 3 * Theme.sp4 - Theme.sp2); height: 6; radius: 3
+                                    color: Theme.border
+                                    Rectangle {
+                                        width: parent.width * (cell.pct / 100); height: parent.height; radius: parent.radius
+                                        color: cell.st === "completed" ? Theme.success : cell.st === "error" ? Theme.danger : Theme.accent
+                                        Behavior on width { NumberAnimation { duration: 300; easing.type: Easing.Linear } }
+                                    }
+                                }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: cell.val; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; textFormat: Text.PlainText }
+                            }
+
+                            // Everything else: plain text, dimmer when it is secondary information
+                            Text {
+                                visible: cell.role !== "name" && cell.role !== "status" && cell.role !== "progress"
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: parent.width - Theme.sp2
                                 elide: Text.ElideRight
-                                color: cell.role === "error" ? Theme.danger
-                                    : (cell.role === "savePath" || cell.role === "urlHost") ? Theme.textDim
-                                    : Theme.text
-                                font.pixelSize: Theme.fontSizeNormal
                                 text: cell.val
+                                font.pixelSize: Theme.fontSizeNormal
+                                color: cell.role === "error" ? Theme.danger
+                                     : (cell.role === "size" || cell.role === "speed" || cell.role === "eta") ? Theme.text : Theme.textDim
                                 textFormat: Text.PlainText
                             }
                         }
@@ -243,16 +276,14 @@ Flickable {
         text: qsTr("Cannot load downloads") + "\n" + downloadHFlick.lastError
     }
 
-    Text {
+    Column {
         anchors.centerIn: parent
-        width: parent.width - 48
         z: 2
-        horizontalAlignment: Text.AlignHCenter
-        wrapMode: Text.WordWrap
-        font.pixelSize: Theme.fontSizeNormal
+        spacing: Theme.sp2
         visible: downloadHFlick.downloadModel && downloadHFlick.downloadModel.count === 0 && downloadHFlick.lastOk
-        color: Theme.textDim
-        text: qsTr("No downloads yet \u2014 Add URL or capture from the browser")
+        Image { anchors.horizontalCenter: parent.horizontalCenter; width: 96; height: 96; sourceSize: Qt.size(192, 192); smooth: true; source: "qrc:/icons/empty-downloads.png" }
+        Text { anchors.horizontalCenter: parent.horizontalCenter; text: qsTr("No downloads yet"); color: Theme.text; font.pixelSize: Theme.fontSizeMedium; font.weight: Font.DemiBold }
+        Text { anchors.horizontalCenter: parent.horizontalCenter; text: qsTr("Click Add URL, or start a download in your browser."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
     }
 
     Menu {

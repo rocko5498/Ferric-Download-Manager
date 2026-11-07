@@ -14,7 +14,7 @@ AppDialog {
 
         Rectangle {
             width: parent.width; height: 160; color: Theme.bg
-            border.color: trackersTextArea.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+            border.color: trackersTextArea.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
             clip: true
             TextEdit {
                 id: trackersTextArea

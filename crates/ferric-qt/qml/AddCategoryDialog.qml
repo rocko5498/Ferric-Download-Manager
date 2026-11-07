@@ -10,8 +10,8 @@ AppDialog {
 
     contentItem: [
         Rectangle {
-            width: parent.width; height: 28; color: Theme.bg
-            border.color: addCatInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+            width: parent.width; height: Theme.controlH; color: Theme.bg
+            border.color: addCatInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
             TextInput {
                 clip: true
                 id: addCatInput

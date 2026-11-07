@@ -23,6 +23,14 @@ QtObject {
     readonly property color danger: dark ? "#f87171" : "#d64545"
     readonly property color success: dark ? "#34d399" : "#28a06c"
     readonly property color warning: dark ? "#fbbf24" : "#e8a31c"
+    // soft tints for pills, selected rows and hover
+    readonly property color accentSoft: dark ? "#3a2a1f" : "#fdeee3"
+    readonly property color successSoft: dark ? "#16352a" : "#e4f5ec"
+    readonly property color warningSoft: dark ? "#3a3013" : "#fdf1d6"
+    readonly property color warningText: dark ? "#fbbf24" : "#9a6a00"
+    readonly property color dangerSoft: dark ? "#3b1d1d" : "#fbe5e5"
+    readonly property color rowHover: dark ? "#22222c" : "#fbf8f5"
+    readonly property color shadow: "#22000000"
 
     // Spacing scale (Fibonacci)
     readonly property int sp1: 5
@@ -47,6 +55,8 @@ QtObject {
     readonly property int toolIcon: 32
     readonly property int sidebarW: 233     // Fibonacci
     readonly property int controlH: 34      // buttons and text fields
+    readonly property int listRowH: 34      // download list rows (name over host)
+    readonly property int radiusCard: 8     // dialogs and cards; controls use `radius`
     readonly property int dotSize: 8        // status dots
     readonly property int btnS: 55          // short button (Save, Close): 55 x 34 is a golden rectangle
     readonly property int btnM: 89          // normal button

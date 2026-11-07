@@ -125,49 +125,49 @@ Rectangle {
                 anchors.topMargin: Theme.sp5
                 spacing: Theme.sp1
                 Rectangle {
-                    width: 76; height: 20; radius: 3; color: openFolderArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 76; height: 20; radius: Theme.radius; color: openFolderArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("Open Folder"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: openFolderArea; anchors.fill: parent; hoverEnabled: true; onClicked: doOpenFolder() }
                 }
                 Rectangle {
-                    width: 60; height: 20; radius: 3; color: openFileArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 60; height: 20; radius: Theme.radius; color: openFileArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("Open File"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: openFileArea; anchors.fill: parent; hoverEnabled: true; onClicked: doOpenFile() }
                 }
                 Rectangle {
-                    width: 60; height: 20; radius: 3; color: copyUrlArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 60; height: 20; radius: Theme.radius; color: copyUrlArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("Copy URL"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: copyUrlArea; anchors.fill: parent; hoverEnabled: true; onClicked: doCopyUrl() }
                 }
                 Rectangle {
-                    width: 68; height: 20; radius: 3; color: copyNameArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 68; height: 20; radius: Theme.radius; color: copyNameArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("Copy Name"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: copyNameArea; anchors.fill: parent; hoverEnabled: true; onClicked: doCopyName() }
                 }
                 Rectangle {
-                    width: 76; height: 20; radius: 3; color: refreshUrlBtnArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 76; height: 20; radius: Theme.radius; color: refreshUrlBtnArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("Refresh URL"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: refreshUrlBtnArea; anchors.fill: parent; hoverEnabled: true; onClicked: doShowRefreshUrl() }
                 }
                 Rectangle {
-                    width: 20; height: 20; radius: 3; color: prioUpArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 20; height: 20; radius: Theme.radius; color: prioUpArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("\u25b2"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: prioUpArea; anchors.fill: parent; hoverEnabled: true; onClicked: doPriorityUp() }
                 }
                 Rectangle {
-                    width: 20; height: 20; radius: 3; color: prioDownArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 20; height: 20; radius: Theme.radius; color: prioDownArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     visible: selectedDownloads.length === 1
                     Text { anchors.centerIn: parent; text: qsTr("\u25bc"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: prioDownArea; anchors.fill: parent; hoverEnabled: true; onClicked: doPriorityDown() }
                 }
                 Rectangle {
-                    width: 58; height: 20; radius: 3; color: speedLimArea.containsMouse ? Theme.surfaceAlt : Theme.surface
+                    width: 58; height: 20; radius: Theme.radius; color: speedLimArea.containsMouse ? Theme.surfaceAlt : Theme.surface
                     Text { anchors.centerIn: parent; text: qsTr("Set Limit"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: speedLimArea; anchors.fill: parent; hoverEnabled: true; onClicked: doShowSpeedLimit() }
                 }
@@ -225,7 +225,7 @@ Rectangle {
                     id: descField
                     width: 320; height: 20
                     color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                    background: Rectangle { color: Theme.surface; border.color: Theme.surfaceAlt; radius: 2 }
+                    background: Rectangle { color: Theme.surface; border.color: Theme.surfaceAlt; radius: Theme.radius }
                     text: detailGeneral.dlData ? (detailGeneral.dlData.description || "") : ""
                     onEditingFinished: {
                         if (selectedDownloads.length === 1)
@@ -314,11 +314,13 @@ Rectangle {
                 Row {
                     spacing: Theme.sp2
                     Rectangle {
+                        anchors.verticalCenter: parent.verticalCenter
                         width: 8; height: 8; radius: 4
                         color: detailDiagnostic.diagData && (detailDiagnostic.diagData.severity === "ok" || detailDiagnostic.diagData.severity === "info") ? Theme.success
                             : detailDiagnostic.diagData && detailDiagnostic.diagData.severity === "warning" ? Theme.warning : Theme.danger
                     }
                     Text {
+                        anchors.verticalCenter: parent.verticalCenter
                         color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true
                         text: detailDiagnostic.diagData ? detailDiagnostic.diagData.title || "-" : "-"
                     }
@@ -346,10 +348,11 @@ Rectangle {
                 Row {
                     anchors.centerIn: parent; spacing: Theme.sp3
                     Text {
+                        anchors.verticalCenter: parent.verticalCenter
                         color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                         text: "Speed: " + ((hub.download_bps || 0) >= 1048576 ? ((hub.download_bps || 0) / 1048576).toFixed(1) + " MB/s" : (hub.download_bps || 0) >= 1024 ? ((hub.download_bps || 0) / 1024).toFixed(0) + " KB/s" : (hub.download_bps || 0) + " B/s")
                     }
-                    Text { color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; text: "Active: " + (hub.active_downloads || 0) }
+                    Text { anchors.verticalCenter: parent.verticalCenter; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; text: "Active: " + (hub.active_downloads || 0) }
                 }
             }
 

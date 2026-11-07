@@ -12,9 +12,9 @@ AppDialog {
     title: qsTr("Ferric Download Manager")
 
     contentItem: [
-        Row { spacing: Theme.sp2; height: 22
-            Rectangle { width: 8; height: 8; radius: 4; color: session && session.connected ? Theme.success : Theme.danger }
-            Text { color: session && session.connected ? Theme.success : Theme.danger; font.pixelSize: Theme.fontSizeSmall
+        Row { spacing: Theme.sp2; height: Theme.rowH
+            Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: session && session.connected ? Theme.success : Theme.danger }
+            Text { anchors.verticalCenter: parent.verticalCenter; color: session && session.connected ? Theme.success : Theme.danger; font.pixelSize: Theme.fontSizeSmall
                 text: session && session.connected ? "Daemon connected (port " + session.port + ")" : "Daemon disconnected" }
         },
 
@@ -26,7 +26,7 @@ AppDialog {
         Column { width: parent.width; spacing: Theme.sp1
             Text { text: qsTr("Open folders"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
             Row { spacing: Theme.sp1
-                Rectangle { width: 90; height: 22; radius: 3; color: aboutDataArea.containsMouse ? Theme.border : Theme.surfaceAlt
+                Rectangle { width: 90; height: Theme.rowH; radius: Theme.radius; color: aboutDataArea.containsMouse ? Theme.border : Theme.surfaceAlt
                     Text { anchors.centerIn: parent; text: qsTr("Data folder"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: aboutDataArea; anchors.fill: parent; hoverEnabled: true
                         onClicked: {

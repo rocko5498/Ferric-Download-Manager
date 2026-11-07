@@ -33,9 +33,9 @@ AppDialog {
                 Repeater {
                     model: shortcutsDialog.shortcutsModel
                     Row {
-                        spacing: Theme.sp3; height: 22; width: shortcutsCol.width
+                        spacing: Theme.sp3; height: Theme.rowH; width: shortcutsCol.width
                         Rectangle {
-                            width: 100; height: 20; radius: 3
+                            width: 100; height: Theme.rowH; radius: Theme.radius
                             color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                             Text {
                                 anchors.centerIn: parent
@@ -43,7 +43,7 @@ AppDialog {
                                 color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.family: "monospace"
                             }
                         }
-                        Text { text: modelData[1]; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                        Text { anchors.verticalCenter: parent.verticalCenter; text: modelData[1]; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     }
                 }
             }

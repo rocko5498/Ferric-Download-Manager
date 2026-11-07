@@ -18,7 +18,7 @@ AppDialog {
 
         Rectangle {
             width: parent.width; height: 160
-            radius: 4; color: Theme.bg
+            radius: Theme.radius; color: Theme.bg
             border.color: batchInput.activeFocus ? Theme.accent : Theme.surfaceAlt; border.width: 1
             clip: true
 

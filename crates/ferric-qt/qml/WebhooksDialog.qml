@@ -15,9 +15,9 @@ AppDialog {
     title: qsTr("Webhooks")
 
     contentItem: [
-        Row { spacing: Theme.sp2; width: parent.width; height: 28
+        Row { spacing: Theme.sp2; width: parent.width; height: Theme.controlH
             Rectangle {
-                width: 70; height: 24; radius: 3
+                width: 70; height: Theme.controlH; radius: Theme.radius
                 color: addWebhookArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: addWebhookArea; anchors.fill: parent; hoverEnabled: true
@@ -25,7 +25,7 @@ AppDialog {
                 }
             }
             Rectangle {
-                width: 50; height: 24; radius: 3
+                width: 50; height: Theme.controlH; radius: Theme.radius
                 color: whRefreshArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: whRefreshArea; anchors.fill: parent; hoverEnabled: true
@@ -35,13 +35,13 @@ AppDialog {
         },
 
         // Add webhook row (hidden by default)
-        Row { id: webhookAddRow; visible: false; spacing: Theme.sp1; width: parent.width; height: 28
-            Rectangle { width: parent.width - 140; height: 24; color: Theme.bg; border.color: webhookUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+        Row { id: webhookAddRow; visible: false; spacing: Theme.sp1; width: parent.width; height: Theme.controlH
+            Rectangle { anchors.verticalCenter: parent.verticalCenter; width: parent.width - 140; height: Theme.controlH; color: Theme.bg; border.color: webhookUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                 TextInput { id: webhookUrlInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                     Text { visible: parent.text.length === 0; text: qsTr("https://..."); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall } } }
             TextInput { id: webhookEventsInput; visible: false; width: 0; height: 0; text: "*" }
             clip: true
-            Rectangle { width: 50; height: 24; radius: 3; color: whSaveArea.containsMouse ? Theme.border : Theme.surfaceAlt
+            Rectangle { width: 50; height: Theme.controlH; radius: Theme.radius; color: whSaveArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Save"); color: Theme.success; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: whSaveArea; anchors.fill: parent; hoverEnabled: true
                     onClicked: {
@@ -57,7 +57,7 @@ AppDialog {
                     }
                 }
             }
-            Rectangle { width: 50; height: 24; radius: 3; color: Theme.surfaceAlt
+            Rectangle { width: 50; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: webhookAddRow.visible = false }
             }
@@ -67,8 +67,8 @@ AppDialog {
             Column { id: whCol; width: parent.width; spacing: Theme.sp1
                 Repeater {
                     model: webhooksDialog.webhookList
-                    Row { spacing: Theme.sp1; height: 28; width: whCol.width
-                        Rectangle { width: 8; height: 8; radius: 4; color: modelData.enabled ? Theme.success : Theme.danger }
+                    Row { spacing: Theme.sp1; height: Theme.controlH; width: whCol.width
+                        Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: modelData.enabled ? Theme.success : Theme.danger }
                         Column { width: parent.width - 80
                             Text { text: modelData.url; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: parent.width }
                             Text { text: "Events: " + modelData.events; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }

@@ -52,8 +52,9 @@ Rectangle {
         Row {
             width: parent.width; spacing: Theme.sp1
             Rectangle {
-                width: parent.width - 160; height: 28; color: Theme.bg
-                border.color: grabUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width - 160; height: Theme.controlH; color: Theme.bg
+                border.color: grabUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                 TextInput {
                     clip: true
                     id: grabUrlInput
@@ -67,8 +68,8 @@ Rectangle {
                 }
             }
             Rectangle {
-                width: 70; height: 28; radius: 3
-                color: grabBtnArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 70; height: Theme.controlH; radius: Theme.radius
+                color: grabBtnArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: grabber.grabLoading ? "..." : "Grab"; color: "white"; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { id: grabBtnArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onGrab() }
             }
@@ -79,10 +80,11 @@ Rectangle {
             spacing: Theme.sp3
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Extensions:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Extensions:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 140; height: 24; color: Theme.bg
-                    border.color: grabExtInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 140; height: Theme.controlH; color: Theme.bg
+                    border.color: grabExtInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: grabExtInput
@@ -95,10 +97,11 @@ Rectangle {
             }
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Depth:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Depth:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 40; height: 24; color: Theme.bg
-                    border.color: grabDepthInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 40; height: Theme.controlH; color: Theme.bg
+                    border.color: grabDepthInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: grabDepthInput
@@ -109,14 +112,15 @@ Rectangle {
                         onTextChanged: grabber.grabDepth = Math.min(5, parseInt(text) || 0)
                     }
                 }
-                Text { text: qsTr("(0-5)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("(0-5)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             }
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Levels on other sites:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Levels on other sites:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 40; height: 24; color: Theme.bg
-                    border.color: grabExternalInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 40; height: Theme.controlH; color: Theme.bg
+                    border.color: grabExternalInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: grabExternalInput
@@ -135,10 +139,11 @@ Rectangle {
             spacing: Theme.sp3
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Explore only:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Explore only:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 170; height: 24; color: Theme.bg
-                    border.color: grabIncludeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 170; height: Theme.controlH; color: Theme.bg
+                    border.color: grabIncludeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: grabIncludeInput
@@ -151,10 +156,11 @@ Rectangle {
             }
             Row {
                 spacing: Theme.sp1
-                Text { text: qsTr("Never open:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Never open:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: 170; height: 24; color: Theme.bg
-                    border.color: grabExcludeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    anchors.verticalCenter: parent.verticalCenter
+                    width: 170; height: Theme.controlH; color: Theme.bg
+                    border.color: grabExcludeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: grabExcludeInput
@@ -167,7 +173,7 @@ Rectangle {
             }
             Row {
                 spacing: Theme.sp1
-                Rectangle { width: 16; height: 16; radius: 3; anchors.verticalCenter: parent.verticalCenter
+                Rectangle { width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; anchors.verticalCenter: parent.verticalCenter
                     color: grabber.grabStayBelow ? Theme.accent : Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                     Text { anchors.centerIn: parent; text: grabber.grabStayBelow ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: grabber.grabStayBelow = !grabber.grabStayBelow }
@@ -181,8 +187,9 @@ Rectangle {
             spacing: Theme.sp2
             Text { text: qsTr("Project:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             Rectangle {
-                width: 170; height: 24; color: Theme.bg
-                border.color: grabProjectName.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                anchors.verticalCenter: parent.verticalCenter
+                width: 170; height: Theme.controlH; color: Theme.bg
+                border.color: grabProjectName.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                 TextInput {
                     clip: true
                     id: grabProjectName
@@ -192,23 +199,23 @@ Rectangle {
                 }
             }
             Rectangle {
-                width: 90; height: 24; radius: 3; color: saveProjArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 90; height: Theme.controlH; radius: Theme.radius; color: saveProjArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("Save project"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: saveProjArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onProjectSave(grabProjectName.text, false) }
             }
             Rectangle {
-                width: 100; height: 24; radius: 3; color: saveTplArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 100; height: Theme.controlH; radius: Theme.radius; color: saveTplArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("Save as template"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: saveTplArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onProjectSave(grabProjectName.text, true) }
             }
             Rectangle {
-                width: 100; height: 24; radius: 3; color: updProjArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 100; height: Theme.controlH; radius: Theme.radius; color: updProjArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("Update project"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: updProjArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onProjectUpdate() }
             }
             Row {
                 spacing: Theme.sp1
-                Rectangle { width: 16; height: 16; radius: 3; anchors.verticalCenter: parent.verticalCenter
+                Rectangle { width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; anchors.verticalCenter: parent.verticalCenter
                     color: grabber.grabDownloadAll ? Theme.accent : Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                     Text { anchors.centerIn: parent; text: grabber.grabDownloadAll ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: grabber.grabDownloadAll = !grabber.grabDownloadAll }
@@ -222,9 +229,10 @@ Rectangle {
             Repeater {
                 model: grabber.projects
                 Rectangle {
-                    height: 22; radius: 3; color: Theme.surface; border.color: Theme.surfaceAlt
+                    height: Theme.rowH; radius: Theme.radius; color: Theme.surface; border.color: Theme.surfaceAlt
                     width: projLabel.implicitWidth + 34
                     Text {
+                        anchors.verticalCenter: parent.verticalCenter
                         id: projLabel
                         anchors { left: parent.left; leftMargin: Theme.sp2; verticalCenter: parent.verticalCenter }
                         text: (modelData.is_template ? "[template] " : "") + modelData.name + (modelData.is_template ? "" : " (" + modelData.result_count + ")")
@@ -240,9 +248,9 @@ Rectangle {
         // Results header
         Row {
             width: parent.width; spacing: 0
-            Text { width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 24; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: parent.width - 54; text: "URL (" + grabber.grabResults.length + " found)"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 24; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: parent.width - 54; text: "URL (" + grabber.grabResults.length + " found)"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         }
 
         Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
@@ -260,18 +268,18 @@ Rectangle {
                 // `ListView.view` only exists on the delegate root; nested items must use this.
                 property var lv: ListView.view
                 width: lv.width
-                height: 22
+                height: Theme.rowH
                 color: grabber.grabSelected.indexOf(index) >= 0 ? Theme.surfaceAlt : "transparent"
                 Row {
                     anchors.fill: parent
-                    Text { width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Rectangle {
-                        width: 14; height: 14; radius: 2
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         color: grabber.grabSelected.indexOf(index) >= 0 ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         MouseArea { anchors.fill: parent; onClicked: grabber.onToggleResult(index) }
                     }
-                    Text { width: lv.width - 54; text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: lv.width - 54; text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
                 }
             }
 
@@ -285,7 +293,7 @@ Rectangle {
 
         // Add selected button
         Rectangle {
-            width: 140; height: 26; radius: 3
+            width: 140; height: Theme.controlH; radius: Theme.radius
             color: grabber.grabSelected.length > 0 ? Theme.accent : Theme.surfaceAlt
             opacity: grabber.grabSelected.length > 0 ? 1.0 : 0.4
             Text { anchors.centerIn: parent; text: "Add Selected (" + grabber.grabSelected.length + ")"; color: "white"; font.pixelSize: Theme.fontSizeSmall }

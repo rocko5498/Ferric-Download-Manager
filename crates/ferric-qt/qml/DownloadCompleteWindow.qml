@@ -40,7 +40,7 @@ Window {
 
         Text { text: qsTr("Address"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         Rectangle {
-            width: parent.width; height: 24; color: Theme.surface; border.color: Theme.border
+            width: parent.width; height: Theme.controlH; color: Theme.surface; border.color: Theme.border
             TextInput {
                 anchors { fill: parent; margins: Theme.sp1 }
                 readOnly: true; selectByMouse: true; clip: true
@@ -51,7 +51,7 @@ Window {
 
         Text { text: qsTr("The file saved as"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         Rectangle {
-            width: parent.width; height: 24; color: Theme.surface; border.color: Theme.border
+            width: parent.width; height: Theme.controlH; color: Theme.surface; border.color: Theme.border
             TextInput {
                 anchors { fill: parent; margins: Theme.sp1 }
                 readOnly: true; selectByMouse: true; clip: true
@@ -63,17 +63,17 @@ Window {
         Row {
             spacing: Theme.sp2
             Rectangle {
-                width: 90; height: 26; radius: 3; color: Theme.accent
+                width: 90; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("Open"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.bus.open_file(win.fullPath) }
             }
             Rectangle {
-                width: 110; height: 26; radius: 3; color: Theme.surfaceAlt
+                width: 110; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Open folder"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.bus.open_folder(win.fullPath) }
             }
             Rectangle {
-                width: 80; height: 26; radius: 3; color: Theme.surfaceAlt
+                width: 80; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.close() }
             }
@@ -82,13 +82,13 @@ Window {
         Row {
             spacing: Theme.sp2
             Rectangle {
-                width: 16; height: 16; radius: 3
+                width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                 color: win.dontShowAgain ? Theme.accent : Theme.bg
                 border.color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: win.dontShowAgain ? "✓" : ""; color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.dontShowAgain = !win.dontShowAgain }
             }
-            Text { text: qsTr("Don't show this dialog again"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Don't show this dialog again"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
         }
     }
 }

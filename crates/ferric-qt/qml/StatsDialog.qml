@@ -14,7 +14,7 @@ AppDialog {
 
     contentItem: [
         Row { spacing: Theme.sp2
-            Rectangle { width: 50; height: 22; radius: 3; color: Theme.surfaceAlt
+            Rectangle { width: 50; height: Theme.rowH; radius: Theme.radius; color: Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: { if (loadStats) loadStats(); } }
             }
@@ -38,9 +38,9 @@ AppDialog {
 
         Text { text: qsTr("Connection"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true },
 
-        Row { spacing: Theme.sp2; height: 22
-            Rectangle { width: 8; height: 8; radius: 4; color: session && session.connected ? Theme.success : Theme.danger }
-            Text { color: session && session.connected ? Theme.success : Theme.danger; font.pixelSize: Theme.fontSizeSmall
+        Row { spacing: Theme.sp2; height: Theme.rowH
+            Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: session && session.connected ? Theme.success : Theme.danger }
+            Text { anchors.verticalCenter: parent.verticalCenter; color: session && session.connected ? Theme.success : Theme.danger; font.pixelSize: Theme.fontSizeSmall
                 text: session && session.connected ? "Daemon connected (port " + session.port + ")" : "Daemon disconnected" }
         },
 

@@ -159,7 +159,7 @@ Window {
         property alias text: edit.text
         property alias editor: edit
         property bool readOnly: false
-        height: 26; radius: 2
+        height: Theme.controlH; radius: Theme.radius
         color: readOnly ? Theme.surfaceAlt : Theme.surface
         border.color: edit.activeFocus ? Theme.accent : Theme.border
         TextInput {
@@ -179,18 +179,18 @@ Window {
 
         // URL (read-only, like IDM)
         Row {
-            spacing: Theme.sp2; height: 26
+            spacing: Theme.sp2; height: Theme.controlH
             Text { text: qsTr("URL"); width: 78; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; anchors.verticalCenter: parent.verticalCenter; horizontalAlignment: Text.AlignRight }
             Field { id: urlField; width: win.width - 28 - 86; readOnly: true; text: win.rec ? (win.rec.final_url || win.rec.url) : "" }
         }
 
         // Category + "+"
         Row {
-            spacing: Theme.sp2; height: 26
+            spacing: Theme.sp2; height: Theme.controlH
             Text { text: qsTr("Category"); width: 78; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; anchors.verticalCenter: parent.verticalCenter; horizontalAlignment: Text.AlignRight }
             QQC.ComboBox {
                 id: catCombo
-                width: 200; height: 26
+                width: 200; height: Theme.controlH
                 model: win.folders
                 textRole: "name"
                 font.pixelSize: Theme.fontSizeNormal
@@ -201,14 +201,14 @@ Window {
                     win.dirPath = win.folders[i].dir;
                     win.syncSaveField();
                 }
-                background: Rectangle { radius: 2; color: Theme.surface; border.color: catCombo.activeFocus ? Theme.accent : Theme.border }
+                background: Rectangle { radius: Theme.radius; color: Theme.surface; border.color: catCombo.activeFocus ? Theme.accent : Theme.border }
                 contentItem: Text { leftPadding: Theme.sp1; text: catCombo.displayText; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; verticalAlignment: Text.AlignVCenter; elide: Text.ElideRight }
             }
         }
 
         // Save As + "..."
         Row {
-            spacing: Theme.sp2; height: 26
+            spacing: Theme.sp2; height: Theme.controlH
             Text { text: qsTr("Save As"); width: 78; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; anchors.verticalCenter: parent.verticalCenter; horizontalAlignment: Text.AlignRight }
             Field {
                 id: saveField
@@ -217,7 +217,7 @@ Window {
                 editor.onEditingFinished: { var s = win.splitPath(text); if (s.dir !== "") win.dirPath = s.dir; if (s.name !== "") win.fileName = s.name; }
             }
             Rectangle {
-                width: 26; height: 26; radius: 2; color: Theme.surfaceAlt; border.color: Theme.border
+                width: 26; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt; border.color: Theme.border
                 Text { anchors.centerIn: parent; text: "…"; color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { anchors.fill: parent; onClicked: browseDialog.open() }
             }
@@ -234,12 +234,12 @@ Window {
                     Rectangle {
                         id: rememberBox
                         property bool checked: false
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         color: checked ? Theme.accent : Theme.bg; border.color: Theme.border
                         Text { anchors.centerIn: parent; text: parent.checked ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: rememberBox.checked = !rememberBox.checked }
                     }
-                    Text { text: qsTr("Remember this path for \"%1\" category").arg(win.category); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Remember this path for \"%1\" category").arg(win.category); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Field {
                     width: win.width - 28 - 86 - 130   // leaves room for the Preview button
@@ -252,7 +252,7 @@ Window {
 
         // Description
         Row {
-            spacing: Theme.sp2; height: 26
+            spacing: Theme.sp2; height: Theme.controlH
             Text { text: qsTr("Description"); width: 78; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; anchors.verticalCenter: parent.verticalCenter; horizontalAlignment: Text.AlignRight }
             Field { id: descField; width: win.width - 28 - 86 }
         }
@@ -266,11 +266,12 @@ Window {
         width: 120; height: 70
         Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter
-            width: 36; height: 44; radius: 3
+            width: 36; height: 44; radius: Theme.radius
             color: Theme.surface; border.color: Theme.accent; border.width: 2
             Text { anchors.centerIn: parent; text: win.ext; color: Theme.accent; font.pixelSize: win.ext.length > 3 ? 9 : 11; font.bold: true }
         }
         Text {
+            anchors.verticalCenter: parent.verticalCenter
             anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
             text: win.fmtSize(win.total)
             color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
@@ -281,7 +282,7 @@ Window {
     Rectangle {
         visible: win.ext === "ZIP" && win.total > 0
         anchors { right: parent.right; rightMargin: Theme.sp3; top: parent.top; topMargin: Theme.sp6 }
-        width: 90; height: 24; radius: 3; color: Theme.surfaceAlt; border.color: Theme.border
+        width: 90; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt; border.color: Theme.border
         Text { anchors.centerIn: parent; text: qsTr("Preview"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
         MouseArea {
             anchors.fill: parent
@@ -297,7 +298,7 @@ Window {
         anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: Theme.sp3 }
         spacing: Theme.sp3
         Rectangle {
-            width: 100; height: 28; radius: 3; color: Theme.surfaceAlt; border.color: Theme.border
+            width: 100; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt; border.color: Theme.border
             Text { anchors.centerIn: parent; text: qsTr("Download Later"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
             MouseArea { anchors.fill: parent; onClicked: {
                 if (win.askQueue && win.queues.length > 1) laterQueueMenu.popup()
@@ -312,12 +313,12 @@ Window {
             }
         }
         Rectangle {
-            width: 100; height: 28; radius: 3; color: Theme.accent
+            width: 100; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
             Text { anchors.centerIn: parent; text: qsTr("Start Download"); color: "white"; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
             MouseArea { anchors.fill: parent; onClicked: win.confirm(true) }
         }
         Rectangle {
-            width: 100; height: 28; radius: 3; color: Theme.surfaceAlt; border.color: Theme.border
+            width: 100; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt; border.color: Theme.border
             Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
             MouseArea { anchors.fill: parent; onClicked: win.cancel() }
         }

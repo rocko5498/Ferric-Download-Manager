@@ -65,8 +65,8 @@ Rectangle {
         spacing: Theme.sp2
 
         Row { spacing: Theme.sp3; width: parent.width
-            Text { text: qsTr("Overview"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
-            Rectangle { width: 50; height: 22; radius: 3; color: refreshArea.containsMouse ? Theme.border : Theme.surfaceAlt
+            Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Overview"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
+            Rectangle { width: 50; height: Theme.rowH; radius: Theme.radius; color: refreshArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: refreshArea; anchors.fill: parent; hoverEnabled: true; onClicked: overview.onRefresh() }
             }
@@ -74,33 +74,33 @@ Rectangle {
 
         // Stats cards
         Row { spacing: Theme.sp2; width: parent.width
-            Rectangle { width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: 4; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+            Rectangle { width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                 Column { anchors.centerIn: parent; spacing: 2
                     Text { text: qsTr("Downloads"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                     Text { text: (overview.stats.active_downloads || 0) + " active"; color: Theme.success; font.pixelSize: Theme.fontSizeNormal; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
                     Text { text: (overview.stats.total_downloads || 0) + " total"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                 }
             }
-            Rectangle { visible: overview.torrentsVisible; width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: 4; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+            Rectangle { visible: overview.torrentsVisible; width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                 Column { anchors.centerIn: parent; spacing: 2
                     Text { text: qsTr("Torrents"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                     Text { text: (overview.stats.active_torrents || 0) + " active"; color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
                     Text { text: (overview.stats.total_torrents || 0) + " total"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                 }
             }
-            Rectangle { width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: 4; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+            Rectangle { width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                 Column { anchors.centerIn: parent; spacing: 2
                     Text { text: qsTr("Download speed"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                     Text { text: formatBps(overview.stats.download_bps || 0); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
                 }
             }
-            Rectangle { visible: overview.torrentsVisible; width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: 4; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+            Rectangle { visible: overview.torrentsVisible; width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                 Column { anchors.centerIn: parent; spacing: 2
                     Text { text: qsTr("Upload speed"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                     Text { text: formatBps(overview.stats.upload_bps || 0); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
                 }
             }
-            Rectangle { visible: overview.torrentsVisible; width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: 4; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
+            Rectangle { visible: overview.torrentsVisible; width: (parent.width - 10 * (overview.cardCount - 1)) / overview.cardCount; height: 60; radius: Theme.radius; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                 Column { anchors.centerIn: parent; spacing: 2
                     Text { text: qsTr("Privacy"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.horizontalCenter: parent.horizontalCenter }
                     Row {
@@ -115,7 +115,7 @@ Rectangle {
                             visible: overview.anonymityGrade.length > 0
                             width: gradeBadgeText.implicitWidth + 12
                             height: 16
-                            radius: 3
+                            radius: Theme.radius
                             color: gradeBadgeColor()
                             border.color: Theme.surfaceAlt
                             border.width: 1
@@ -143,15 +143,16 @@ Rectangle {
         // Network mode strip
         Rectangle {
             visible: overview.torrentsVisible
-            width: parent.width; height: 32; radius: 4
+            width: parent.width; height: Theme.controlH; radius: Theme.radius
             color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
             Row {
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.leftMargin: Theme.sp2
                 spacing: Theme.sp2
-                Text { text: qsTr("Network mode"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Network mode"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Text {
+                    anchors.verticalCenter: parent.verticalCenter
                     font.pixelSize: Theme.fontSizeNormal; font.bold: true
                     color: {
                         var m = overview.prefsData["product_mode"] || "balanced"
@@ -167,6 +168,7 @@ Rectangle {
                     }
                 }
                 Text {
+                    anchors.verticalCenter: parent.verticalCenter
                     color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                     text: {
                         var m = overview.prefsData["product_mode"] || "balanced"
@@ -187,7 +189,7 @@ Rectangle {
         // Privacy dashboard strip
         Rectangle {
             visible: overview.torrentsVisible
-            width: parent.width; height: 28; radius: 4
+            width: parent.width; height: Theme.controlH; radius: Theme.radius
             color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
             Row {
                 anchors { fill: parent; leftMargin: Theme.sp2; rightMargin: Theme.sp2 }
@@ -215,12 +217,12 @@ Rectangle {
             Column { id: recentCol; width: parent.width; spacing: Theme.sp1
                 Repeater {
                     model: overview.recentTransfers
-                    Item { height: 24; width: recentCol.width
+                    Item { height: Theme.controlH; width: recentCol.width
                         Row { anchors.fill: parent; spacing: Theme.sp2
                             Rectangle { width: 8; height: 8; radius: 4; anchors.verticalCenter: parent.verticalCenter
                                 color: modelData.status === "completed" ? Theme.success : modelData.status === "downloading" ? Theme.accent : modelData.status === "error" ? Theme.danger : Theme.textDim
                             }
-                            Text { text: modelData.filename || modelData.id; textFormat: Text.PlainText; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; width: parent.width - 160; elide: Text.ElideRight; anchors.verticalCenter: parent.verticalCenter }
+                            Text { text: modelData.filename || modelData.id; textFormat: Text.PlainText; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; width: parent.width - Theme.dotSize - 2 * 89 - 3 * Theme.sp2; elide: Text.ElideRight; anchors.verticalCenter: parent.verticalCenter }
                             Text { text: modelData.status || "?"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 89; anchors.verticalCenter: parent.verticalCenter }
                             Text { text: overview.formatBytes(modelData.total_size || 0); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 89; horizontalAlignment: Text.AlignRight; anchors.verticalCenter: parent.verticalCenter }
                         }
@@ -238,13 +240,14 @@ Rectangle {
         // Quick add
         Row { spacing: Theme.sp2; width: parent.width
             Rectangle {
-                width: parent.width - 80; height: 26; radius: 3; color: Theme.bg
+                anchors.verticalCenter: parent.verticalCenter
+                width: parent.width - 80; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
                 border.color: overviewUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt
                 TextInput { id: overviewUrlInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                     clip: true
                     Text { visible: parent.text.length === 0; text: qsTr("Paste URL to quick add..."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal } }
             }
-            Rectangle { width: 70; height: 26; radius: 3; color: overviewAddArea.containsMouse ? Theme.border : Theme.surfaceAlt
+            Rectangle { width: 70; height: Theme.controlH; radius: Theme.radius; color: overviewAddArea.containsMouse ? Theme.border : Theme.surfaceAlt
                 Text { anchors.centerIn: parent; text: qsTr("Add"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: overviewAddArea; anchors.fill: parent; hoverEnabled: true
                     onClicked: {

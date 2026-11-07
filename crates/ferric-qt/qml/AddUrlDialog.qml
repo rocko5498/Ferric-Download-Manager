@@ -33,12 +33,14 @@ AppDialog {
             visible: !addUrlDialog.skipInfoStep
             spacing: Theme.sp2
             Text {
+                anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Step") + " 1: " + qsTr("URL")
                 color: step === 1 ? Theme.accent : Theme.textDim
                 font.pixelSize: Theme.fontSizeSmall; font.bold: step === 1
             }
-            Text { text: "\u2192"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: "\u2192"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Text {
+                anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Step") + " 2: " + qsTr("File Info")
                 color: step === 2 ? Theme.accent : Theme.textDim
                 font.pixelSize: Theme.fontSizeSmall; font.bold: step === 2
@@ -100,7 +102,7 @@ AppDialog {
                     fieldWidth: parent.width - 74
                 }
                 Rectangle {
-                    width: 68; height: 28; radius: 3; color: Theme.surfaceAlt
+                    width: 68; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
                     anchors.bottom: parent.bottom
                     Text { anchors.centerIn: parent; text: qsTr("Browse…"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: urlSaveFolderDialog.open() }
@@ -115,13 +117,13 @@ AppDialog {
                     Rectangle {
                         id: startPausedCheck
                         property bool checked: false
-                        width: 16; height: 16; radius: 3
+                        width: Theme.sp4; height: Theme.sp4; radius: Theme.radius
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
                         Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: parent.checked = !parent.checked }
                     }
-                    Text { text: qsTr("Start paused"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
+                    Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Start paused"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                 }
             }
         }

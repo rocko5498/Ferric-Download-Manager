@@ -46,13 +46,13 @@ Window {
         model: win.entries.length
         QQC.ScrollBar.vertical: QQC.ScrollBar {}
         header: Row {
-            height: 22
+            height: Theme.rowH
             Text { width: 300; text: qsTr("Name"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Text { text: qsTr("Size"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         }
         delegate: Row {
             readonly property var e: win.entries[index]
-            height: 20
+            height: Theme.rowH
             Text { width: 300; text: e ? e.name : ""; textFormat: Text.PlainText; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideMiddle }
             Text { text: e ? win.fmtSize(e.size) : ""; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         }
@@ -60,7 +60,7 @@ Window {
 
     Rectangle {
         anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: Theme.sp2 }
-        width: 90; height: 26; radius: 3; color: Theme.accent
+        width: 90; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
         Text { anchors.centerIn: parent; text: qsTr("Close"); color: "white"; font.pixelSize: Theme.fontSizeNormal }
         MouseArea { anchors.fill: parent; onClicked: win.close() }
     }

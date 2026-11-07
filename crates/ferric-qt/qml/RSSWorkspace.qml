@@ -24,14 +24,14 @@ Rectangle {
 
         Row {
             spacing: Theme.sp2
-            Text { text: qsTr("RSS Feeds"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("RSS Feeds"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
             Rectangle {
-                width: 60; height: 22; radius: 3; color: rssAddArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 60; height: Theme.rowH; radius: Theme.radius; color: rssAddArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: rssAddArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onAddFeed() }
             }
             Rectangle {
-                width: 60; height: 22; radius: 3; color: rssRefreshArea.containsMouse ? Theme.surfaceAlt : "transparent"
+                width: 60; height: Theme.rowH; radius: Theme.radius; color: rssRefreshArea.containsMouse ? Theme.surfaceAlt : "transparent"
                 Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: rssRefreshArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onRefreshFeeds() }
             }
@@ -39,11 +39,11 @@ Rectangle {
 
         // Feeds list header
         Row {
-            width: parent.width; height: 20; spacing: 0
-            Text { width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 250; text: qsTr("URL"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 80; text: qsTr("Poll (s)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 50; text: qsTr("Action"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            width: parent.width; height: Theme.rowH; spacing: 0
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 250; text: qsTr("URL"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 80; text: qsTr("Poll (s)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 50; text: qsTr("Action"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         }
 
         Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
@@ -58,15 +58,15 @@ Rectangle {
             QQC.ScrollBar.vertical: QQC.ScrollBar {}
             delegate: Rectangle {
                 width: ListView.view.width
-                height: 22
+                height: Theme.rowH
                 color: Theme.bg
                 Row {
                     anchors.fill: parent
-                    Text { width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                    Text { width: 250; text: modelData.url || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
-                    Text { width: 80; text: modelData.poll_secs || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 250; text: modelData.url || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 80; text: modelData.poll_secs || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Rectangle {
-                        width: 45; height: 18; radius: 3; color: Theme.surfaceAlt
+                        width: 45; height: Theme.rowH; radius: Theme.radius; color: Theme.surfaceAlt
                         Text { anchors.centerIn: parent; text: qsTr("Delete"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: rssWorkspace.onDeleteFeed(modelData.id) }
                     }
@@ -86,9 +86,9 @@ Rectangle {
 
         Row {
             spacing: Theme.sp2
-            Text { text: qsTr("Auto-download Rules"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
+            Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Auto-download Rules"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
             Rectangle {
-                width: 60; height: 22; radius: 3; color: rssRuleAddArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 60; height: Theme.rowH; radius: Theme.radius; color: rssRuleAddArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: rssRuleAddArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onAddRule() }
             }
@@ -99,8 +99,8 @@ Rectangle {
             Column { id: rssRulesCol; width: parent.width; spacing: Theme.sp1
                 Repeater {
                     model: rssWorkspace.rssRules
-                    Row { spacing: Theme.sp1; height: 22; width: rssRulesCol.width
-                        Rectangle { width: 8; height: 8; radius: 4; color: modelData.enabled ? Theme.success : Theme.danger }
+                    Row { spacing: Theme.sp1; height: Theme.rowH; width: rssRulesCol.width
+                        Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: modelData.enabled ? Theme.success : Theme.danger }
                         Column { width: rssRulesCol.width - 100
                             Text { text: modelData.name + " \u2014 " + modelData.match_pattern; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: parent.width }
                             Text {
@@ -114,7 +114,8 @@ Rectangle {
                             }
                         }
                         Rectangle {
-                            width: 45; height: 18; radius: 3; color: Theme.surfaceAlt
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: 45; height: Theme.rowH; radius: Theme.radius; color: Theme.surfaceAlt
                             Text { anchors.centerIn: parent; text: qsTr("Delete"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { anchors.fill: parent; onClicked: rssWorkspace.onDeleteRule(modelData.id) }
                         }

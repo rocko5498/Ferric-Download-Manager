@@ -37,12 +37,12 @@ AppDialog {
             width: parent.width; spacing: Theme.sp2
             Item { width: parent.width - 170; height: 1 }
             Rectangle {
-                width: 60; height: 22; radius: 3; color: siteRuleAddArea.containsMouse ? Theme.accent : Theme.accentDark
+                width: 60; height: Theme.rowH; radius: Theme.radius; color: siteRuleAddArea.containsMouse ? Theme.accentDark : Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: siteRuleAddArea; anchors.fill: parent; hoverEnabled: true; onClicked: if (doAddSiteRule) doAddSiteRule() }
             }
             Rectangle {
-                width: 60; height: 22; radius: 3; color: siteRuleRefreshArea.containsMouse ? Theme.surfaceAlt : "transparent"
+                width: 60; height: Theme.rowH; radius: Theme.radius; color: siteRuleRefreshArea.containsMouse ? Theme.surfaceAlt : "transparent"
                 Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: siteRuleRefreshArea; anchors.fill: parent; hoverEnabled: true; onClicked: if (loadSiteRules) loadSiteRules() }
             }
@@ -52,13 +52,13 @@ AppDialog {
 
         // Table header
         Row {
-            width: parent.width; height: 20; spacing: 0
-            Text { width: 40; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 150; text: qsTr("Pattern"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 90; text: qsTr("Type"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 110; text: qsTr("Value"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 50; text: qsTr("Pri"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { width: 50; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            width: parent.width; height: Theme.rowH; spacing: 0
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 40; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 150; text: qsTr("Pattern"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 90; text: qsTr("Type"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 110; text: qsTr("Value"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 50; text: qsTr("Pri"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { anchors.verticalCenter: parent.verticalCenter; width: 50; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         },
 
         // Rules list
@@ -70,24 +70,24 @@ AppDialog {
             model: siteRuleDialog.siteRules
             delegate: Rectangle {
                 width: ListView.view.width
-                height: 22
+                height: Theme.rowH
                 color: Theme.bg
                 Row {
                     anchors.fill: parent
-                    Text { width: 40; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                    Text { width: 150; text: modelData.pattern; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
-                    Text { width: 90; text: modelData.rule_type; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                    Text { width: 110; text: modelData.value || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
-                    Text { width: 50; text: modelData.priority; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 40; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 150; text: modelData.pattern; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 90; text: modelData.rule_type; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 110; text: modelData.value || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
+                    Text { anchors.verticalCenter: parent.verticalCenter; width: 50; text: modelData.priority; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Row {
                         width: 50; spacing: 2
                         Rectangle {
-                            width: 20; height: 16; radius: 2; color: "transparent"
+                            width: 20; height: 16; radius: Theme.radius; color: "transparent"
                             Text { anchors.centerIn: parent; text: qsTr("\u270E"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { anchors.fill: parent; onClicked: if (doEditSiteRule) doEditSiteRule(modelData) }
                         }
                         Rectangle {
-                            width: 20; height: 16; radius: 2; color: "transparent"
+                            width: 20; height: 16; radius: Theme.radius; color: "transparent"
                             Text { anchors.centerIn: parent; text: qsTr("\u2715"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { anchors.fill: parent; onClicked: if (doDeleteSiteRule) doDeleteSiteRule(modelData.id) }
                         }
@@ -111,8 +111,8 @@ AppDialog {
             Column { width: 200; spacing: Theme.sp1
                 Text { text: qsTr("Pattern (*.example.com/*)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: parent.width; height: 24; color: Theme.bg
-                    border.color: rulePatternInput2.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg
+                    border.color: rulePatternInput2.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: rulePatternInput2
@@ -124,8 +124,8 @@ AppDialog {
             Column { width: 100; spacing: Theme.sp1
                 Text { text: qsTr("Type"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: parent.width; height: 24; color: Theme.bg
-                    border.color: Theme.surfaceAlt; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg
+                    border.color: Theme.surfaceAlt; radius: Theme.radius
                     Item {
                         id: ruleTypeCombo2
                         property var options: ["capture", "skip", "max_connections", "max_speed_bps", "always_ask"]
@@ -139,8 +139,8 @@ AppDialog {
             Column { width: 120; spacing: Theme.sp1
                 Text { text: qsTr("Value"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
-                    width: parent.width; height: 24; color: Theme.bg
-                    border.color: ruleValueInput2.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
+                    width: parent.width; height: Theme.controlH; color: Theme.bg
+                    border.color: ruleValueInput2.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
                     TextInput {
                         clip: true
                         id: ruleValueInput2
@@ -154,7 +154,7 @@ AppDialog {
         Row {
             anchors.right: parent.right; spacing: Theme.sp2
             Rectangle {
-                width: 50; height: 22; radius: 3; color: Theme.accent
+                width: 50; height: Theme.rowH; radius: Theme.radius; color: Theme.accent
                 Text { anchors.centerIn: parent; text: qsTr("Save"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: {
                     var pattern = rulePatternInput2.text.trim();
