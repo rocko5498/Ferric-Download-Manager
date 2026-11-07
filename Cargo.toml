@@ -65,7 +65,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
 # Utilities
 uuid              = { version = "1", features = ["v4", "serde"] }
 url               = "2"
-sanitize-filename = "0.5"
+sanitize-filename = "0.6"
 globset           = "0.4"
 which             = "6"
 directories       = "5"
