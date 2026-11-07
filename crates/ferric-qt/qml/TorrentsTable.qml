@@ -6,7 +6,7 @@ Flickable {
     id: torrentHFlick
 
     anchors.fill: parent
-    anchors.margins: 8
+    anchors.margins: Theme.sp2
     contentWidth: Math.max(width, tableWidth)
     contentHeight: height
     clip: true
@@ -38,7 +38,7 @@ Flickable {
             id: torrentHeaderRow
             width: parent.width
             height: 22
-            Text { width: 28; text: qsTr("#"); color: Theme.textDim; font.pixelSize: 11 }
+            Text { width: 28; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Repeater {
                 model: torrentHFlick.columnsAll.length
                 Item {
@@ -51,10 +51,10 @@ Flickable {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
-                        anchors.rightMargin: 8
+                        anchors.rightMargin: Theme.sp2
                         text: torrentHFlick.columnsAll[index].title
                         color: Theme.textDim
-                        font.pixelSize: 11
+                        font.pixelSize: Theme.fontSizeSmall
                         elide: Text.ElideRight
                     }
                     Rectangle {
@@ -124,10 +124,10 @@ Flickable {
                 Row {
                     anchors.fill: parent
                     spacing: 0
-                    Text { width: 28; color: Theme.textDim; font.pixelSize: 12; text: (index + 1) }
-                    Text { width: torrentHFlick.columns[0] ? torrentHFlick.columns[0].width : 150; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.name || "" }
-                    Text { width: torrentHFlick.columns[1] ? torrentHFlick.columns[1].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.done || "" }
-                    Text { width: torrentHFlick.columns[2] ? torrentHFlick.columns[2].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.size || "" }
+                    Text { width: 28; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: (index + 1) }
+                    Text { width: torrentHFlick.columns[0] ? torrentHFlick.columns[0].width : 150; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.name || "" }
+                    Text { width: torrentHFlick.columns[1] ? torrentHFlick.columns[1].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.done || "" }
+                    Text { width: torrentHFlick.columns[2] ? torrentHFlick.columns[2].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.size || "" }
                     Item {
                         width: torrentHFlick.columns[3] ? torrentHFlick.columns[3].width : 100
                         height: parent.height
@@ -161,7 +161,7 @@ Flickable {
                                 anchors.centerIn: parent
                                 text: model.progress || ""
                                 color: Theme.text
-                                font.pixelSize: 10
+                                font.pixelSize: Theme.fontSizeSmall
                             }
                         }
                     }
@@ -174,24 +174,24 @@ Flickable {
                              : model.status === "Paused" ? Theme.warning
                              : model.status === "Completed" ? Theme.success
                              : Theme.textDim
-                        font.pixelSize: 12
+                        font.pixelSize: Theme.fontSizeNormal
                         text: model.status || ""
                     }
-                    Text { width: torrentHFlick.columns[5] ? torrentHFlick.columns[5].width : 50; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.seeds || "-" }
-                    Text { width: torrentHFlick.columns[6] ? torrentHFlick.columns[6].width : 50; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.peers || "0" }
-                    Text { width: torrentHFlick.columns[7] ? torrentHFlick.columns[7].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.speed || "-" }
-                    Text { width: torrentHFlick.columns[8] ? torrentHFlick.columns[8].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.upSpeed || "-" }
-                    Text { width: torrentHFlick.columns[9] ? torrentHFlick.columns[9].width : 60; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.eta || "-" }
-                    Text { width: torrentHFlick.columns[10] ? torrentHFlick.columns[10].width : 50; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.ratio || "" }
-                    Text { width: torrentHFlick.columns[11] ? torrentHFlick.columns[11].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.category || "" }
-                    Text { width: torrentHFlick.columns[12] ? torrentHFlick.columns[12].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: rowTags }
-                    Text { width: torrentHFlick.columns[13] ? torrentHFlick.columns[13].width : 80; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: 12; text: model.availability || "-" }
-                    Text { width: torrentHFlick.columns[14] ? torrentHFlick.columns[14].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: 12; text: model.uploaded || "" }
-                    Text { width: torrentHFlick.columns[15] ? torrentHFlick.columns[15].width : 150; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: 12; text: model.savePath || "" }
-                    Text { width: torrentHFlick.columns[16] ? torrentHFlick.columns[16].width : 120; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: 12; text: model.infoHash || "" }
-                    Text { width: torrentHFlick.columns[17] ? torrentHFlick.columns[17].width : 100; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: 12; text: model.added || "" }
-                    Text { width: torrentHFlick.columns[18] ? torrentHFlick.columns[18].width : 100; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: 12; text: model.completed || "" }
-                    Text { width: torrentHFlick.columns[19] ? torrentHFlick.columns[19].width : 60; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: 12; text: model.isPrivate || "" }
+                    Text { width: torrentHFlick.columns[5] ? torrentHFlick.columns[5].width : 50; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.seeds || "-" }
+                    Text { width: torrentHFlick.columns[6] ? torrentHFlick.columns[6].width : 50; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.peers || "0" }
+                    Text { width: torrentHFlick.columns[7] ? torrentHFlick.columns[7].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.speed || "-" }
+                    Text { width: torrentHFlick.columns[8] ? torrentHFlick.columns[8].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.upSpeed || "-" }
+                    Text { width: torrentHFlick.columns[9] ? torrentHFlick.columns[9].width : 60; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.eta || "-" }
+                    Text { width: torrentHFlick.columns[10] ? torrentHFlick.columns[10].width : 50; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.ratio || "" }
+                    Text { width: torrentHFlick.columns[11] ? torrentHFlick.columns[11].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.category || "" }
+                    Text { width: torrentHFlick.columns[12] ? torrentHFlick.columns[12].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: rowTags }
+                    Text { width: torrentHFlick.columns[13] ? torrentHFlick.columns[13].width : 80; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: model.availability || "-" }
+                    Text { width: torrentHFlick.columns[14] ? torrentHFlick.columns[14].width : 80; elide: Text.ElideRight; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; text: model.uploaded || "" }
+                    Text { width: torrentHFlick.columns[15] ? torrentHFlick.columns[15].width : 150; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: model.savePath || "" }
+                    Text { width: torrentHFlick.columns[16] ? torrentHFlick.columns[16].width : 120; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: model.infoHash || "" }
+                    Text { width: torrentHFlick.columns[17] ? torrentHFlick.columns[17].width : 100; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: model.added || "" }
+                    Text { width: torrentHFlick.columns[18] ? torrentHFlick.columns[18].width : 100; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: model.completed || "" }
+                    Text { width: torrentHFlick.columns[19] ? torrentHFlick.columns[19].width : 60; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; text: model.isPrivate || "" }
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -220,7 +220,7 @@ Flickable {
         z: 2
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
-        font.pixelSize: 13
+        font.pixelSize: Theme.fontSizeNormal
         visible: !torrentHFlick.lastOk && torrentHFlick.lastError !== ""
         color: Theme.danger
         text: qsTr("Cannot load torrents") + "\n" + torrentHFlick.lastError
@@ -232,7 +232,7 @@ Flickable {
         z: 2
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
-        font.pixelSize: 13
+        font.pixelSize: Theme.fontSizeNormal
         visible: torrentHFlick.torrentModel && torrentHFlick.torrentModel.count === 0 && torrentHFlick.lastOk
         color: Theme.textDim
         text: qsTr("No torrents yet \u2014 Add magnet or .torrent to stage")

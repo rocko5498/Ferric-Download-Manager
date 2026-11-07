@@ -5,7 +5,7 @@ Rectangle {
     id: clipboardOfferToast
 
     visible: false; z: 110
-    anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 40 }
+    anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: Theme.sp5 }
     width: Math.max(320, clipOfferText.width + 120)
     height: 44; radius: 6
     color: Theme.surface
@@ -17,10 +17,10 @@ Rectangle {
 
     Row {
         anchors.centerIn: parent
-        spacing: 10
+        spacing: Theme.sp2
         Text {
             id: clipOfferText
-            color: Theme.text; font.pixelSize: 11
+            color: Theme.text; font.pixelSize: Theme.fontSizeSmall
             text: clipboardOfferToast.offerType === "torrent"
                 ? "Magnet link detected \u2014 add torrent?"
                 : "URL detected \u2014 add download?"
@@ -28,12 +28,12 @@ Rectangle {
         }
         Rectangle {
             width: 40; height: 22; radius: 3; color: clipOfferAddArea.containsMouse ? Theme.accent : Theme.accentDark
-            Text { anchors.centerIn: parent; text: qsTr("Add"); color: "white"; font.pixelSize: 11 }
+            Text { anchors.centerIn: parent; text: qsTr("Add"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { id: clipOfferAddArea; anchors.fill: parent; hoverEnabled: true; onClicked: clipboardOfferToast.onAdd() }
         }
         Rectangle {
             width: 50; height: 22; radius: 3; color: clipOfferDismissArea.containsMouse ? Theme.border : Theme.surfaceAlt
-            Text { anchors.centerIn: parent; text: qsTr("Ignore"); color: Theme.textDim; font.pixelSize: 11 }
+            Text { anchors.centerIn: parent; text: qsTr("Ignore"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { id: clipOfferDismissArea; anchors.fill: parent; hoverEnabled: true; onClicked: clipboardOfferToast.visible = false }
         }
     }

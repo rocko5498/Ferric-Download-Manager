@@ -29,5 +29,15 @@
         <file alias="icons/media-playback-stop-48.png">icons/media-playback-stop-48.png</file>
         <file alias="icons/view-refresh-32.png">icons/view-refresh-32.png</file>
         <file alias="icons/view-refresh-48.png">icons/view-refresh-48.png</file>
+        <file>icons/tb-add-48.png</file>
+        <file>icons/tb-resume-48.png</file>
+        <file>icons/tb-stop-48.png</file>
+        <file>icons/tb-stopall-48.png</file>
+        <file>icons/tb-delete-48.png</file>
+        <file>icons/tb-deldone-48.png</file>
+        <file>icons/tb-options-48.png</file>
+        <file>icons/tb-scheduler-48.png</file>
+        <file>icons/tb-startq-48.png</file>
+        <file>icons/tb-stopq-48.png</file>
     </qresource>
 </RCC>

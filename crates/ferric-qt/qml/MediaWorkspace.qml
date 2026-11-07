@@ -37,19 +37,19 @@ Rectangle {
 
     Column {
         anchors.fill: parent
-        anchors.margins: 12
-        spacing: 10
+        anchors.margins: Theme.sp3
+        spacing: Theme.sp2
 
         Row {
-            spacing: 8
-            Text { text: qsTr("Media Extractor"); color: Theme.text; font.pixelSize: 14; font.bold: true }
+            spacing: Theme.sp2
+            Text { text: qsTr("Media Extractor"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
             Rectangle {
                 width: 80; height: 18; radius: 3; color: Theme.bg
                 border.color: Theme.surfaceAlt; border.width: 1
                 Text {
                     id: ytdlpLabel
                     anchors.centerIn: parent
-                    font.pixelSize: 9; color: Theme.textDim; text: "yt-dlp ..."
+                    font.pixelSize: Theme.fontSizeSmall; color: Theme.textDim; text: "yt-dlp ..."
                     property int tries: 0
                     function load() {
                         if (!media.requestBus) return;
@@ -76,7 +76,7 @@ Rectangle {
                 border.color: Theme.surfaceAlt; border.width: 1
                 Text {
                     anchors.centerIn: parent
-                    font.pixelSize: 9
+                    font.pixelSize: Theme.fontSizeSmall
                     // Bound to the parent's status so it updates when the async check returns.
                     text: media.ffmpegStatus
                     color: media.ffmpegStatus.indexOf("✓") >= 0 ? Theme.success : Theme.danger
@@ -87,7 +87,7 @@ Rectangle {
 
         // URL input
         Row {
-            width: parent.width; spacing: 6
+            width: parent.width; spacing: Theme.sp1
             Rectangle {
                 // 90 (Extract) + 110 (Playlist DL) + 2 gaps of 6; the row used to overflow by ~110 px.
                 width: parent.width - 212; height: 28; color: Theme.bg
@@ -95,9 +95,9 @@ Rectangle {
                 TextInput {
                     clip: true
                     id: mediaUrlInput
-                    anchors { fill: parent; margins: 6 }
-                    color: Theme.text; font.pixelSize: 12
-                    Text { visible: parent.text.length === 0; text: qsTr("https://youtube.com/watch?v=..."); color: Theme.textDim; font.pixelSize: 12 }
+                    anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                    Text { visible: parent.text.length === 0; text: qsTr("https://youtube.com/watch?v=..."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                     onAccepted: media.onExtract()
                     onTextChanged: media.onSetMediaUrl(text)
                 }
@@ -105,13 +105,13 @@ Rectangle {
             Rectangle {
                 width: 90; height: 28; radius: 3
                 color: mediaExtractBtnArea.containsMouse ? Theme.accent : Theme.accentDark
-                Text { anchors.centerIn: parent; text: media.mediaLoading ? "..." : "Extract"; color: "white"; font.pixelSize: 12 }
+                Text { anchors.centerIn: parent; text: media.mediaLoading ? "..." : "Extract"; color: "white"; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { id: mediaExtractBtnArea; anchors.fill: parent; hoverEnabled: true; onClicked: media.onExtract() }
             }
             Rectangle {
                 width: 110; height: 28; radius: 3
                 color: mediaPlaylistBtnArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                Text { anchors.centerIn: parent; text: qsTr("Playlist DL"); color: Theme.textDim; font.pixelSize: 12 }
+                Text { anchors.centerIn: parent; text: qsTr("Playlist DL"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { id: mediaPlaylistBtnArea; anchors.fill: parent; hoverEnabled: true; onClicked: media.onPlaylistDownload() }
             }
         }
@@ -122,7 +122,7 @@ Rectangle {
             width: parent.width
             text: media.mediaError
             color: media.mediaError.indexOf("started") >= 0 ? Theme.success : Theme.danger
-            font.pixelSize: 11
+            font.pixelSize: Theme.fontSizeSmall
             wrapMode: Text.Wrap
         }
 
@@ -132,19 +132,19 @@ Rectangle {
             // leave room for the title row, merge jobs and the cookies box below
             height: Math.max(200, parent.height - 200)
             visible: media.mediaResult !== null
-            spacing: 8
+            spacing: Theme.sp2
 
             // Video info
             Rectangle {
                 width: parent.width; height: 50; radius: 4; color: Theme.bg
                 Row {
-                    anchors { fill: parent; margins: 8 }
-                    spacing: 12
+                    anchors { fill: parent; margins: Theme.sp2 }
+                    spacing: Theme.sp3
                     Column {
                         spacing: 2
-                        Text { text: media.mediaResult ? media.mediaResult.title || "(untitled)" : ""; color: Theme.text; font.pixelSize: 12; elide: Text.ElideRight; width: 300 }
+                        Text { text: media.mediaResult ? media.mediaResult.title || "(untitled)" : ""; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; elide: Text.ElideRight; width: 300 }
                         Text {
-                            color: Theme.textDim; font.pixelSize: 10
+                            color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                             text: {
                                 if (!media.mediaResult) return "";
                                 var r = media.mediaResult;
@@ -163,12 +163,12 @@ Rectangle {
             // Format list header
             Row {
                 width: parent.width; spacing: 0
-                Text { width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: 10 }
-                Text { width: 24; text: qsTr(""); color: Theme.textDim; font.pixelSize: 10 }
-                Text { width: 60; text: qsTr("ID"); color: Theme.textDim; font.pixelSize: 10 }
-                Text { width: 200; text: qsTr("Label"); color: Theme.textDim; font.pixelSize: 10 }
-                Text { width: 60; text: qsTr("Ext"); color: Theme.textDim; font.pixelSize: 10 }
-                Text { width: 80; text: qsTr("Size"); color: Theme.textDim; font.pixelSize: 10 }
+                Text { width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { width: 24; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { width: 60; text: qsTr("ID"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { width: 200; text: qsTr("Label"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { width: 60; text: qsTr("Ext"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { width: 80; text: qsTr("Size"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             }
 
             Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
@@ -186,19 +186,19 @@ Rectangle {
                     color: media.mediaSelectedFormat === modelData.id ? Theme.surfaceAlt : "transparent"
                     Row {
                         anchors.fill: parent
-                        Text { width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: 10 }
+                        Text { width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                         Rectangle {
                             width: 10; height: 10; radius: 5
                             color: media.mediaSelectedFormat === modelData.id ? Theme.accent : Theme.bg
                             border.color: Theme.surfaceAlt; border.width: 1
                         }
                         Item { width: 14; height: 1 }
-                        Text { width: 60; text: modelData.id; color: Theme.textDim; font.pixelSize: 10; elide: Text.ElideRight }
-                        Text { width: 200; text: modelData.label || "-"; color: Theme.text; font.pixelSize: 10; elide: Text.ElideRight }
-                        Text { width: 60; text: modelData.ext || "-"; color: Theme.textDim; font.pixelSize: 10 }
+                        Text { width: 60; text: modelData.id; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
+                        Text { width: 200; text: modelData.label || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
+                        Text { width: 60; text: modelData.ext || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                         Text {
                             width: 80
-                            color: Theme.textDim; font.pixelSize: 10
+                            color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                             text: modelData.filesize ? (modelData.filesize / (1024*1024)).toFixed(1) + " MB" : "-"
                         }
                     }
@@ -211,7 +211,7 @@ Rectangle {
                 width: 140; height: 26; radius: 3
                 color: media.mediaSelectedFormat !== "" ? Theme.accent : Theme.surfaceAlt
                 opacity: media.mediaSelectedFormat !== "" ? 1.0 : 0.4
-                Text { anchors.centerIn: parent; text: qsTr("Download Selected"); color: "white"; font.pixelSize: 11 }
+                Text { anchors.centerIn: parent; text: qsTr("Download Selected"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; enabled: media.mediaSelectedFormat !== ""; onClicked: media.onMediaDownload() }
             }
         }
@@ -219,9 +219,9 @@ Rectangle {
         // Placeholder when no result
         Text {
             visible: media.mediaResult === null && !media.mediaLoading && media.mediaError === ""
-            width: parent.width; horizontalAlignment: Text.AlignHCenter; topPadding: 40
+            width: parent.width; horizontalAlignment: Text.AlignHCenter; topPadding: Theme.sp5
             text: qsTr("Paste a video URL and click Extract")
-            color: Theme.textDim; font.pixelSize: 12
+            color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal
         }
 
         // FQT-042: Merge jobs section
@@ -232,26 +232,26 @@ Rectangle {
         Column {
             width: parent.width
             visible: media.mergeJobs.length > 0
-            spacing: 4
+            spacing: Theme.sp1
             Row {
-                spacing: 6
-                Text { text: qsTr("Merge Jobs"); color: Theme.accent; font.pixelSize: 11; font.bold: true }
+                spacing: Theme.sp1
+                Text { text: qsTr("Merge Jobs"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true }
                 Rectangle {
                     width: 50; height: 16; radius: 3; color: mergeRefreshArea.containsMouse ? Theme.surfaceAlt : "transparent"
-                    Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.textDim; font.pixelSize: 9 }
+                    Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: mergeRefreshArea; anchors.fill: parent; hoverEnabled: true; onClicked: media.onLoadMergeJobs() }
                 }
             }
             Repeater {
                 model: media.mergeJobs
                 Row {
-                    spacing: 8; height: 18
+                    spacing: Theme.sp2; height: 18
                     Rectangle {
                         width: 6; height: 6; radius: 3
                         color: modelData.state === "completed" ? Theme.success : modelData.state === "failed" ? Theme.danger : Theme.warning
                     }
-                    Text { text: modelData.state || "-"; color: Theme.textDim; font.pixelSize: 10; width: 60 }
-                    Text { text: modelData.message || "-"; color: Theme.textDim; font.pixelSize: 10; elide: Text.ElideRight; width: 200 }
+                    Text { text: modelData.state || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 60 }
+                    Text { text: modelData.message || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 200 }
                 }
             }
         }
@@ -260,22 +260,22 @@ Rectangle {
         Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
 
         Row {
-            spacing: 6
-            Text { text: qsTr("Cookies"); color: Theme.accent; font.pixelSize: 11; font.bold: true }
+            spacing: Theme.sp1
+            Text { text: qsTr("Cookies"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true }
             Rectangle {
                 width: 50; height: 18; radius: 3; color: cookiesParseArea.containsMouse ? Theme.surfaceAlt : "transparent"
-                Text { anchors.centerIn: parent; text: qsTr("Parse"); color: Theme.textDim; font.pixelSize: 9 }
+                Text { anchors.centerIn: parent; text: qsTr("Parse"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: cookiesParseArea; anchors.fill: parent; hoverEnabled: true; onClicked: media.onParseCookies() }
             }
             Rectangle {
                 width: 50; height: 18; radius: 3; color: cookiesExportArea.containsMouse ? Theme.surfaceAlt : "transparent"
-                Text { anchors.centerIn: parent; text: qsTr("Export"); color: Theme.textDim; font.pixelSize: 9 }
+                Text { anchors.centerIn: parent; text: qsTr("Export"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { id: cookiesExportArea; anchors.fill: parent; hoverEnabled: true; onClicked: media.onExportCookies() }
             }
             Text {
                 text: media.cookiesStatus
                 color: media.cookiesStatus.indexOf("Error") >= 0 ? Theme.danger : Theme.success
-                font.pixelSize: 9
+                font.pixelSize: Theme.fontSizeSmall
             }
         }
 
@@ -285,8 +285,8 @@ Rectangle {
             clip: true
             TextEdit {
                 id: cookiesTextArea
-                anchors { fill: parent; margins: 6 }
-                color: Theme.text; font.pixelSize: 10; font.family: "monospace"
+                anchors { fill: parent; margins: Theme.sp1 }
+                color: Theme.text; font.pixelSize: Theme.fontSizeSmall; font.family: "monospace"
                 wrapMode: TextEdit.NoWrap
                 text: media.cookiesText
                 onTextChanged: media.onSetCookiesText(text)
@@ -296,7 +296,7 @@ Rectangle {
         Text {
             width: parent.width
             text: qsTr("Paste Netscape cookies.txt content. Browser cookie DB access is disabled for privacy \u2014 use the extension capture path or paste manually.")
-            color: Theme.textDim; font.pixelSize: 9; wrapMode: Text.Wrap
+            color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; wrapMode: Text.Wrap
         }
     }
 }

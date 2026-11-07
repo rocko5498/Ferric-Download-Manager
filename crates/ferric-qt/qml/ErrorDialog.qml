@@ -17,7 +17,7 @@ AppDialog {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             text: errorDialog.message
-            color: Theme.danger; font.pixelSize: 12
+            color: Theme.danger; font.pixelSize: Theme.fontSizeNormal
             wrapMode: Text.WordWrap
             width: 300
             horizontalAlignment: Text.AlignHCenter
@@ -26,8 +26,8 @@ AppDialog {
 
     buttons: [
         Rectangle {
-            width: 60; height: 28; radius: 4; color: Theme.surfaceAlt
-            Text { anchors.centerIn: parent; text: qsTr("OK"); color: Theme.text; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
+            Text { anchors.centerIn: parent; text: qsTr("OK"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
             MouseArea { anchors.fill: parent; onClicked: errorDialog.close() }
         }
     ]

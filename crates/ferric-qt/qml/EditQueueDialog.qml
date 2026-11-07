@@ -65,159 +65,159 @@ AppDialog {
     contentItem: [
         Row {
             visible: editQueueDialog.queueList.length > 1 && editQueueDialog.currentQueueId !== ""
-            spacing: 6; height: visible ? 26 : 0
+            spacing: Theme.sp1; height: visible ? 26 : 0
             Repeater {
                 model: editQueueDialog.queueList
                 Rectangle {
                     width: qLabel.implicitWidth + 16; height: 24; radius: 3
                     color: modelData.id === editQueueDialog.currentQueueId ? Theme.accent : Theme.surface
-                    Text { id: qLabel; anchors.centerIn: parent; text: modelData.name; font.pixelSize: 11
+                    Text { id: qLabel; anchors.centerIn: parent; text: modelData.name; font.pixelSize: Theme.fontSizeSmall
                         color: modelData.id === editQueueDialog.currentQueueId ? "white" : Theme.text }
                     MouseArea { anchors.fill: parent; onClicked: editQueueDialog.onPickQueue(modelData) }
                 }
             }
         },
 
-        Column { width: parent.width; spacing: 3
-            Text { text: qsTr("Name"); color: Theme.textDim; font.pixelSize: 11 }
+        Column { width: parent.width; spacing: Theme.sp1
+            Text { text: qsTr("Name"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Rectangle {
                 width: parent.width; height: 28; color: Theme.bg
                 border.color: editQueueName.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
                 TextInput {
                     clip: true
                     id: editQueueName
-                    anchors { fill: parent; margins: 6 }
-                    color: Theme.text; font.pixelSize: 12
+                    anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                 }
             }
         },
 
-        Column { width: parent.width; spacing: 3
-            Text { text: qsTr("Max concurrent downloads"); color: Theme.textDim; font.pixelSize: 11 }
+        Column { width: parent.width; spacing: Theme.sp1
+            Text { text: qsTr("Max concurrent downloads"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Rectangle {
                 width: parent.width; height: 28; color: Theme.bg
                 border.color: editQueueMaxConc.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
                 TextInput {
                     clip: true
                     id: editQueueMaxConc
-                    anchors { fill: parent; margins: 6 }
-                    color: Theme.text; font.pixelSize: 12
+                    anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                     inputMethodHints: Qt.ImhDigitsOnly
                 }
             }
         },
 
         Row {
-            spacing: 8; height: 22
+            spacing: Theme.sp2; height: 22
             Rectangle {
                 id: editQueueEnabled
                 property bool checked: true
                 width: 16; height: 16; radius: 3
                 color: checked ? Theme.accent : Theme.bg
                 border.color: Theme.surfaceAlt; border.width: 1
-                Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: 10 }
+                Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: parent.checked = !parent.checked }
             }
-            Text { text: qsTr("Enabled"); color: Theme.text; font.pixelSize: 11 }
+            Text { text: qsTr("Enabled"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
         },
 
         Row {
-            spacing: 8; height: 22
+            spacing: Theme.sp2; height: 22
             Rectangle {
                 id: editQueueStartup
                 property bool checked: false
                 width: 16; height: 16; radius: 3
                 color: checked ? Theme.accent : Theme.bg
                 border.color: Theme.surfaceAlt; border.width: 1
-                Text { anchors.centerIn: parent; text: parent.checked ? "✓" : ""; color: "#fff"; font.pixelSize: 10 }
+                Text { anchors.centerIn: parent; text: parent.checked ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: parent.checked = !parent.checked }
             }
-            Text { text: qsTr("Start download on Ferric startup"); color: Theme.text; font.pixelSize: 11 }
+            Text { text: qsTr("Start download on Ferric startup"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
         },
 
         Row {
-            spacing: 8; height: 28
-            Text { text: qsTr("Retries for each file (empty = global):"); color: Theme.textDim; font.pixelSize: 10; anchors.verticalCenter: parent.verticalCenter }
+            spacing: Theme.sp2; height: 28
+            Text { text: qsTr("Retries for each file (empty = global):"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             Rectangle {
                 width: 60; height: 26; color: Theme.bg; radius: 3
                 border.color: editQueueRetries.activeFocus ? Theme.accent : Theme.surfaceAlt
-                TextInput { id: editQueueRetries; clip: true; anchors { fill: parent; margins: 5 }
-                    color: Theme.text; font.pixelSize: 12; inputMethodHints: Qt.ImhDigitsOnly }
+                TextInput { id: editQueueRetries; clip: true; anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhDigitsOnly }
             }
         },
 
-        Column { width: parent.width; spacing: 3
-            Text { text: qsTr("Open this file when the queue is done"); color: Theme.textDim; font.pixelSize: 10 }
+        Column { width: parent.width; spacing: Theme.sp1
+            Text { text: qsTr("Open this file when the queue is done"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Rectangle {
                 width: parent.width; height: 26; color: Theme.bg; radius: 3
                 border.color: editQueueOpenFile.activeFocus ? Theme.accent : Theme.surfaceAlt
-                TextInput { id: editQueueOpenFile; clip: true; anchors { fill: parent; margins: 5 }
-                    color: Theme.text; font.pixelSize: 12 }
+                TextInput { id: editQueueOpenFile; clip: true; anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
             }
         },
 
         Row {
-            spacing: 6; height: 26
-            Text { text: qsTr("When done:"); color: Theme.textDim; font.pixelSize: 10; anchors.verticalCenter: parent.verticalCenter }
+            spacing: Theme.sp1; height: 26
+            Text { text: qsTr("When done:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             Repeater {
                 model: [ { id: "", label: qsTr("Nothing") }, { id: "exit", label: qsTr("Exit Ferric") }, { id: "shutdown", label: qsTr("Turn off computer") } ]
                 Rectangle {
                     width: wdLabel.implicitWidth + 14; height: 24; radius: 3
                     color: editQueueDialog.whenDone === modelData.id ? Theme.accent : Theme.surface
-                    Text { id: wdLabel; anchors.centerIn: parent; text: modelData.label; font.pixelSize: 11
+                    Text { id: wdLabel; anchors.centerIn: parent; text: modelData.label; font.pixelSize: Theme.fontSizeSmall
                         color: editQueueDialog.whenDone === modelData.id ? "white" : Theme.text }
                     MouseArea { anchors.fill: parent; onClicked: editQueueDialog.whenDone = modelData.id }
                 }
             }
         },
 
-        Column { width: parent.width; spacing: 3
-            Text { text: qsTr("Periodic synchronization: check finished files every N minutes (empty = off)"); color: Theme.textDim; font.pixelSize: 10; wrapMode: Text.WordWrap; width: parent.width }
+        Column { width: parent.width; spacing: Theme.sp1
+            Text { text: qsTr("Periodic synchronization: check finished files every N minutes (empty = off)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; wrapMode: Text.WordWrap; width: parent.width }
             Rectangle {
                 width: 140; height: 28; color: Theme.bg
                 border.color: editQueueSync.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
                 TextInput {
                     clip: true
                     id: editQueueSync
-                    anchors { fill: parent; margins: 6 }
-                    color: Theme.text; font.pixelSize: 12
+                    anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                     inputMethodHints: Qt.ImhDigitsOnly
                 }
             }
         },
 
         Row {
-            spacing: 8
-            Column { width: 140; spacing: 3
-                Text { text: qsTr("Start time (HH:MM)"); color: Theme.textDim; font.pixelSize: 10 }
+            spacing: Theme.sp2
+            Column { width: 140; spacing: Theme.sp1
+                Text { text: qsTr("Start time (HH:MM)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
                     width: parent.width; height: 28; color: Theme.bg
                     border.color: editQueueSchedStart.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
                     TextInput {
                         clip: true
                         id: editQueueSchedStart
-                        anchors { fill: parent; margins: 6 }
-                        color: Theme.text; font.pixelSize: 12
+                        anchors { fill: parent; margins: Theme.sp1 }
+                        color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                     }
                 }
             }
-            Column { width: 140; spacing: 3
-                Text { text: qsTr("End time (HH:MM)"); color: Theme.textDim; font.pixelSize: 10 }
+            Column { width: 140; spacing: Theme.sp1
+                Text { text: qsTr("End time (HH:MM)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
                     width: parent.width; height: 28; color: Theme.bg
                     border.color: editQueueSchedEnd.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: 3
                     TextInput {
                         clip: true
                         id: editQueueSchedEnd
-                        anchors { fill: parent; margins: 6 }
-                        color: Theme.text; font.pixelSize: 12
+                        anchors { fill: parent; margins: Theme.sp1 }
+                        color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                     }
                 }
             }
         },
 
         Row {
-            spacing: 6
+            spacing: Theme.sp1
             Repeater {
                 model: [qsTr("Sun"), qsTr("Mon"), qsTr("Tue"), qsTr("Wed"), qsTr("Thu"), qsTr("Fri"), qsTr("Sat")]
                 Rectangle {
@@ -225,24 +225,24 @@ AppDialog {
                     width: 40; height: 24; radius: 3
                     color: on ? Theme.accent : Theme.bg
                     border.color: Theme.surfaceAlt; border.width: 1
-                    Text { anchors.centerIn: parent; text: modelData; color: parent.on ? "white" : Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: modelData; color: parent.on ? "white" : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: editQueueDialog.daysMask = editQueueDialog.daysMask ^ (1 << index) }
                 }
             }
         },
 
-        Text { text: qsTr("Blank times = always active. Use 24-hour times such as 22:30. Days: the queue only runs on the highlighted days."); width: parent.width; wrapMode: Text.Wrap; color: Theme.textDim; font.pixelSize: 10 }
+        Text { text: qsTr("Blank times = always active. Use 24-hour times such as 22:30. Days: the queue only runs on the highlighted days."); width: parent.width; wrapMode: Text.Wrap; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
     ]
 
     buttons: [
         Rectangle {
-            width: 60; height: 26; radius: 3; color: Theme.bg
-            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: 11 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
+            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: editQueueDialog.close() }
         },
         Rectangle {
-            width: 60; height: 26; radius: 3; color: Theme.accent
-            Text { anchors.centerIn: parent; text: qsTr("Save"); color: "white"; font.pixelSize: 11 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
+            Text { anchors.centerIn: parent; text: qsTr("Save"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: if (doSaveQueue) doSaveQueue() }
         }
     ]

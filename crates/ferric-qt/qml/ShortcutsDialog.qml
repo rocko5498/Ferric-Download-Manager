@@ -28,22 +28,22 @@ AppDialog {
             Column {
                 id: shortcutsCol
                 width: parent.width
-                spacing: 6
+                spacing: Theme.sp1
 
                 Repeater {
                     model: shortcutsDialog.shortcutsModel
                     Row {
-                        spacing: 12; height: 22; width: shortcutsCol.width
+                        spacing: Theme.sp3; height: 22; width: shortcutsCol.width
                         Rectangle {
                             width: 100; height: 20; radius: 3
                             color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                             Text {
                                 anchors.centerIn: parent
                                 text: modelData[0]
-                                color: Theme.accent; font.pixelSize: 11; font.family: "monospace"
+                                color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.family: "monospace"
                             }
                         }
-                        Text { text: modelData[1]; color: Theme.text; font.pixelSize: 11 }
+                        Text { text: modelData[1]; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     }
                 }
             }
@@ -52,9 +52,9 @@ AppDialog {
 
     buttons: [
         Rectangle {
-            width: 70; height: 26; radius: 3
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius
             color: scCloseArea.containsMouse ? Theme.border : Theme.surfaceAlt
-            Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: 12 }
+            Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
             MouseArea {
                 id: scCloseArea
                 anchors.fill: parent

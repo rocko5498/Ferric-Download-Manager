@@ -107,8 +107,8 @@ Window {
     onDownloadIdChanged: { announced = false; lastBytes = -1; rate = 0; dl = null; chunks = []; refresh(); }
 
     Column {
-        anchors { fill: parent; margins: 14 }
-        spacing: 8
+        anchors { fill: parent; margins: Theme.sp3 }
+        spacing: Theme.sp2
 
         Text {
             width: parent.width
@@ -116,7 +116,7 @@ Window {
             textFormat: Text.PlainText
             elide: Text.ElideMiddle
             color: Theme.textDim
-            font.pixelSize: 11
+            font.pixelSize: Theme.fontSizeSmall
         }
 
         Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
@@ -124,26 +124,26 @@ Window {
         // status block: label / value pairs as in IDM's download status tab
         Grid {
             columns: 2
-            columnSpacing: 16
-            rowSpacing: 4
-            Text { text: qsTr("Status"); color: Theme.textDim; font.pixelSize: 12; width: 130 }
-            Text { text: win.statusText(); color: win.status === "error" ? Theme.danger : Theme.text; font.pixelSize: 12; width: win.width - 190; elide: Text.ElideRight }
-            Text { text: qsTr("File size"); color: Theme.textDim; font.pixelSize: 12 }
-            Text { text: win.total > 0 ? win.fmtBytes(win.total) : qsTr("unknown"); color: Theme.text; font.pixelSize: 12 }
-            Text { text: qsTr("Downloaded"); color: Theme.textDim; font.pixelSize: 12 }
+            columnSpacing: Theme.sp3
+            rowSpacing: Theme.sp1
+            Text { text: qsTr("Status"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; width: 130 }
+            Text { text: win.statusText(); color: win.status === "error" ? Theme.danger : Theme.text; font.pixelSize: Theme.fontSizeNormal; width: win.width - 190; elide: Text.ElideRight }
+            Text { text: qsTr("File size"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
+            Text { text: win.total > 0 ? win.fmtBytes(win.total) : qsTr("unknown"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
+            Text { text: qsTr("Downloaded"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             Text {
                 text: win.fmtBytes(win.done) + (win.total > 0 ? "  (" + (win.fraction * 100).toFixed(2) + " %)" : "")
-                color: Theme.text; font.pixelSize: 12
+                color: Theme.text; font.pixelSize: Theme.fontSizeNormal
             }
-            Text { text: qsTr("Transfer rate"); color: Theme.textDim; font.pixelSize: 12 }
+            Text { text: qsTr("Transfer rate"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             Text { // a blank value would be skipped by the Grid (zero-size item) and shift every later row
-                text: win.rate <= 0 ? " " : (win.rate >= 1048576 ? (win.rate / 1048576).toFixed(2) + " MB/sec" : (win.rate / 1024).toFixed(2) + " KB/sec"); color: Theme.text; font.pixelSize: 12 }
-            Text { text: qsTr("Time left"); color: Theme.textDim; font.pixelSize: 12 }
-            Text { text: win.rate > 0 && win.total > 0 ? win.fmtTime((win.total - win.done) / win.rate) : " "; color: Theme.text; font.pixelSize: 12 }
-            Text { text: qsTr("Resume capability"); color: Theme.textDim; font.pixelSize: 12 }
+                text: win.rate <= 0 ? " " : (win.rate >= 1048576 ? (win.rate / 1048576).toFixed(2) + " MB/sec" : (win.rate / 1024).toFixed(2) + " KB/sec"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
+            Text { text: qsTr("Time left"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
+            Text { text: win.rate > 0 && win.total > 0 ? win.fmtTime((win.total - win.done) / win.rate) : " "; color: Theme.text; font.pixelSize: Theme.fontSizeNormal }
+            Text { text: qsTr("Resume capability"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             Text {
                 text: win.chunks.length > 1 ? qsTr("Yes") : (win.dl && win.status !== "connecting" && win.total > 0 && win.chunks.length === 1 ? qsTr("No") : qsTr("(unknown)"))
-                color: Theme.text; font.pixelSize: 12
+                color: Theme.text; font.pixelSize: Theme.fontSizeNormal
             }
         }
 
@@ -160,7 +160,7 @@ Window {
                 anchors.centerIn: parent
                 text: Math.floor(win.fraction * 100) + " %"
                 color: win.fraction > 0.5 ? "white" : Theme.text
-                font.pixelSize: 11
+                font.pixelSize: Theme.fontSizeSmall
             }
         }
 
@@ -169,16 +169,16 @@ Window {
             width: parent.width; height: 28
             Rectangle {
                 width: 110; height: 26; radius: 3; color: Theme.surfaceAlt
-                Text { anchors.centerIn: parent; text: win.detailsShown ? qsTr("<< Hide details") : qsTr("Show details >>"); color: Theme.text; font.pixelSize: 11 }
+                Text { anchors.centerIn: parent; text: win.detailsShown ? qsTr("<< Hide details") : qsTr("Show details >>"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: { win.detailsShown = !win.detailsShown; if (win.detailsShown) win.refresh(); } }
             }
             Row {
                 anchors.right: parent.right
-                spacing: 8
+                spacing: Theme.sp2
                 Rectangle {
                     width: 80; height: 26; radius: 3; color: Theme.surfaceAlt
                     visible: win.status !== "completed"
-                    Text { anchors.centerIn: parent; text: win.status === "paused" || win.status === "error" ? qsTr("Resume") : qsTr("Pause"); color: Theme.text; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: win.status === "paused" || win.status === "error" ? qsTr("Resume") : qsTr("Pause"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: win.requestBus("download_action", {
@@ -189,7 +189,7 @@ Window {
                 }
                 Rectangle {
                     width: 80; height: 26; radius: 3; color: Theme.accent
-                    Text { anchors.centerIn: parent; text: win.status === "completed" ? qsTr("Close") : qsTr("Cancel"); color: "white"; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: win.status === "completed" ? qsTr("Close") : qsTr("Cancel"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -206,14 +206,14 @@ Window {
         // Per-download speed limiter, reduced to one row: KBytes/sec for this download, 0 = unlimited
         Row {
             visible: win.detailsShown && win.status !== "completed"
-            spacing: 8
-            Text { text: qsTr("Maximum download speed (KB/sec, 0 = no limit):"); color: Theme.textDim; font.pixelSize: 11; anchors.verticalCenter: parent.verticalCenter }
+            spacing: Theme.sp2
+            Text { text: qsTr("Maximum download speed (KB/sec, 0 = no limit):"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             Rectangle {
                 width: 70; height: 24; color: Theme.surface; border.color: limitInput.activeFocus ? Theme.accent : Theme.border
                 TextInput {
                     id: limitInput
-                    anchors { fill: parent; margins: 4 }
-                    color: Theme.text; font.pixelSize: 11
+                    anchors { fill: parent; margins: Theme.sp1 }
+                    color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                     text: win.dl && win.dl.speed_limit_bps > 0 ? Math.round(win.dl.speed_limit_bps / 1024).toString() : "0"
                     inputMethodHints: Qt.ImhDigitsOnly
                     onEditingFinished: win.requestBus("set_download_speed_limit", {
@@ -227,7 +227,7 @@ Window {
         Text {
             visible: win.detailsShown
             text: qsTr("Start positions and download progress by connections")
-            color: Theme.text; font.pixelSize: 12; font.bold: true
+            color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true
         }
 
         // segment map: pink = start position of a segment, blue = downloaded, white = still to fetch
@@ -266,9 +266,9 @@ Window {
             Row {
                 id: connHeader
                 height: 22
-                Text { text: qsTr("N."); width: 40; color: Theme.textDim; font.pixelSize: 11; leftPadding: 6; verticalAlignment: Text.AlignVCenter; height: parent.height }
-                Text { text: qsTr("Downloaded"); width: 130; color: Theme.textDim; font.pixelSize: 11; verticalAlignment: Text.AlignVCenter; height: parent.height }
-                Text { text: qsTr("Info"); width: 200; color: Theme.textDim; font.pixelSize: 11; verticalAlignment: Text.AlignVCenter; height: parent.height }
+                Text { text: qsTr("N."); width: 40; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; leftPadding: Theme.sp1; verticalAlignment: Text.AlignVCenter; height: parent.height }
+                Text { text: qsTr("Downloaded"); width: 130; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; verticalAlignment: Text.AlignVCenter; height: parent.height }
+                Text { text: qsTr("Info"); width: 200; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; verticalAlignment: Text.AlignVCenter; height: parent.height }
             }
             ListView {
                 anchors { top: connHeader.bottom; left: parent.left; right: parent.right; bottom: parent.bottom }
@@ -277,10 +277,10 @@ Window {
                 delegate: Row {
                     readonly property var c: win.chunks[index]
                     height: 20
-                    Text { text: c ? (c.chunk_index + 1) + "." : ""; width: 40; color: Theme.text; font.pixelSize: 11; leftPadding: 6 }
-                    Text { text: c ? (c.downloaded / 1024).toFixed(3) + " KB" : ""; width: 130; color: Theme.text; font.pixelSize: 11 }
+                    Text { text: c ? (c.chunk_index + 1) + "." : ""; width: 40; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; leftPadding: Theme.sp1 }
+                    Text { text: c ? (c.downloaded / 1024).toFixed(3) + " KB" : ""; width: 130; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     Text {
-                        width: 200; color: Theme.text; font.pixelSize: 11
+                        width: 200; color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                         text: !c ? "" : c.status === "completed" ? qsTr("Download complete")
                             : c.status === "downloading" ? qsTr("Receiving data...")
                             : c.status === "error" ? qsTr("Error") : qsTr("Connecting...")

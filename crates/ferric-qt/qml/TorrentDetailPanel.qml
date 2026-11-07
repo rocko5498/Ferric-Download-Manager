@@ -83,19 +83,19 @@ Rectangle {
                     width: 90; height: 28
                     color: torrentDetailTab.activeTab === 0 ? Theme.surface : "transparent"
                     MouseArea { anchors.fill: parent; onClicked: torrentDetailTab.activeTab = 0 }
-                    Text { anchors.centerIn: parent; text: qsTr("General"); color: torrentDetailTab.activeTab === 0 ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("General"); color: torrentDetailTab.activeTab === 0 ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Rectangle {
                     width: 90; height: 28
                     color: torrentDetailTab.activeTab === 1 ? Theme.surface : "transparent"
                     MouseArea { anchors.fill: parent; onClicked: torrentDetailTab.activeTab = 1 }
-                    Text { anchors.centerIn: parent; text: qsTr("Files"); color: torrentDetailTab.activeTab === 1 ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("Files"); color: torrentDetailTab.activeTab === 1 ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Rectangle {
                     width: 90; height: 28
                     color: torrentDetailTab.activeTab === 2 ? Theme.surface : "transparent"
                     MouseArea { anchors.fill: parent; onClicked: torrentDetailTab.activeTab = 2 }
-                    Text { anchors.centerIn: parent; text: qsTr("Trackers"); color: torrentDetailTab.activeTab === 2 ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("Trackers"); color: torrentDetailTab.activeTab === 2 ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Rectangle {
                     width: 90; height: 28
@@ -104,7 +104,7 @@ Rectangle {
                         anchors.fill: parent
                         onClicked: { torrentDetailTab.activeTab = 3; refreshTorrentPeers(); }
                     }
-                    Text { anchors.centerIn: parent; text: qsTr("Peers"); color: torrentDetailTab.activeTab === 3 ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("Peers"); color: torrentDetailTab.activeTab === 3 ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Rectangle {
                     // T2 honesty: Pieces often has no engine map \u2014 keep tab but dim + n/a label.
@@ -119,20 +119,20 @@ Rectangle {
                         anchors.centerIn: parent
                         text: qsTr("Pieces")
                         color: torrentDetailTab.activeTab === 4 ? Theme.textDim : Theme.textDim
-                        font.pixelSize: 11
+                        font.pixelSize: Theme.fontSizeSmall
                     }
                 }
                 Rectangle {
                     width: 100; height: 28
                     color: torrentDetailTab.activeTab === 5 ? Theme.surface : "transparent"
                     MouseArea { anchors.fill: parent; onClicked: torrentDetailTab.activeTab = 5 }
-                    Text { anchors.centerIn: parent; text: qsTr("HTTP Sources"); color: torrentDetailTab.activeTab === 5 ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("HTTP Sources"); color: torrentDetailTab.activeTab === 5 ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
                 Rectangle {
                     width: 90; height: 28
                     color: torrentDetailTab.activeTab === 6 ? Theme.surface : "transparent"
                     MouseArea { anchors.fill: parent; onClicked: torrentDetailTab.activeTab = 6 }
-                    Text { anchors.centerIn: parent; text: qsTr("Speed"); color: torrentDetailTab.activeTab === 6 ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("Speed"); color: torrentDetailTab.activeTab === 6 ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
             }
             }
@@ -152,40 +152,40 @@ Rectangle {
                 id: torrentActionsRow
                 x: 8
                 y: 2
-                spacing: 4
+                spacing: Theme.sp1
                 Rectangle {
                     width: 60; height: 20; radius: 3; color: torOpenFolderArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Folder"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Folder"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torOpenFolderArea; anchors.fill: parent; hoverEnabled: true; onClicked: doOpenTorrentFolder() }
                 }
                 Rectangle {
                     width: 62; height: 20; radius: 3; color: torCopyHashArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Copy Hash"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Copy Hash"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torCopyHashArea; anchors.fill: parent; hoverEnabled: true; onClicked: doCopyInfoHash() }
                 }
                 Rectangle {
                     width: 68; height: 20; radius: 3; color: torCopyMagnetArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Copy Magnet"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Copy Magnet"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torCopyMagnetArea; anchors.fill: parent; hoverEnabled: true; onClicked: doCopyMagnet() }
                 }
                 Rectangle {
                     width: 56; height: 20; radius: 3; color: torRecheckArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Recheck"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Recheck"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torRecheckArea; anchors.fill: parent; hoverEnabled: true; onClicked: doTorrentRecheck() }
                 }
                 Rectangle {
                     width: 72; height: 20; radius: 3; color: torReannounceArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Reannounce"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Reannounce"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torReannounceArea; anchors.fill: parent; hoverEnabled: true; onClicked: doTorrentReannounce() }
                 }
                 Rectangle {
                     width: 56; height: 20; radius: 3; color: torLocArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Location"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Location"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torLocArea; anchors.fill: parent; hoverEnabled: true; onClicked: doShowSetLocation() }
                 }
                 Rectangle {
                     width: 62; height: 20; radius: 3; color: torTrackersArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Trackers"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Trackers"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         id: torTrackersArea
                         anchors.fill: parent; hoverEnabled: true
@@ -195,18 +195,18 @@ Rectangle {
                 Rectangle {
                     width: 20; height: 20; radius: 3; color: selectionCanQueueMove ? (torUpArea.containsMouse ? Theme.surfaceAlt : Theme.surface) : Theme.bg
                     opacity: selectionCanQueueMove ? 1.0 : 0.4
-                    Text { anchors.centerIn: parent; text: qsTr("\u25b2"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("\u25b2"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torUpArea; anchors.fill: parent; hoverEnabled: true; enabled: selectionCanQueueMove; onClicked: { if (selectedTorrents.length === 1 && requestBus) requestBus("set_torrent_queue", { id: selectedTorrents[0].id, position: "up" }, function() {}); } }
                 }
                 Rectangle {
                     width: 20; height: 20; radius: 3; color: selectionCanQueueMove ? (torDownArea.containsMouse ? Theme.surfaceAlt : Theme.surface) : Theme.bg
                     opacity: selectionCanQueueMove ? 1.0 : 0.4
-                    Text { anchors.centerIn: parent; text: qsTr("\u25bc"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("\u25bc"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: torDownArea; anchors.fill: parent; hoverEnabled: true; enabled: selectionCanQueueMove; onClicked: { if (selectedTorrents.length === 1 && requestBus) requestBus("set_torrent_queue", { id: selectedTorrents[0].id, position: "down" }, function() {}); } }
                 }
                 Rectangle {
                     width: 50; height: 20; radius: 3; color: policyArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Policy"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Policy"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         id: policyArea
                         anchors.fill: parent; hoverEnabled: true
@@ -215,7 +215,7 @@ Rectangle {
                 }
                 Rectangle {
                     width: 50; height: 20; radius: 3; color: syncArea.containsMouse ? Theme.surfaceAlt : Theme.surface
-                    Text { anchors.centerIn: parent; text: qsTr("Sync"); color: Theme.textDim; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Sync"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea {
                         id: syncArea
                         anchors.fill: parent; hoverEnabled: true
@@ -255,25 +255,25 @@ Rectangle {
 
             Grid {
                 id: torrentGeneralGrid
-                anchors { top: parent.top; left: parent.left; right: parent.right; margins: 10 }
+                anchors { top: parent.top; left: parent.left; right: parent.right; margins: Theme.sp2 }
                 height: implicitHeight
                 columns: 2
-                columnSpacing: 12
-                rowSpacing: 4
+                columnSpacing: Theme.sp3
+                rowSpacing: Theme.sp1
 
-                Text { text: qsTr("Name:");   color: Theme.textDim; font.pixelSize: 11 }
-                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.name || "-") : "-"; color: Theme.text; font.pixelSize: 11; elide: Text.ElideRight; width: 320 }
-                Text { text: qsTr("Hash:");   color: Theme.textDim; font.pixelSize: 11 }
-                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.info_hash || "-") : "-"; color: Theme.text; font.pixelSize: 11; elide: Text.ElideRight; width: 320 }
-                Text { text: qsTr("Path:");   color: Theme.textDim; font.pixelSize: 11 }
-                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.save_root || "-") : "-"; color: Theme.text; font.pixelSize: 11; elide: Text.ElideRight; width: 320 }
-                Text { text: qsTr("Status:"); color: Theme.textDim; font.pixelSize: 11 }
-                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.status || "-") : "-"; color: Theme.accent; font.pixelSize: 11 }
-                Text { text: qsTr("Tags:");   color: Theme.textDim; font.pixelSize: 11 }
-                Text { text: torrentDetailGeneral.tdData ? ((torrentDetailGeneral.tdData.record.tags || []).join(", ") || "none") : "-"; color: Theme.text; font.pixelSize: 11 }
-                Text { text: qsTr("Size:");   color: Theme.textDim; font.pixelSize: 11 }
+                Text { text: qsTr("Name:");   color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.name || "-") : "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 320 }
+                Text { text: qsTr("Hash:");   color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.info_hash || "-") : "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 320 }
+                Text { text: qsTr("Path:");   color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.save_root || "-") : "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 320 }
+                Text { text: qsTr("Status:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.status || "-") : "-"; color: Theme.accent; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: qsTr("Tags:");   color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: torrentDetailGeneral.tdData ? ((torrentDetailGeneral.tdData.record.tags || []).join(", ") || "none") : "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: qsTr("Size:");   color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Text {
-                    color: Theme.text; font.pixelSize: 11
+                    color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                     text: {
                         if (!torrentDetailGeneral.tdData) return "-"
                         var t = torrentDetailGeneral.tdData.record.total_size || 0
@@ -281,24 +281,24 @@ Rectangle {
                         return (t > 0 ? (d / (1024*1024)).toFixed(1) + " / " + (t / (1024*1024)).toFixed(1) + " MB" : "-")
                     }
                 }
-                Text { text: qsTr("Ratio:");  color: Theme.textDim; font.pixelSize: 11 }
-                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.ratio || 0).toFixed(2) : "-"; color: Theme.text; font.pixelSize: 11 }
+                Text { text: qsTr("Ratio:");  color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                Text { text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.ratio || 0).toFixed(2) : "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
             }
 
             // Tag assignment UI
             Row {
                 id: tagRow
-                anchors { top: torrentGeneralGrid.bottom; left: parent.left; right: parent.right; margins: 10; topMargin: 6 }
-                spacing: 6
-                Text { text: qsTr("Add tag:"); color: Theme.textDim; font.pixelSize: 11 }
+                anchors { top: torrentGeneralGrid.bottom; left: parent.left; right: parent.right; margins: Theme.sp2; topMargin: Theme.sp1 }
+                spacing: Theme.sp1
+                Text { text: qsTr("Add tag:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
                     width: 120; height: 20; radius: 3; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
-                    TextInput { id: tagInput; anchors.fill: parent; anchors.margins: 4; color: Theme.text; font.pixelSize: 11; clip: true }
+                    TextInput { id: tagInput; anchors.fill: parent; anchors.margins: Theme.sp1; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; clip: true }
                 clip: true
                 }
                 Rectangle {
                     width: 40; height: 20; radius: 3; color: tagAddArea.containsMouse ? Theme.border : Theme.surfaceAlt
-                    Text { anchors.centerIn: parent; text: qsTr("Add"); color: Theme.text; font.pixelSize: 10 }
+                    Text { anchors.centerIn: parent; text: qsTr("Add"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { id: tagAddArea; anchors.fill: parent; hoverEnabled: true
                         onClicked: {
                             if (tagInput.text === "" || !selectedTorrents.length) return;
@@ -313,17 +313,17 @@ Rectangle {
             }
             Flow {
                 id: tagFlow
-                anchors { top: tagRow.bottom; left: parent.left; right: parent.right; margins: 10; topMargin: 4 }
+                anchors { top: tagRow.bottom; left: parent.left; right: parent.right; margins: Theme.sp2; topMargin: Theme.sp1 }
                 height: visible ? implicitHeight : 0
-                spacing: 4
+                spacing: Theme.sp1
                 visible: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record && torrentDetailGeneral.tdData.record.tags && torrentDetailGeneral.tdData.record.tags.length > 0) : false
                 Repeater {
                     model: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.record.tags || []) : []
                     Rectangle {
                         width: tagLabel.width + 20; height: 18; radius: 3; color: Theme.surfaceAlt
-                        Row { anchors.centerIn: parent; spacing: 4
-                            Text { id: tagLabel; text: modelData; color: Theme.text; font.pixelSize: 10 }
-                            Text { text: qsTr("\u00d7"); color: Theme.danger; font.pixelSize: 10
+                        Row { anchors.centerIn: parent; spacing: Theme.sp1
+                            Text { id: tagLabel; text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
+                            Text { text: qsTr("\u00d7"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall
                                 MouseArea { anchors.fill: parent; onClicked: {
                                     if (requestBus) requestBus("remove_torrent_tag", { id: selectedTorrents[0].id, tag: modelData }, function() {
                                         refreshTorrentDetail();
@@ -338,9 +338,9 @@ Rectangle {
             // Proxy assignment UI
             Row {
                 id: proxyRow
-                anchors { top: tagFlow.bottom; left: parent.left; right: parent.right; margins: 10; topMargin: 6 }
-                spacing: 6
-                Text { text: qsTr("Proxy:"); color: Theme.textDim; font.pixelSize: 11 }
+                anchors { top: tagFlow.bottom; left: parent.left; right: parent.right; margins: Theme.sp2; topMargin: Theme.sp1 }
+                spacing: Theme.sp1
+                Text { text: qsTr("Proxy:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 Rectangle {
                     width: 180; height: 20; radius: 3; color: Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
                     property var proxyList: []
@@ -351,7 +351,7 @@ Rectangle {
                         });
                     }
                     Text {
-                        anchors.fill: parent; anchors.margins: 4
+                        anchors.fill: parent; anchors.margins: Theme.sp1
                         text: {
                             if (!torrentDetailGeneral.tdData) return "\u2014";
                             var assigned = torrentDetailGeneral.tdData.record.proxy_id || "";
@@ -361,7 +361,7 @@ Rectangle {
                             }
                             return assigned;
                         }
-                        color: Theme.text; font.pixelSize: 11; clip: true; elide: Text.ElideRight
+                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall; clip: true; elide: Text.ElideRight
                     }
                     MouseArea {
                         anchors.fill: parent
@@ -392,12 +392,12 @@ Rectangle {
                 width: 200; height: proxyColumn.height + 8; radius: 4; color: Theme.surface; border.color: Theme.border; border.width: 1
                 property var items: []
                 property var proxyIds: []
-                Column { id: proxyColumn; anchors { left: parent.left; right: parent.right; margins: 4 } spacing: 2
+                Column { id: proxyColumn; anchors { left: parent.left; right: parent.right; margins: Theme.sp1 } spacing: 2
                     Repeater {
                         model: proxyChooser.items
                         Rectangle {
                             width: proxyColumn.width; height: 22; radius: 3; color: proxyMouse.containsMouse ? Theme.surfaceAlt : "transparent"
-                            Text { anchors { left: parent.left; margins: 6; verticalCenter: parent.verticalCenter } text: modelData; color: Theme.text; font.pixelSize: 11 }
+                            Text { anchors { left: parent.left; margins: Theme.sp1; verticalCenter: parent.verticalCenter } text: modelData; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                             MouseArea { id: proxyMouse; anchors.fill: parent; hoverEnabled: true
                                 onClicked: {
                                     var tid = selectedTorrents.length ? selectedTorrents[0].id : "";
@@ -421,12 +421,12 @@ Rectangle {
             visible: torrentDetailTab.activeTab === 1
 
             ListView {
-                anchors { fill: parent; margins: 8 }
+                anchors { fill: parent; margins: Theme.sp2 }
                 model: torrentDetailGeneral.tdData ? torrentDetailGeneral.tdData.files : []
                 clip: true
                 cacheBuffer: 200
                 delegate: Row {
-                    spacing: 8; height: 20; width: ListView.view.width
+                    spacing: Theme.sp2; height: 20; width: ListView.view.width
 
                     Rectangle {
                         width: 14; height: 14; radius: 2
@@ -438,8 +438,8 @@ Rectangle {
                             onClicked: doToggleTorrentFile(selectedTorrents[0].id, modelData)
                         }
                     }
-                    Text { text: modelData.path || "-"; color: Theme.text; font.pixelSize: 11; elide: Text.ElideRight; width: 380 }
-                    Text { text: ((modelData.size || 0) / (1024*1024)).toFixed(1) + " MB"; color: Theme.textDim; font.pixelSize: 10 }
+                    Text { text: modelData.path || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 380 }
+                    Text { text: ((modelData.size || 0) / (1024*1024)).toFixed(1) + " MB"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
             }
         }
@@ -451,7 +451,7 @@ Rectangle {
             visible: torrentDetailTab.activeTab === 2
 
             ListView {
-                anchors { fill: parent; margins: 8 }
+                anchors { fill: parent; margins: Theme.sp2 }
                 model: torrentDetailGeneral.tdData ? torrentDetailGeneral.tdData.trackers : []
                 clip: true
                 cacheBuffer: 200
@@ -459,14 +459,14 @@ Rectangle {
                 Text {
                     visible: (torrentDetailGeneral.tdData ? torrentDetailGeneral.tdData.trackers.length : 0) === 0
                     anchors.centerIn: parent
-                    text: qsTr("No trackers"); color: Theme.textDim; font.pixelSize: 11
+                    text: qsTr("No trackers"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                 }
 
                 delegate: Row {
-                    spacing: 8; height: 20; width: ListView.view.width
-                    Text { text: modelData.url || "-"; color: Theme.text; font.pixelSize: 11; elide: Text.ElideRight; width: 340 }
-                    Text { text: modelData.status || "-"; color: Theme.textDim; font.pixelSize: 10; width: 70 }
-                    Text { text: modelData.last_error || ""; color: Theme.danger; font.pixelSize: 10; elide: Text.ElideRight; width: 150 }
+                    spacing: Theme.sp2; height: 20; width: ListView.view.width
+                    Text { text: modelData.url || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 340 }
+                    Text { text: modelData.status || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 70 }
+                    Text { text: modelData.last_error || ""; color: Theme.danger; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 150 }
                 }
             }
         }
@@ -513,8 +513,8 @@ Rectangle {
             readonly property bool hasEyesPeers: fiveEyesCount > 0 || nineEyesCount > 0 || fourteenEyesCount > 0
 
             Column {
-                anchors { fill: parent; margins: 8 }
-                spacing: 4
+                anchors { fill: parent; margins: Theme.sp2 }
+                spacing: Theme.sp1
 
                 Text {
                     width: parent.width
@@ -523,7 +523,7 @@ Rectangle {
                     text: torrentDetailPeers.fiveEyesCount + " five-eyes / "
                           + torrentDetailPeers.nineEyesCount + " nine-eyes peers"
                     color: Theme.warning
-                    font.pixelSize: 10
+                    font.pixelSize: Theme.fontSizeSmall
                 }
 
                 ListView {
@@ -538,27 +538,27 @@ Rectangle {
                         anchors.centerIn: parent
                         text: torrentPeersError !== "" ? torrentPeersError : "No peers"
                         color: torrentPeersError !== "" ? Theme.danger : Theme.textDim
-                        font.pixelSize: 11
+                        font.pixelSize: Theme.fontSizeSmall
                     }
 
                     delegate: Row {
-                        spacing: 8; height: 20; width: ListView.view.width
+                        spacing: Theme.sp2; height: 20; width: ListView.view.width
                         readonly property string eyesTier: modelData.eyes_tier || ""
                         Text {
                             text: (modelData.flag_emoji || "") + " " + (modelData.client || "-")
                             color: torrentDetailPeers.peerEyesColor(parent.eyesTier, Theme.text)
-                            font.pixelSize: 11; elide: Text.ElideRight; width: 220
+                            font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: 220
                         }
                         Text {
                             text: modelData.country_name || "-"
                             color: torrentDetailPeers.peerEyesColor(parent.eyesTier, Theme.textDim)
-                            font.pixelSize: 10; width: 110
+                            font.pixelSize: Theme.fontSizeSmall; width: 110
                         }
                         Text {
                             text: "↓" + ((modelData.downloaded || 0) / (1024*1024)).toFixed(1)
                                   + " ↑" + ((modelData.uploaded || 0) / (1024*1024)).toFixed(1) + " MB"
                             color: torrentDetailPeers.peerEyesColor(parent.eyesTier, Theme.textDim)
-                            font.pixelSize: 10
+                            font.pixelSize: Theme.fontSizeSmall
                         }
                     }
                 }
@@ -573,7 +573,7 @@ Rectangle {
 
             Rectangle {
                 id: piecesCanvas
-                anchors { fill: parent; margins: 8 }
+                anchors { fill: parent; margins: Theme.sp2 }
                 color: Theme.bg; radius: 3
 
                 // FQT-075 honesty: use real piece rows from detail when present.
@@ -588,7 +588,7 @@ Rectangle {
                     wrapMode: Text.WordWrap
                     visible: piecesCanvas.pieceCount === 0
                     text: qsTr("Pieces map not available for this torrent (engine does not expose piece status). Not a loading error.")
-                    color: Theme.textDim; font.pixelSize: 11
+                    color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                 }
 
                 Grid {
@@ -612,11 +612,11 @@ Rectangle {
                 }
 
                 Text {
-                    anchors.bottom: parent.bottom; anchors.right: parent.right; anchors.margins: 4
+                    anchors.bottom: parent.bottom; anchors.right: parent.right; anchors.margins: Theme.sp1
                     text: piecesCanvas.pieceCount > 0
                           ? (piecesCanvas.pieceCount + qsTr(" pieces"))
                           : qsTr("Pieces not available")
-                    color: Theme.textDim; font.pixelSize: 9
+                    color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                 }
             }
         }
@@ -628,19 +628,19 @@ Rectangle {
             visible: torrentDetailTab.activeTab === 5
 
             Column {
-                anchors { fill: parent; margins: 10 }
-                spacing: 6
+                anchors { fill: parent; margins: Theme.sp2 }
+                spacing: Theme.sp1
                 Text {
                     text: qsTr("HTTP Sources (Web Seeds)")
-                    color: Theme.text; font.pixelSize: 12; font.bold: true
+                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true
                 }
                 Text {
                     text: qsTr("No web seeds available for this torrent.")
-                    color: Theme.textDim; font.pixelSize: 11; wrapMode: Text.Wrap; width: parent.width
+                    color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; wrapMode: Text.Wrap; width: parent.width
                 }
                 Text {
                     text: qsTr("Web seeds (BEP-19) are listed here when the .torrent file includes url-list entries. Most torrents do not use web seeds.")
-                    color: Theme.textDim; font.pixelSize: 10; wrapMode: Text.Wrap; width: parent.width
+                    color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; wrapMode: Text.Wrap; width: parent.width
                 }
             }
         }
@@ -652,16 +652,16 @@ Rectangle {
             visible: torrentDetailTab.activeTab === 6
 
             Column {
-                anchors { fill: parent; margins: 10 }
-                spacing: 8
+                anchors { fill: parent; margins: Theme.sp2 }
+                spacing: Theme.sp2
 
                 Row {
-                    spacing: 24
+                    spacing: Theme.sp4
                     Column {
                         spacing: 2
-                        Text { text: qsTr("Download"); color: Theme.textDim; font.pixelSize: 10 }
+                        Text { text: qsTr("Download"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                         Text {
-                            color: Theme.success; font.pixelSize: 14; font.bold: true
+                            color: Theme.success; font.pixelSize: Theme.fontSizeNormal; font.bold: true
                             text: {
                                 if (!torrentDetailGeneral.tdData) return "0 B/s"
                                 var sp = torrentDetailGeneral.tdData.download_speed || 0
@@ -673,9 +673,9 @@ Rectangle {
                     }
                     Column {
                         spacing: 2
-                        Text { text: qsTr("Upload"); color: Theme.textDim; font.pixelSize: 10 }
+                        Text { text: qsTr("Upload"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                         Text {
-                            color: Theme.accent; font.pixelSize: 14; font.bold: true
+                            color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true
                             text: {
                                 if (!torrentDetailGeneral.tdData) return "0 B/s"
                                 var sp = torrentDetailGeneral.tdData.upload_speed || 0
@@ -688,10 +688,10 @@ Rectangle {
                 }
 
                 Grid {
-                    columns: 2; columnSpacing: 16; rowSpacing: 4
-                    Text { text: qsTr("Total Downloaded:"); color: Theme.textDim; font.pixelSize: 11 }
+                    columns: 2; columnSpacing: Theme.sp3; rowSpacing: Theme.sp1
+                    Text { text: qsTr("Total Downloaded:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Text {
-                        color: Theme.text; font.pixelSize: 11
+                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                         text: {
                             if (!torrentDetailGeneral.tdData) return "-"
                             var d = torrentDetailGeneral.tdData.downloaded || 0
@@ -701,9 +701,9 @@ Rectangle {
                                  : d + " B"
                         }
                     }
-                    Text { text: qsTr("Total Uploaded:"); color: Theme.textDim; font.pixelSize: 11 }
+                    Text { text: qsTr("Total Uploaded:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Text {
-                        color: Theme.text; font.pixelSize: 11
+                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                         text: {
                             if (!torrentDetailGeneral.tdData) return "-"
                             var u = torrentDetailGeneral.tdData.uploaded || 0
@@ -713,9 +713,9 @@ Rectangle {
                                  : u + " B"
                         }
                     }
-                    Text { text: qsTr("Share Ratio:"); color: Theme.textDim; font.pixelSize: 11 }
+                    Text { text: qsTr("Share Ratio:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Text {
-                        color: Theme.text; font.pixelSize: 11
+                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                         text: torrentDetailGeneral.tdData ? (torrentDetailGeneral.tdData.ratio || "0.00") : "-"
                     }
                 }
@@ -727,7 +727,7 @@ Rectangle {
                     Text {
                         anchors.centerIn: parent
                         text: qsTr("Speed history graph \u2014 coming soon")
-                        color: Theme.textDim; font.pixelSize: 10
+                        color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                     }
                 }
             }

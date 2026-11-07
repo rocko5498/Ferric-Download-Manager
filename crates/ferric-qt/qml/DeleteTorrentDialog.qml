@@ -16,20 +16,20 @@ AppDialog {
     contentItem: [
         Text {
             text: "Delete " + deleteTorrentDialog.deleteCount + " torrent(s)?"
-            color: Theme.text; font.pixelSize: 13
+            color: Theme.text; font.pixelSize: Theme.fontSizeNormal
         },
         Row {
-            spacing: 6
+            spacing: Theme.sp1
             Rectangle {
                 width: 16; height: 16; radius: 3
                 color: deleteTorrentDialog.deleteFiles ? Theme.danger : Theme.bg
                 border.color: Theme.surfaceAlt; border.width: 1
-                Text { anchors.centerIn: parent; text: deleteTorrentDialog.deleteFiles ? "✓" : ""; color: "#fff"; font.pixelSize: 10 }
+                Text { anchors.centerIn: parent; text: deleteTorrentDialog.deleteFiles ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: deleteTorrentDialog.deleteFiles = !deleteTorrentDialog.deleteFiles }
             }
             Text {
                 text: qsTr("Also delete files from disk")
-                color: Theme.text; font.pixelSize: 12
+                color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                 anchors.verticalCenter: parent.verticalCenter
                 MouseArea { anchors.fill: parent; onClicked: deleteTorrentDialog.deleteFiles = !deleteTorrentDialog.deleteFiles }
             }
@@ -38,16 +38,16 @@ AppDialog {
 
     buttons: [
         Rectangle {
-            width: 64; height: 28; radius: 4; color: Theme.bg
-            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
+            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             MouseArea {
                 anchors.fill: parent
                 onClicked: { deleteTorrentDialog.onCancel(); deleteTorrentDialog.close() }
             }
         },
         Rectangle {
-            width: 90; height: 28; radius: 4; color: Theme.danger
-            Text { anchors.centerIn: parent; text: qsTr("Delete"); color: "white"; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.danger
+            Text { anchors.centerIn: parent; text: qsTr("Delete"); color: "white"; font.pixelSize: Theme.fontSizeNormal }
             MouseArea {
                 anchors.fill: parent
                 onClicked: { deleteTorrentDialog.onConfirm(); deleteTorrentDialog.close() }

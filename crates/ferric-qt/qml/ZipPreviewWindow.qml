@@ -33,35 +33,35 @@ Window {
     })
 
     Text {
-        anchors { left: parent.left; right: parent.right; top: parent.top; margins: 14 }
+        anchors { left: parent.left; right: parent.right; top: parent.top; margins: Theme.sp3 }
         visible: win.status !== ""
         text: win.status
-        color: Theme.textDim; font.pixelSize: 12; wrapMode: Text.Wrap
+        color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal; wrapMode: Text.Wrap
     }
 
     ListView {
-        anchors { fill: parent; margins: 10; bottomMargin: 46 }
+        anchors { fill: parent; margins: Theme.sp2; bottomMargin: Theme.sp6 }
         visible: win.entries.length > 0
         clip: true
         model: win.entries.length
         QQC.ScrollBar.vertical: QQC.ScrollBar {}
         header: Row {
             height: 22
-            Text { width: 300; text: qsTr("Name"); color: Theme.textDim; font.pixelSize: 11 }
-            Text { text: qsTr("Size"); color: Theme.textDim; font.pixelSize: 11 }
+            Text { width: 300; text: qsTr("Name"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { text: qsTr("Size"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         }
         delegate: Row {
             readonly property var e: win.entries[index]
             height: 20
-            Text { width: 300; text: e ? e.name : ""; textFormat: Text.PlainText; color: Theme.text; font.pixelSize: 11; elide: Text.ElideMiddle }
-            Text { text: e ? win.fmtSize(e.size) : ""; color: Theme.textDim; font.pixelSize: 11 }
+            Text { width: 300; text: e ? e.name : ""; textFormat: Text.PlainText; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideMiddle }
+            Text { text: e ? win.fmtSize(e.size) : ""; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         }
     }
 
     Rectangle {
-        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: 10 }
+        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom; bottomMargin: Theme.sp2 }
         width: 90; height: 26; radius: 3; color: Theme.accent
-        Text { anchors.centerIn: parent; text: qsTr("Close"); color: "white"; font.pixelSize: 12 }
+        Text { anchors.centerIn: parent; text: qsTr("Close"); color: "white"; font.pixelSize: Theme.fontSizeNormal }
         MouseArea { anchors.fill: parent; onClicked: win.close() }
     }
 }

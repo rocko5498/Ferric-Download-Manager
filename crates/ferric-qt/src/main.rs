@@ -23,6 +23,10 @@ fn main() {
 
     let mut app = QGuiApplication::new();
     QQuickStyle::set_style(&QString::from("Basic"));
+    // The About dialog shows this (Qt.application.version).
+    if let Some(app) = app.as_mut() {
+        app.set_application_version(&QString::from(env!("CARGO_PKG_VERSION")));
+    }
     let mut engine = QQmlApplicationEngine::new();
 
     if let Some(engine) = engine.as_mut() {

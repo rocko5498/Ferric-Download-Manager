@@ -15,50 +15,30 @@ AppDialog {
     cardMaxHeight: 620
 
     contentItem: [
-        Text { text: qsTr("Downloads"); color: Theme.accent; font.pixelSize: 11; font.bold: true },
+        Text { text: qsTr("Downloads"); color: Theme.accent; font.pixelSize: Theme.fontSizeSmall; font.bold: true },
         Grid {
-            columns: 2; columnSpacing: 24; rowSpacing: 2
+            columns: 2; columnSpacing: Theme.sp4; rowSpacing: 2
             Repeater {
                 model: columnChooserDialog.downloadColumnsAll
                 Row {
-                    spacing: 8; height: 20; width: 180
+                    spacing: Theme.sp2; height: 20; width: 180
                     Rectangle {
                         width: 14; height: 14; radius: 3
                         property bool vis: columnChooserDialog.downloadVisibleColumns.length === 0 || columnChooserDialog.downloadVisibleColumns.indexOf(modelData.title) >= 0
                         color: vis ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
-                        Text { anchors.centerIn: parent; text: parent.vis ? "\u2713" : ""; color: "#fff"; font.pixelSize: 9 }
+                        Text { anchors.centerIn: parent; text: parent.vis ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: { if (toggleDownloadColumn) toggleDownloadColumn(modelData.title); } }
                     }
-                    Text { text: modelData.title; color: Theme.text; font.pixelSize: 11 }
-                }
-            }
-        },
-
-        Text { text: qsTr("Torrents"); color: Theme.accent; font.pixelSize: 11; font.bold: true; topPadding: 4 },
-        Grid {
-            columns: 2; columnSpacing: 24; rowSpacing: 2
-            Repeater {
-                model: columnChooserDialog.torrentColumnsAll
-                Row {
-                    spacing: 8; height: 20; width: 180
-                    Rectangle {
-                        width: 14; height: 14; radius: 3
-                        property bool vis: columnChooserDialog.torrentVisibleColumns.length === 0 || columnChooserDialog.torrentVisibleColumns.indexOf(modelData.title) >= 0
-                        color: vis ? Theme.accent : Theme.bg
-                        border.color: Theme.surfaceAlt; border.width: 1
-                        Text { anchors.centerIn: parent; text: parent.vis ? "\u2713" : ""; color: "#fff"; font.pixelSize: 9 }
-                        MouseArea { anchors.fill: parent; onClicked: { if (toggleTorrentColumn) toggleTorrentColumn(modelData.title); } }
-                    }
-                    Text { text: modelData.title; color: Theme.text; font.pixelSize: 11 }
+                    Text { text: modelData.title; color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 }
             }
         }
     ]
 
     buttons: [
-        Rectangle { width: 70; height: 24; radius: 3; color: Theme.surfaceAlt
-            Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: 11 }
+        Rectangle { width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.surfaceAlt
+            Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: columnChooserDialog.close() }
         }
     ]

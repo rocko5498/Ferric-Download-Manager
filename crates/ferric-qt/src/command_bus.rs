@@ -1115,10 +1115,28 @@ fn delete_rss_rule_http(id: &str) -> Result<(), String> {
     })
 }
 
+/// What to hand Explorer: a folder opens itself, a file is shown selected in its folder. Explorer only
+/// understands backslashes here (the daemon and Qt use `C:/...`, which made it open the default folder
+/// instead) and wants the path quoted inside the argument, which Rust's own quoting does not do.
+fn explorer_args(path: &str, is_dir: bool) -> String {
+    let path = path.replace('/', "\\");
+    if is_dir {
+        format!("\"{path}\"")
+    } else {
+        format!("/select,\"{path}\"")
+    }
+}
+
 fn open_folder_os(path: &str) -> Result<(), String> {
-    std::process::Command::new("explorer")
-        .arg(format!("/select,{path}"))
-        .spawn()
+    let mut cmd = std::process::Command::new("explorer");
+    #[cfg(windows)]
+    {
+        use std::os::windows::process::CommandExt as _;
+        cmd.raw_arg(explorer_args(path, std::path::Path::new(path).is_dir()));
+    }
+    #[cfg(not(windows))]
+    cmd.arg(format!("/select,{path}"));
+    cmd.spawn()
         .map(|_| ())
         .map_err(|e| format!("open_folder: {e}"))
 }
@@ -2849,6 +2867,26 @@ fn power_args(action: &str) -> Option<Vec<&'static str>> {
         ]),
         "abort" => Some(vec!["/a"]),
         _ => None,
+    }
+}
+
+#[cfg(test)]
+mod explorer_tests {
+    use super::explorer_args;
+
+    #[test]
+    fn explorer_gets_backslashes_and_a_quoted_path() {
+        assert_eq!(
+            explorer_args(
+                "C:/Users/someone/Downloads/Programs/Ferric Setup.exe",
+                false
+            ),
+            r#"/select,"C:\Users\someone\Downloads\Programs\Ferric Setup.exe""#
+        );
+        assert_eq!(
+            explorer_args("D:/My Files/Downloads", true),
+            r#""D:\My Files\Downloads""#
+        );
     }
 }
 

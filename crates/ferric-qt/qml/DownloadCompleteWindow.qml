@@ -33,62 +33,62 @@ Window {
     }
 
     Column {
-        anchors { fill: parent; margins: 14 }
-        spacing: 8
+        anchors { fill: parent; margins: Theme.sp3 }
+        spacing: Theme.sp2
 
-        Text { text: win.sizeLine(); color: Theme.text; font.pixelSize: 13; font.bold: true }
+        Text { text: win.sizeLine(); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
-        Text { text: qsTr("Address"); color: Theme.textDim; font.pixelSize: 11 }
+        Text { text: qsTr("Address"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         Rectangle {
             width: parent.width; height: 24; color: Theme.surface; border.color: Theme.border
             TextInput {
-                anchors { fill: parent; margins: 4 }
+                anchors { fill: parent; margins: Theme.sp1 }
                 readOnly: true; selectByMouse: true; clip: true
                 text: win.info ? (win.info.final_url || win.info.url) : ""
-                color: Theme.text; font.pixelSize: 11
+                color: Theme.text; font.pixelSize: Theme.fontSizeSmall
             }
         }
 
-        Text { text: qsTr("The file saved as"); color: Theme.textDim; font.pixelSize: 11 }
+        Text { text: qsTr("The file saved as"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
         Rectangle {
             width: parent.width; height: 24; color: Theme.surface; border.color: Theme.border
             TextInput {
-                anchors { fill: parent; margins: 4 }
+                anchors { fill: parent; margins: Theme.sp1 }
                 readOnly: true; selectByMouse: true; clip: true
                 text: win.fullPath
-                color: Theme.text; font.pixelSize: 11
+                color: Theme.text; font.pixelSize: Theme.fontSizeSmall
             }
         }
 
         Row {
-            spacing: 8
+            spacing: Theme.sp2
             Rectangle {
                 width: 90; height: 26; radius: 3; color: Theme.accent
-                Text { anchors.centerIn: parent; text: qsTr("Open"); color: "white"; font.pixelSize: 11 }
+                Text { anchors.centerIn: parent; text: qsTr("Open"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.bus.open_file(win.fullPath) }
             }
             Rectangle {
                 width: 110; height: 26; radius: 3; color: Theme.surfaceAlt
-                Text { anchors.centerIn: parent; text: qsTr("Open folder"); color: Theme.text; font.pixelSize: 11 }
+                Text { anchors.centerIn: parent; text: qsTr("Open folder"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.bus.open_folder(win.fullPath) }
             }
             Rectangle {
                 width: 80; height: 26; radius: 3; color: Theme.surfaceAlt
-                Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: 11 }
+                Text { anchors.centerIn: parent; text: qsTr("Close"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.close() }
             }
         }
 
         Row {
-            spacing: 8
+            spacing: Theme.sp2
             Rectangle {
                 width: 16; height: 16; radius: 3
                 color: win.dontShowAgain ? Theme.accent : Theme.bg
                 border.color: Theme.surfaceAlt
-                Text { anchors.centerIn: parent; text: win.dontShowAgain ? "✓" : ""; color: "white"; font.pixelSize: 10 }
+                Text { anchors.centerIn: parent; text: win.dontShowAgain ? "✓" : ""; color: "white"; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: win.dontShowAgain = !win.dontShowAgain }
             }
-            Text { text: qsTr("Don't show this dialog again"); color: Theme.text; font.pixelSize: 11 }
+            Text { text: qsTr("Don't show this dialog again"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
         }
     }
 }

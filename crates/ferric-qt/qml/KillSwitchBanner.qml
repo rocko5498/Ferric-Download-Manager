@@ -16,7 +16,7 @@ Rectangle {
 
     Row {
         anchors.centerIn: parent
-        spacing: 12
+        spacing: Theme.sp3
 
         // Pulsing dot
         Rectangle {
@@ -32,14 +32,14 @@ Rectangle {
 
         Text {
             text: qsTr("Kill switch ACTIVE \u2014 torrents paused, proxy unreachable")
-            color: Theme.danger; font.pixelSize: 12; font.bold: true
+            color: Theme.danger; font.pixelSize: Theme.fontSizeNormal; font.bold: true
             anchors.verticalCenter: parent.verticalCenter
         }
 
         Rectangle {
             width: 120; height: 22; radius: 3
             color: resumeBtnArea.containsMouse ? Theme.accent : Theme.danger
-            Text { anchors.centerIn: parent; text: qsTr("Wait for proxy"); color: Theme.danger; font.pixelSize: 10 }
+            Text { anchors.centerIn: parent; text: qsTr("Wait for proxy"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
             MouseArea {
                 id: resumeBtnArea
                 anchors.fill: parent
@@ -51,7 +51,7 @@ Rectangle {
         Rectangle {
             width: 100; height: 22; radius: 3
             color: dismissBtnArea.containsMouse ? Theme.border : Theme.surfaceAlt
-            Text { anchors.centerIn: parent; text: qsTr("Continue exposed"); color: Theme.textDim; font.pixelSize: 10 }
+            Text { anchors.centerIn: parent; text: qsTr("Continue exposed"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea {
                 id: dismissBtnArea
                 anchors.fill: parent

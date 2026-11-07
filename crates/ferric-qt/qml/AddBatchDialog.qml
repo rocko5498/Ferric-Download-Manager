@@ -14,7 +14,7 @@ AppDialog {
     }
 
     contentItem: [
-        Text { text: qsTr("One URL per line. Empty lines skipped."); color: Theme.textDim; font.pixelSize: 11 },
+        Text { text: qsTr("One URL per line. Empty lines skipped."); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall },
 
         Rectangle {
             width: parent.width; height: 160
@@ -24,8 +24,8 @@ AppDialog {
 
             TextEdit {
                 id: batchInput
-                anchors { fill: parent; margins: 6 }
-                color: Theme.text; font.pixelSize: 12
+                anchors { fill: parent; margins: Theme.sp1 }
+                color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                 wrapMode: TextEdit.NoWrap
             }
         }
@@ -33,13 +33,13 @@ AppDialog {
 
     buttons: [
         Rectangle {
-            width: 68; height: 28; radius: 4; color: Theme.bg
-            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
+            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             MouseArea { anchors.fill: parent; onClicked: addBatchDialog.close() }
         },
         Rectangle {
-            width: 88; height: 28; radius: 4; color: Theme.accent
-            Text { anchors.centerIn: parent; text: qsTr("Add URLs"); color: "#fff"; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
+            Text { anchors.centerIn: parent; text: qsTr("Add URLs"); color: "#fff"; font.pixelSize: Theme.fontSizeNormal }
             MouseArea {
                 anchors.fill: parent
                 onClicked: addBatchDialog.onAddBatch(batchInput.text)

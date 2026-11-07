@@ -31,26 +31,26 @@ AppDialog {
         // Step indicator (IDM goes straight from the address to the Download File Info dialog)
         Row {
             visible: !addUrlDialog.skipInfoStep
-            spacing: 8
+            spacing: Theme.sp2
             Text {
                 text: qsTr("Step") + " 1: " + qsTr("URL")
                 color: step === 1 ? Theme.accent : Theme.textDim
-                font.pixelSize: 11; font.bold: step === 1
+                font.pixelSize: Theme.fontSizeSmall; font.bold: step === 1
             }
-            Text { text: "\u2192"; color: Theme.textDim; font.pixelSize: 11 }
+            Text { text: "\u2192"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Text {
                 text: qsTr("Step") + " 2: " + qsTr("File Info")
                 color: step === 2 ? Theme.accent : Theme.textDim
-                font.pixelSize: 11; font.bold: step === 2
+                font.pixelSize: Theme.fontSizeSmall; font.bold: step === 2
             }
         },
 
-        Text { text: step === 1 ? qsTr("Add Download") : qsTr("Download File Info"); color: Theme.text; font.pixelSize: 14 },
+        Text { text: step === 1 ? qsTr("Add Download") : qsTr("Download File Info"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal },
 
         // Step 1: URL + auth fields
         Column {
             visible: step === 1
-            width: parent.width; spacing: 10
+            width: parent.width; spacing: Theme.sp2
 
             FormField {
                 id: urlField
@@ -76,7 +76,7 @@ AppDialog {
         // Step 2: File info fields
         Column {
             visible: step === 2
-            width: parent.width; spacing: 10
+            width: parent.width; spacing: Theme.sp2
 
             FormField {
                 id: filenameField
@@ -92,7 +92,7 @@ AppDialog {
 
             Row {
                 width: parent.width
-                spacing: 6
+                spacing: Theme.sp1
                 FormField {
                     id: saveDirField
                     label: qsTr("Save dir (optional)")
@@ -102,7 +102,7 @@ AppDialog {
                 Rectangle {
                     width: 68; height: 28; radius: 3; color: Theme.surfaceAlt
                     anchors.bottom: parent.bottom
-                    Text { anchors.centerIn: parent; text: qsTr("Browse…"); color: Theme.text; font.pixelSize: 11 }
+                    Text { anchors.centerIn: parent; text: qsTr("Browse…"); color: Theme.text; font.pixelSize: Theme.fontSizeSmall }
                     MouseArea { anchors.fill: parent; onClicked: urlSaveFolderDialog.open() }
                 }
             }
@@ -111,17 +111,17 @@ AppDialog {
                 width: parent.width; height: 36
 
                 Row {
-                    spacing: 6
+                    spacing: Theme.sp1
                     Rectangle {
                         id: startPausedCheck
                         property bool checked: false
                         width: 16; height: 16; radius: 3
                         color: checked ? Theme.accent : Theme.bg
                         border.color: Theme.surfaceAlt; border.width: 1
-                        Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: 10 }
+                        Text { anchors.centerIn: parent; text: parent.checked ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
                         MouseArea { anchors.fill: parent; onClicked: parent.checked = !parent.checked }
                     }
-                    Text { text: qsTr("Start paused"); color: Theme.textDim; font.pixelSize: 12 }
+                    Text { text: qsTr("Start paused"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                 }
             }
         }
@@ -129,8 +129,8 @@ AppDialog {
 
     buttons: [
         Rectangle {
-            width: 68; height: 28; radius: 4; color: Theme.bg
-            Text { anchors.centerIn: parent; text: step === 1 ? qsTr("Cancel") : qsTr("Back"); color: Theme.textDim; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
+            Text { anchors.centerIn: parent; text: step === 1 ? qsTr("Cancel") : qsTr("Back"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
@@ -143,8 +143,8 @@ AppDialog {
             }
         },
         Rectangle {
-            width: 60; height: 28; radius: 4; color: Theme.accent
-            Text { anchors.centerIn: parent; text: step === 1 ? qsTr("Next") : qsTr("Add"); color: "#fff"; font.pixelSize: 12 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
+            Text { anchors.centerIn: parent; text: step === 1 ? qsTr("Next") : qsTr("Add"); color: "#fff"; font.pixelSize: Theme.fontSizeNormal }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {

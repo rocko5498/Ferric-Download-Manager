@@ -19,13 +19,13 @@ AppDialog {
 
     buttons: [
         Rectangle {
-            width: 60; height: 26; radius: 3; color: Theme.bg
-            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: 11 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.bg
+            Text { anchors.centerIn: parent; text: qsTr("Cancel"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: setLocationDialog.close() }
         },
         Rectangle {
-            width: 60; height: 26; radius: 3; color: Theme.accent
-            Text { anchors.centerIn: parent; text: qsTr("Apply"); color: "white"; font.pixelSize: 11 }
+            width: Theme.btnM; height: Theme.controlH; radius: Theme.radius; color: Theme.accent
+            Text { anchors.centerIn: parent; text: qsTr("Apply"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: setLocationDialog.onApply(setLocationInput.text) }
         }
     ]

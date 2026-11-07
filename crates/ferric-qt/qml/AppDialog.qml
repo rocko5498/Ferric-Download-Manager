@@ -15,7 +15,8 @@ Rectangle {
     property int rootWidth: parent ? parent.width : 800
     property int rootHeight: parent ? parent.height : 600
     property bool appModal: true
-    property int cardMaxHeight: 400
+    property int cardMaxHeight: 610
+    property int cardWidth: Theme.dialogW
     property string title: ""
     property alias contentItem: contentColumn.data
     property alias buttons: buttonRow.data
@@ -40,10 +41,12 @@ Rectangle {
     // Centered dialog card — fixed width, no height binding cycle
     Rectangle {
         id: card
-        width: Math.min(parent.width - 80, 520)
-        height: Math.min(parent.height - 80, cardMaxHeight)
+        width: Math.min(parent.width - 2 * Theme.sp5, dialog.cardWidth)
+        // as tall as its content needs (never shorter than 233, never taller than the window or cardMaxHeight)
+        height: Math.max(233, Math.min(parent.height - 2 * Theme.sp5, dialog.cardMaxHeight,
+            titleRow.height + Math.max(contentColumn.implicitHeight, contentColumn.childrenRect.height) + buttonRow.height + 3 * Theme.sp4 + Theme.sp3))
         anchors.centerIn: parent
-        radius: 6
+        radius: Theme.sp2
         color: Theme.surface
 
         // Block clicks from propagating to scrim
@@ -52,24 +55,24 @@ Rectangle {
         // Title row
         Row {
             id: titleRow
-            anchors { top: parent.top; left: parent.left; right: parent.right; topMargin: 16; leftMargin: 20; rightMargin: 20 }
-            height: dialog.title.length > 0 ? 24 : 0
+            anchors { top: parent.top; left: parent.left; right: parent.right; topMargin: Theme.sp4; leftMargin: Theme.sp4; rightMargin: Theme.sp4 }
+            height: dialog.title.length > 0 ? Theme.sp5 : 0
             visible: dialog.title.length > 0
             Text {
                 text: dialog.title
-                color: Theme.text; font.pixelSize: 15; font.bold: true
+                color: Theme.text; font.pixelSize: Theme.fontSizeMedium; font.bold: true
             }
         }
 
         // Content area — Item wrapper breaks Column implicitHeight ↔ anchor cycle (R1 fix)
         Item {
             id: contentArea
-            anchors { top: titleRow.bottom; left: parent.left; right: parent.right; bottom: buttonRow.top; topMargin: dialog.title.length > 0 ? 12 : 16; leftMargin: 20; rightMargin: 20; bottomMargin: 16 }
+            anchors { top: titleRow.bottom; left: parent.left; right: parent.right; bottom: buttonRow.top; topMargin: dialog.title.length > 0 ? Theme.sp2 : Theme.sp4; leftMargin: Theme.sp4; rightMargin: Theme.sp4; bottomMargin: Theme.sp4 }
 
             Column {
                 id: contentColumn
                 anchors.fill: parent
-                spacing: 8
+                spacing: Theme.sp2
                 clip: true
             }
         }
@@ -77,8 +80,8 @@ Rectangle {
         // Button bar
         Row {
             id: buttonRow
-            anchors { bottom: parent.bottom; horizontalCenter: parent.horizontalCenter; bottomMargin: 16 }
-            spacing: 8
+            anchors { bottom: parent.bottom; horizontalCenter: parent.horizontalCenter; bottomMargin: Theme.sp4 }
+            spacing: Theme.sp2
         }
     }
 }

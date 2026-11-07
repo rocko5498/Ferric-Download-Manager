@@ -4,7 +4,7 @@
 Rectangle {
     id: statusBar
 
-    height: 28
+    height: Theme.rowH
     color: Theme.bg
     border.color: Theme.surfaceAlt
     border.width: 1
@@ -33,20 +33,20 @@ Rectangle {
     Row {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: 8
-        spacing: 16
+        anchors.leftMargin: Theme.sp2
+        spacing: Theme.sp3
 
         // Connection status
         Row {
-            spacing: 4
+            spacing: Theme.sp1
             Rectangle {
                 width: 8; height: 8; radius: 4
                 color: statusBar.connected ? Theme.success : Theme.danger
                 anchors.verticalCenter: parent.verticalCenter
             }
             Text {
-                text: statusBar.connected ? "Connected - port " + statusBar.port : "Disconnected"
-                color: Theme.textDim; font.pixelSize: 10
+                text: statusBar.connected ? "Connected" : "Disconnected"
+                color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -54,15 +54,15 @@ Rectangle {
         // Speed
         Text {
             text: "↓ " + statusBar.formatBps(statusBar.downloadBps) + (statusBar.torrentsVisible ? "  ↑ " + statusBar.formatBps(statusBar.uploadBps) : "")
-            color: Theme.text; font.pixelSize: 10
+            color: Theme.text; font.pixelSize: Theme.fontSizeSmall
             anchors.verticalCenter: parent.verticalCenter
         }
 
         // Counts
         Text {
-            text: statusBar.activeDownloads + "/" + statusBar.totalDownloads + " DL" +
+            text: statusBar.activeDownloads + "/" + statusBar.totalDownloads + " downloads" +
                   (statusBar.torrentsVisible ? "  " + statusBar.activeTorrents + "/" + statusBar.totalTorrents + " BT" : "")
-            color: Theme.textDim; font.pixelSize: 10
+            color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -71,7 +71,7 @@ Rectangle {
             visible: statusBar.torrentsVisible
             text: "Mode: " + (statusBar.mode === "strict" ? "Strict" : statusBar.mode === "open" ? "Open" : "Balanced")
             color: statusBar.mode === "strict" ? Theme.warning : statusBar.mode === "open" ? Theme.accent : Theme.success
-            font.pixelSize: 10; font.bold: true
+            font.pixelSize: Theme.fontSizeSmall; font.bold: true
             anchors.verticalCenter: parent.verticalCenter
         }
 
@@ -79,7 +79,7 @@ Rectangle {
         Text {
             visible: statusBar.torrentsVisible && statusBar.killSwitchActive
             text: "KILL SWITCH"
-            color: Theme.danger; font.pixelSize: 10; font.bold: true
+            color: Theme.danger; font.pixelSize: Theme.fontSizeSmall; font.bold: true
             anchors.verticalCenter: parent.verticalCenter
         }
     }
@@ -88,8 +88,8 @@ Rectangle {
     Text {
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: 8
-        text: statusBar.hubLive ? "SSE" : "Poll"
-        color: statusBar.hubLive ? Theme.success : Theme.textDim; font.pixelSize: 9
+        anchors.rightMargin: Theme.sp2
+        text: statusBar.hubLive ? "Live" : "Refreshing"
+        color: statusBar.hubLive ? Theme.success : Theme.textDim; font.pixelSize: Theme.fontSizeSmall
     }
 }

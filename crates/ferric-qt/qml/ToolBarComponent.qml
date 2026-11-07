@@ -4,7 +4,7 @@ Rectangle {
     id: toolBar
 
     property bool small: false
-    height: small ? 38 : 52
+    height: small ? 38 : Theme.toolbarH
     color: Theme.surface
     border.color: Theme.border
     border.width: 1
@@ -32,18 +32,18 @@ Rectangle {
         property string iconName: ""
         readonly property string iconFile: iconName
 
-        width: toolBar.small ? 34 : 60; height: toolBar.small ? 32 : 44; radius: Theme.radius
+        width: toolBar.small ? 34 : Theme.toolBtnW; height: toolBar.small ? 32 : Theme.toolBtnH; radius: Theme.radius
         color: btnEnabled ? (btnArea.containsMouse ? Theme.surfaceAlt : "transparent") : "transparent"
         opacity: btnEnabled ? 1.0 : 0.38
 
         Column {
             anchors.centerIn: parent
-            spacing: 3
+            spacing: Theme.sp1
             Image {
                 visible: btn.iconFile !== ""
                 anchors.horizontalCenter: parent.horizontalCenter
-                width: toolBar.small ? 20 : 24; height: toolBar.small ? 20 : 24
-                sourceSize: Qt.size(48, 48)
+                width: toolBar.small ? 20 : Theme.toolIcon; height: toolBar.small ? 20 : Theme.toolIcon
+                sourceSize: Qt.size(96, 96)
                 smooth: true
                 source: btn.iconFile !== "" ? "qrc:/icons/" + btn.iconFile + "-48.png" : ""
             }
@@ -52,14 +52,14 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: btn.icon
                 color: btnArea.containsMouse && btn.btnEnabled ? Theme.accent : Theme.textDim
-                font.pixelSize: 16
+                font.pixelSize: Theme.fontSizeMedium
             }
             Text {
                 visible: !toolBar.small
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: btn.label
-                color: Theme.textDim
-                font.pixelSize: 10
+                color: Theme.text
+                font.pixelSize: Theme.fontSizeNormal
             }
         }
         MouseArea {
@@ -74,26 +74,26 @@ Rectangle {
     Row {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        anchors.leftMargin: 6
+        anchors.leftMargin: Theme.sp1
         spacing: 2
 
         // Downloads actions
         Row {
             visible: toolBar.workspaceIndex === 1
             spacing: 2
-            ToolBtn { actionId: "dl.add"; iconName: "list-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
-            ToolBtn { actionId: "dl.resume"; iconName: "media-playback-start"; label: qsTr("Resume"); icon: "▶"; btnEnabled: toolBar.canResume; onAction: toolBar.onAction }
-            ToolBtn { actionId: "dl.stop"; iconName: "media-playback-stop"; label: qsTr("Stop"); icon: "■"; btnEnabled: toolBar.selectedDownloads.length > 0; onAction: toolBar.onAction }
-            ToolBtn { actionId: "dl.stopAll"; iconName: "media-playback-pause"; label: qsTr("Stop All"); icon: "■■"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.add"; iconName: "tb-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.resume"; iconName: "tb-resume"; label: qsTr("Resume"); icon: "▶"; btnEnabled: toolBar.canResume; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.stop"; iconName: "tb-stop"; label: qsTr("Stop"); icon: "■"; btnEnabled: toolBar.selectedDownloads.length > 0; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.stopAll"; iconName: "tb-stopall"; label: qsTr("Stop All"); icon: "■■"; onAction: toolBar.onAction }
             Rectangle { width: 1; height: 32; anchors.verticalCenter: parent.verticalCenter; color: Theme.border }
-            ToolBtn { actionId: "dl.delete"; iconName: "edit-delete"; label: qsTr("Delete"); icon: "✕"; btnEnabled: toolBar.selectedDownloads.length > 0; onAction: toolBar.onAction }
-            ToolBtn { actionId: "dl.clearCompleted"; iconName: "dialog-ok-apply"; label: qsTr("Del. Done"); icon: "✕✓"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.delete"; iconName: "tb-delete"; label: qsTr("Delete"); icon: "✕"; btnEnabled: toolBar.selectedDownloads.length > 0; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.clearCompleted"; iconName: "tb-deldone"; label: qsTr("Del. Done"); icon: "✕✓"; onAction: toolBar.onAction }
             Rectangle { width: 1; height: 32; anchors.verticalCenter: parent.verticalCenter; color: Theme.border }
-            ToolBtn { actionId: "dl.settings"; iconName: "configure"; label: qsTr("Options"); icon: "⚙︎"; onAction: toolBar.onAction }
-            ToolBtn { actionId: "dl.scheduler"; label: qsTr("Scheduler"); icon: "◷"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.settings"; iconName: "tb-options"; label: qsTr("Options"); icon: "⚙︎"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.scheduler"; iconName: "tb-scheduler"; label: qsTr("Scheduler"); icon: "◷"; onAction: toolBar.onAction }
             Rectangle { width: 1; height: 32; anchors.verticalCenter: parent.verticalCenter; color: Theme.border }
-            ToolBtn { actionId: "dl.startQueue"; iconName: "media-playback-start"; label: qsTr("Start Queue"); icon: "▶"; onAction: toolBar.onAction }
-            ToolBtn { actionId: "dl.stopQueue"; iconName: "media-playback-stop"; label: qsTr("Stop Queue"); icon: "■"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.startQueue"; iconName: "tb-startq"; label: qsTr("Start Queue"); icon: "▶"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.stopQueue"; iconName: "tb-stopq"; label: qsTr("Stop Queue"); icon: "■"; onAction: toolBar.onAction }
         }
 
         // Torrent actions
@@ -112,7 +112,7 @@ Rectangle {
         Row {
             visible: toolBar.workspaceIndex === 0
             spacing: 2
-            ToolBtn { actionId: "dl.add"; iconName: "list-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
+            ToolBtn { actionId: "dl.add"; iconName: "tb-add"; label: qsTr("Add URL"); icon: "+"; onAction: toolBar.onAction }
         }
     }
 
@@ -120,18 +120,18 @@ Rectangle {
     Row {
         anchors.verticalCenter: parent.verticalCenter
         anchors.right: parent.right
-        anchors.rightMargin: 10
-        spacing: 8
+        anchors.rightMargin: Theme.sp2
+        spacing: Theme.sp2
 
         Text {
             visible: toolBar.workspaceIndex === 1 && toolBar.selectedDownloads.length > 0
             text: toolBar.selectedDownloads.length + qsTr(" selected")
-            color: Theme.textDim; font.pixelSize: 11
+            color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
         }
         Text {
             visible: toolBar.workspaceIndex === 2 && toolBar.selectedTorrents.length > 0
             text: toolBar.selectedTorrents.length + qsTr(" selected")
-            color: Theme.textDim; font.pixelSize: 11
+            color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
         }
     }
 }

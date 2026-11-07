@@ -5,7 +5,7 @@ import QtQuick.Controls as QQC
 Rectangle {
     id: sideFilter
 
-    width: 180
+    width: Theme.sidebarW
     height: parent.height
     color: Theme.bg
 
@@ -40,40 +40,40 @@ Rectangle {
             x: 8
             y: 8
             width: sideFilter.width - 16
-            spacing: 6
+            spacing: Theme.sp1
 
         // Categories
         Row {
-            spacing: 4
-            Text { text: qsTr("CATEGORIES"); color: Theme.textDim; font.pixelSize: 10 }
+            spacing: Theme.sp1
+            Text { text: qsTr("CATEGORIES"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Rectangle {
                 width: 14; height: 14; radius: 3; color: addCatArea.containsMouse ? Theme.surfaceAlt : "transparent"
-                Text { anchors.centerIn: parent; text: qsTr("+"); color: Theme.textDim; font.pixelSize: 12 }
+                Text { anchors.centerIn: parent; text: qsTr("+"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                 MouseArea { id: addCatArea; anchors.fill: parent; hoverEnabled: true; onClicked: sideFilter.onAddCategory() }
             }
         }
 
         Rectangle {
-            width: parent.width - 16; height: 22; radius: 3
+            width: parent.width - 16; height: Theme.rowH; radius: Theme.radius
             color: sideFilter.categoryFilter === "" ? Theme.surfaceAlt : "transparent"
-            Text { anchors.left: parent.left; text: qsTr("All downloads"); color: sideFilter.categoryFilter === "" ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+            Text { anchors.left: parent.left; text: qsTr("All downloads"); color: sideFilter.categoryFilter === "" ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: sideFilter.onCategoryChanged("") }
         }
 
         Repeater {
             model: sideFilter.categories
             Rectangle {
-                width: sideFilter.width - 16; height: 22; radius: 3
+                width: sideFilter.width - 16; height: Theme.rowH; radius: Theme.radius
                 color: sideFilter.categoryFilter === modelData.name ? Theme.surfaceAlt : "transparent"
                 Row {
                     anchors.left: parent.left; anchors.verticalCenter: parent.verticalCenter
-                    spacing: 4
-                    Text { text: modelData.name; color: sideFilter.categoryFilter === modelData.name ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    spacing: Theme.sp1
+                    Text { text: modelData.name; color: sideFilter.categoryFilter === modelData.name ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Rectangle {
                         visible: modelData.pattern && modelData.pattern.length > 0
                         width: patternLabel.width + 6; height: 14; radius: 3
                         color: Theme.surface; border.color: Theme.surfaceAlt; border.width: 1
-                        Text { id: patternLabel; anchors.centerIn: parent; text: modelData.pattern || ""; color: Theme.textDim; font.pixelSize: 8 }
+                        Text { id: patternLabel; anchors.centerIn: parent; text: modelData.pattern || ""; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     }
                 }
                 MouseArea { anchors.fill: parent; onClicked: sideFilter.onCategoryChanged(modelData.name) }
@@ -83,35 +83,35 @@ Rectangle {
         // Queues
         Item { width: 1; height: 8 }
         Row {
-            spacing: 6
-            Text { text: qsTr("QUEUES"); color: Theme.textDim; font.pixelSize: 10 }
+            spacing: Theme.sp1
+            Text { text: qsTr("QUEUES"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Text {
-                text: "+"; color: Theme.textDim; font.pixelSize: 12
+                text: "+"; color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal
                 MouseArea { anchors.fill: parent; anchors.margins: -4; cursorShape: Qt.PointingHandCursor; onClicked: sideFilter.onNewQueue() }
             }
         }
         Text {
             text: qsTr("No queues yet")
             color: Theme.textDim
-            font.pixelSize: 10
+            font.pixelSize: Theme.fontSizeSmall
             visible: sideFilter.queues.length === 0
             anchors.left: parent.left
-            anchors.leftMargin: 4
+            anchors.leftMargin: Theme.sp1
         }
 
         Repeater {
             model: sideFilter.queues
             Rectangle {
-                width: sideFilter.width - 16; height: 22; radius: 3
+                width: sideFilter.width - 16; height: Theme.rowH; radius: Theme.radius
                 color: sideFilter.queueFilter === modelData.id ? Theme.surfaceAlt : "transparent"
                 Row {
                     anchors.left: parent.left
-                    spacing: 4
+                    spacing: Theme.sp1
                     Rectangle {
                         width: 6; height: 6; radius: 3
                         color: modelData.enabled ? Theme.success : Theme.textDim
                     }
-                    Text { text: modelData.name; color: sideFilter.queueFilter === modelData.id ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                    Text { text: modelData.name; color: sideFilter.queueFilter === modelData.id ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 }
                 MouseArea {
                     anchors.fill: parent
@@ -131,12 +131,12 @@ Rectangle {
 
         // Status
         Item { width: 1; height: 8 }
-        Text { text: qsTr("STATUS"); color: Theme.textDim; font.pixelSize: 10 }
+        Text { text: qsTr("STATUS"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
 
         Rectangle {
-            width: sideFilter.width - 16; height: 22; radius: 3
+            width: sideFilter.width - 16; height: Theme.rowH; radius: Theme.radius
             color: sideFilter.statusFilter === "" ? Theme.surfaceAlt : "transparent"
-            Text { anchors.left: parent.left; text: qsTr("All"); color: sideFilter.statusFilter === "" ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+            Text { anchors.left: parent.left; text: qsTr("All"); color: sideFilter.statusFilter === "" ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: sideFilter.onStatusChanged("") }
         }
 
@@ -145,31 +145,31 @@ Rectangle {
                 ? ["Downloading", "Paused", "Completed", "Error", "Staged", "Checking", "Ready to start"]
                 : ["Downloading", "Paused", "Completed", "Error"]
             Rectangle {
-                width: sideFilter.width - 16; height: 22; radius: 3
+                width: sideFilter.width - 16; height: Theme.rowH; radius: Theme.radius
                 color: sideFilter.statusFilter === modelData ? Theme.surfaceAlt : "transparent"
-                Text { anchors.left: parent.left; text: modelData; color: sideFilter.statusFilter === modelData ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                Text { anchors.left: parent.left; text: modelData; color: sideFilter.statusFilter === modelData ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: sideFilter.onStatusChanged(sideFilter.statusFilter === modelData ? "" : modelData) }
             }
         }
 
         // Tags (torrent tags only)
         Item { visible: sideFilter.torrentsVisible; width: 1; height: 8 }
-        Text { visible: sideFilter.torrentsVisible; text: qsTr("TAGS"); color: Theme.textDim; font.pixelSize: 10 }
+        Text { visible: sideFilter.torrentsVisible; text: qsTr("TAGS"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
 
         Rectangle {
             visible: sideFilter.torrentsVisible
-            width: sideFilter.width - 16; height: 22; radius: 3
+            width: sideFilter.width - 16; height: Theme.rowH; radius: Theme.radius
             color: sideFilter.tagFilter === "" ? Theme.surfaceAlt : "transparent"
-            Text { anchors.left: parent.left; text: qsTr("All tags"); color: sideFilter.tagFilter === "" ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+            Text { anchors.left: parent.left; text: qsTr("All tags"); color: sideFilter.tagFilter === "" ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             MouseArea { anchors.fill: parent; onClicked: sideFilter.onTagChanged("") }
         }
 
         Repeater {
             model: sideFilter.torrentsVisible ? sideFilter.tags : []
             Rectangle {
-                width: sideFilter.width - 16; height: 22; radius: 3
+                width: sideFilter.width - 16; height: Theme.rowH; radius: Theme.radius
                 color: sideFilter.tagFilter === modelData ? Theme.surfaceAlt : "transparent"
-                Text { anchors.left: parent.left; text: modelData; color: sideFilter.tagFilter === modelData ? Theme.text : Theme.textDim; font.pixelSize: 11 }
+                Text { anchors.left: parent.left; text: modelData; color: sideFilter.tagFilter === modelData ? Theme.text : Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                 MouseArea { anchors.fill: parent; onClicked: sideFilter.onTagChanged(sideFilter.tagFilter === modelData ? "" : modelData) }
             }
         }

@@ -6,7 +6,7 @@ Flickable {
     id: downloadHFlick
 
     anchors.fill: parent
-    anchors.margins: 8
+    anchors.margins: Theme.sp2
     contentWidth: Math.max(width, tableWidth)
     contentHeight: height
     clip: true
@@ -40,6 +40,10 @@ Flickable {
 
     // The model's `queue` is the first 8 chars of the queue id ("" = default queue), while the
     // sidebar filter holds the full id, so the queue filter never matched and showed nothing.
+    function queueLabel(id) {
+        for (var i = 0; i < queues.length; i++) if (queues[i].id === id) return queues[i].name
+        return ""
+    }
     function queueMatches(rowQueue) {
         if (queueFilter === "") return true;
         return (rowQueue === "" ? "00000000" : rowQueue) === queueFilter.substring(0, 8);
@@ -57,16 +61,18 @@ Flickable {
 
         Row {
             id: downloadHeaderRow
-            height: 22
-            Text { width: 28; text: qsTr("#"); color: Theme.textDim; font.pixelSize: 11 }
-            Text { width: 24; text: qsTr(""); color: Theme.textDim; font.pixelSize: 11 }
+            height: Theme.rowH
+            Text { width: 28; height: parent.height; verticalAlignment: Text.AlignVCenter; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+            Text { width: Theme.sp4 + Theme.sp2 - 5; height: parent.height; verticalAlignment: Text.AlignVCenter; text: qsTr(""); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
             Repeater {
                 model: downloadHFlick.columns
                 Text {
                     width: modelData.width
+                    height: Theme.rowH
+                    verticalAlignment: Text.AlignVCenter
                     text: modelData.title
                     color: Theme.textDim
-                    font.pixelSize: 11
+                    font.pixelSize: Theme.fontSizeSmall
                     elide: Text.ElideRight
                 }
             }
@@ -85,7 +91,7 @@ Flickable {
                 height: ((downloadHFlick.categoryFilter !== "" && model.category !== downloadHFlick.categoryFilter) ||
                          downloadHFlick.hiddenIds[model.id] === true ||
                          !downloadHFlick.queueMatches(model.queue) ||
-                         !downloadHFlick.findMatches(model.name || "", model.urlHost || "", model.savePath || "", model.description || "")) ? 0 : 22
+                         !downloadHFlick.findMatches(model.name || "", model.urlHost || "", model.savePath || "", model.description || "")) ? 0 : Theme.rowH
                 visible: (downloadHFlick.categoryFilter === "" || model.category === downloadHFlick.categoryFilter) &&
                          downloadHFlick.hiddenIds[model.id] !== true &&
                          downloadHFlick.queueMatches(model.queue) &&
@@ -120,7 +126,7 @@ Flickable {
                         case "status": return rowRoot.rStatus
                         case "speed": return rowRoot.rSpeed
                         case "eta": return rowRoot.rEta
-                        case "queue": return rowRoot.rQueue
+                        case "queue": return downloadHFlick.queueLabel(rowRoot.rQueue)
                         case "category": return rowRoot.rCategory
                         case "added": return rowRoot.rAdded
                         case "completed": return rowRoot.rCompleted
@@ -133,22 +139,23 @@ Flickable {
 
                 Row {
                     anchors.fill: parent
-                    Text { width: 28; text: (index + 1); color: Theme.textDim; font.pixelSize: 11 }
+                    Text { width: 28; height: parent.height; verticalAlignment: Text.AlignVCenter; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                     Rectangle {
-                        width: 10; height: 10; radius: 5
+                        width: Theme.dotSize; height: Theme.dotSize; radius: Theme.dotSize / 2
+                        anchors.verticalCenter: parent.verticalCenter
                         color: rowRoot.rStatus === "downloading" ? Theme.success
                             : rowRoot.rStatus === "error" ? Theme.danger
                             : rowRoot.rStatus === "paused" ? Theme.warning
                             : Theme.textDim
                     }
-                    Item { width: 14; height: 1 }
+                    Item { width: Theme.sp3 + 1; height: 1 }
 
                     Repeater {
                         model: downloadHFlick.columns
                         delegate: Item {
                             id: cell
                             width: modelData.width
-                            height: 22
+                            height: Theme.rowH
                             property string role: modelData.role
                             property string val: rowRoot.roleValue(role)
 
@@ -158,7 +165,7 @@ Flickable {
                                 active: cell.role === "progress"
                                 anchors.verticalCenter: parent.verticalCenter
                                 sourceComponent: Row {
-                                    spacing: 5
+                                    spacing: Theme.sp1
                                     property real pct: {
                                         var n = parseFloat(cell.val);
                                         return isNaN(n) ? 0 : Math.max(0, Math.min(100, n));
@@ -177,7 +184,7 @@ Flickable {
                                     }
                                     Text {
                                         anchors.verticalCenter: parent.verticalCenter
-                                        color: Theme.textDim; font.pixelSize: 11
+                                        color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                                         text: cell.val
                                 textFormat: Text.PlainText
                                     }
@@ -191,7 +198,7 @@ Flickable {
                                 color: cell.role === "error" ? Theme.danger
                                     : (cell.role === "savePath" || cell.role === "urlHost") ? Theme.textDim
                                     : Theme.text
-                                font.pixelSize: 12
+                                font.pixelSize: Theme.fontSizeNormal
                                 text: cell.val
                                 textFormat: Text.PlainText
                             }
@@ -230,7 +237,7 @@ Flickable {
         z: 2
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
-        font.pixelSize: 13
+        font.pixelSize: Theme.fontSizeNormal
         visible: !downloadHFlick.lastOk && downloadHFlick.lastError !== ""
         color: Theme.danger
         text: qsTr("Cannot load downloads") + "\n" + downloadHFlick.lastError
@@ -242,7 +249,7 @@ Flickable {
         z: 2
         horizontalAlignment: Text.AlignHCenter
         wrapMode: Text.WordWrap
-        font.pixelSize: 13
+        font.pixelSize: Theme.fontSizeNormal
         visible: downloadHFlick.downloadModel && downloadHFlick.downloadModel.count === 0 && downloadHFlick.lastOk
         color: Theme.textDim
         text: qsTr("No downloads yet \u2014 Add URL or capture from the browser")

@@ -14,13 +14,13 @@ Column {
 
     signal accepted()
 
-    spacing: 4
+    spacing: Theme.sp1
     width: fieldWidth
 
     Text {
         visible: field.label.length > 0
         text: field.label
-        color: Theme.textDim; font.pixelSize: 11
+        color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
     }
 
     Rectangle {
@@ -31,8 +31,8 @@ Column {
 
         TextInput {
             id: input
-            anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: 8; rightMargin: 8 }
-            color: Theme.text; font.pixelSize: 12
+            anchors { left: parent.left; right: parent.right; verticalCenter: parent.verticalCenter; leftMargin: Theme.sp2; rightMargin: Theme.sp2 }
+            color: Theme.text; font.pixelSize: Theme.fontSizeNormal
             clip: true
             readOnly: field.readOnly
             selectByMouse: true
@@ -41,7 +41,7 @@ Column {
             Text {
                 visible: !input.text && input.focus
                 text: field.placeholder
-                color: Theme.textDim; font.pixelSize: 12
+                color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal
                 anchors.verticalCenter: parent.verticalCenter
             }
         }
@@ -50,6 +50,6 @@ Column {
     Text {
         visible: field.error.length > 0
         text: field.error
-        color: Theme.danger; font.pixelSize: 10
+        color: Theme.danger; font.pixelSize: Theme.fontSizeSmall
     }
 }
