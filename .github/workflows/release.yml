@@ -1,11 +1,12 @@
 name: Release
 
-# GitHub-hosted runners are not paid for on this account, so these jobs would only fail ("recent account
-# payments have failed ..."). The checks run on the maintainer's machine instead: scripts/ci-local.ps1.
-# To run this workflow anyway: Actions tab > this workflow > Run workflow. To switch the automatic triggers
-# back on, restore the `push` / `pull_request` / `schedule` blocks from git history (commit "Workflows: manual start only").
+# Builds the Windows installer and zip on a GitHub-hosted Windows machine, so nothing has to be compiled or
+# run on a developer's PC. The result is a DRAFT release: it becomes public only when its Publish button is
+# pressed. Start it from Actions > Release > Run workflow, or by pushing a tag such as v1.0.0.
 on:
   workflow_dispatch:
+  push:
+    tags: ["v*"]
 
 permissions:
   contents: write
@@ -25,12 +26,28 @@ env:
 
 jobs:
   windows:
-    name: Windows package
+    name: Windows installer and zip
     runs-on: windows-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Version
+        id: version
+        shell: pwsh
+        run: |
+          $v = (Select-String -Path Cargo.toml -Pattern '^version\s*=\s*"([^"]+)"' | Select-Object -First 1).Matches[0].Groups[1].Value
+          if (-not $v) { throw "no version in Cargo.toml" }
+          "version=$v" >> $env:GITHUB_OUTPUT
+
+      - name: Verify release metadata
+        shell: pwsh
+        run: |
+          if (-not $env:FERRIC_EXTENSION_ID) { throw "Set the repository variable FERRIC_EXTENSION_ID (Settings > Secrets and variables > Actions > Variables)" }
+          if (-not $env:FERRIC_FIREFOX_EXTENSION_ID) { throw "Set the repository variable FERRIC_FIREFOX_EXTENSION_ID" }
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -38,76 +55,99 @@ jobs:
       - name: Cache Rust
         uses: Swatinem/rust-cache@v2
 
+      # qtdeclarative ships inside the base desktop install for Qt 6.8; listing it as a module fails the install.
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           version: ${{ env.QT_VERSION }}
           arch: ${{ env.QT_ARCH }}
-          modules: qtdeclarative qtshadertools
+          modules: qtshadertools
           cache: true
 
-      - name: Verify official release metadata
+      # The extension goes first: the packaging script copies its build into the release folder.
+      - name: Build the browser extension
         shell: pwsh
+        working-directory: extension
         run: |
-          if (-not $env:FERRIC_EXTENSION_ID) { throw "FERRIC_EXTENSION_ID repository variable is required for official release builds" }
-          if (-not $env:FERRIC_FIREFOX_EXTENSION_ID) { throw "FERRIC_FIREFOX_EXTENSION_ID repository variable is required for official release builds" }
+          npm ci
+          npm run build
+          npm test
 
-      - name: Build ferric-qt + ferricd + ferric-host
+      - name: Build ferric-qt, ferricd and ferric-host
         run: cargo build --release -p ferric-qt -p ferricd -p ferric-host
 
-      - name: Package Windows release
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
+
+      - name: Package (zip and installer)
         shell: pwsh
         run: .\scripts\package-windows.ps1 -Release -OutputDir release
 
-      - name: Generate SHA256 checksums
+      # Install it the way a user would, check it, remove it again. Only this disposable runner is touched.
+      - name: Test the installer
         shell: pwsh
         run: |
-          Get-ChildItem release -File |
-            ForEach-Object {
-              $hash = Get-FileHash -Algorithm SHA256 $_.FullName
-              "$($hash.Hash.ToLowerInvariant())  $($_.Name)" | Out-File -Append -Encoding ascii release/SHA256SUMS.txt
-            }
+          $setup = Get-ChildItem dist -Filter "Ferric-Setup-*.exe" | Select-Object -First 1
+          if (-not $setup) { throw "the installer was not built" }
+          $dir = "$env:RUNNER_TEMP\ferric-installed"
+          $p = Start-Process $setup.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART","/DIR=$dir" -Wait -PassThru
+          if ($p.ExitCode -ne 0) { throw "installer exit code $($p.ExitCode)" }
+          foreach ($f in "ferric-qt.exe","ferricd.exe","ferric-host.exe","Qt6Core.dll","extension\manifest.json") {
+            if (-not (Test-Path "$dir\$f")) { throw "missing after install: $f" }
+          }
+          & "$dir\ferric-host.exe" --status
+          $un = Get-ChildItem $dir -Filter "unins*.exe" | Select-Object -First 1
+          $u = Start-Process $un.FullName -ArgumentList "/VERYSILENT","/SUPPRESSMSGBOXES","/NORESTART" -Wait -PassThru
+          if ($u.ExitCode -ne 0) { throw "uninstaller exit code $($u.ExitCode)" }
 
-      - name: Upload Windows artifact
+      - name: Name the files and write checksums
+        shell: pwsh
+        run: |
+          $v = "${{ steps.version.outputs.version }}"
+          New-Item -ItemType Directory -Force out | Out-Null
+          Copy-Item dist\Ferric-win64.zip "out\Ferric-$v-win-x64.zip"
+          Copy-Item (Get-ChildItem dist -Filter "Ferric-Setup-*.exe" | Select-Object -First 1).FullName "out\Ferric-Setup-$v.exe"
+          Copy-Item extension\build\chrome-mv3-prod -Destination "out\ext" -Recurse
+          Compress-Archive -Path "out\ext\*" -DestinationPath "out\ferric-extension-$v.zip"
+          Remove-Item "out\ext" -Recurse -Force
+          Get-ChildItem out -File | ForEach-Object {
+            $h = Get-FileHash -Algorithm SHA256 $_.FullName
+            "$($h.Hash.ToLowerInvariant())  $($_.Name)" | Out-File -Append -Encoding ascii out\SHA256SUMS.txt
+          }
+          Get-Content out\SHA256SUMS.txt
+
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
           name: ferric-windows
-          path: release/*
-          if-no-files-found: error
-
-      - name: Install extension dependencies
-        working-directory: extension
-        run: npm ci
-
-      - name: Build and package extension
-        shell: pwsh
-        working-directory: extension
-        run: |
-          npm run build
-          $version = (Get-Content package.json | ConvertFrom-Json).version
-          Compress-Archive -Path build/chrome-mv3-prod/* -DestinationPath "../ferric-extension-$version.zip"
-
-      - name: Upload extension artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ferric-extension-zip
-          path: ferric-extension-*.zip
+          path: out/*
           if-no-files-found: error
 
   publish:
-    name: Publish GitHub Release
+    name: Draft GitHub release
     runs-on: ubuntu-latest
-    needs:
-      - windows
-
+    needs: windows
     steps:
-      - name: Download artifacts
+      - name: Download
         uses: actions/download-artifact@v4
         with:
-          path: release-artifacts
-          merge-multiple: true
+          name: ferric-windows
+          path: out
 
-      - name: Publish release
+      - name: Create the draft release
         uses: softprops/action-gh-release@v2
         with:
-          files: release-artifacts/*
+          tag_name: v${{ needs.windows.outputs.version }}
+          target_commitish: ${{ github.sha }}
+          name: Ferric ${{ needs.windows.outputs.version }}
+          draft: true
+          prerelease: ${{ contains(needs.windows.outputs.version, '-') }}
+          files: out/*
+          body: |
+            Unsigned build. Windows SmartScreen may warn the first time you run it.
+            Check the download against `SHA256SUMS.txt`.
+
+            - `Ferric-Setup-*.exe`: one-click installer (current user, no administrator rights)
+            - `Ferric-*-win-x64.zip`: the same files without an installer
+            - `ferric-extension-*.zip`: the browser extension (load it unpacked)

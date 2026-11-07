@@ -96,6 +96,22 @@ $zip = Join-Path $dist "Ferric-win64.zip"
 Remove-Item $zip -Force -ErrorAction SilentlyContinue
 Compress-Archive -Path "$outPath\*" -DestinationPath $zip -CompressionLevel Optimal
 
+# One-click installer (Ferric-Setup-<version>.exe), built with Inno Setup when it is installed
+# (winget install JRSoftware.InnoSetup). Without it the zip above still works.
+$iscc = @(
+    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
+    "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
+    "C:\Program Files\Inno Setup 6\ISCC.exe"
+) | Where-Object { Test-Path $_ } | Select-Object -First 1
+if ($iscc) {
+    $ver = (Select-String -Path "$root\Cargo.toml" -Pattern '^version\s*=\s*"([^"]+)"' | Select-Object -First 1).Matches[0].Groups[1].Value
+    Write-Host "`nBuilding the setup program ($ver)..." -ForegroundColor Yellow
+    & $iscc "/DFerricVersion=$ver" "$root\scripts\installer\Ferric.iss"
+    if ($LASTEXITCODE -ne 0) { Write-Host "WARNING: the setup program could not be built." -ForegroundColor Red }
+} else {
+    Write-Host "NOTE: Inno Setup not found; only the zip was made (winget install JRSoftware.InnoSetup)." -ForegroundColor Yellow
+}
+
 # Summary
 $files = Get-ChildItem $outPath -Recurse -File
 $totalSize = ($files | Measure-Object -Property Length -Sum).Sum / 1MB
