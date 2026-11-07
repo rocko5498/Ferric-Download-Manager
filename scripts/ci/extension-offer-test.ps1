@@ -9,12 +9,16 @@ $work = Join-Path $env:RUNNER_TEMP "offer-test"
 New-Item -ItemType Directory -Force $work | Out-Null
 
 $chrome = "C:\Program Files\Google\Chrome\Application\chrome.exe"
+# Brave's install folder and registry key are not documented anywhere I could find: look for the program,
+# and try each key a Chromium browser might read.
+$brave = Get-ChildItem "C:\Program Files", "C:\Program Files (x86)", $env:LOCALAPPDATA -Recurse -Filter brave.exe -ErrorAction SilentlyContinue |
+    Select-Object -First 1 -ExpandProperty FullName
 $browsers = [ordered]@{
-    chrome = @{ exe = $chrome; reg = 'HKCU:\Software\Google\Chrome\Extensions'; store = "https://clients2.google.com/service/update2/crx" }
-    edge   = @{ exe = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"; reg = 'HKCU:\Software\Microsoft\Edge\Extensions'; store = "https://edge.microsoft.com/extensionwebstorebase/v1/crx" }
-    brave  = @{ exe = "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"; reg = 'HKCU:\Software\BraveSoftware\Brave-Browser\Extensions'; store = "https://clients2.google.com/service/update2/crx" }
+    chrome = @{ exe = $chrome; regs = @('HKCU:\Software\Google\Chrome\Extensions'); store = "https://clients2.google.com/service/update2/crx" }
+    edge   = @{ exe = "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"; regs = @('HKCU:\Software\Microsoft\Edge\Extensions'); store = "https://edge.microsoft.com/extensionwebstorebase/v1/crx" }
+    brave  = @{ exe = $brave; regs = @('HKCU:\Software\BraveSoftware\Brave-Browser\Extensions', 'HKCU:\Software\Google\Chrome\Extensions', 'HKCU:\Software\Chromium\Extensions'); store = "https://clients2.google.com/service/update2/crx" }
 }
-foreach ($n in $browsers.Keys) { Write-Host ("{0,-7} installed: {1}" -f $n, (Test-Path $browsers[$n].exe)) }
+foreach ($n in $browsers.Keys) { Write-Host ("{0,-7} installed: {1}  {2}" -f $n, ($browsers[$n].exe -and (Test-Path $browsers[$n].exe)), $browsers[$n].exe) }
 
 # A throwaway signing key and the extension id that comes from it.
 $rsa = [Security.Cryptography.RSA]::Create(2048)
@@ -53,34 +57,38 @@ function Stop-Browsers { Get-Process -Name chrome, msedge, brave, crashpad_handl
 $rows = @()
 foreach ($name in $browsers.Keys) {
     $b = $browsers[$name]
-    if (-not (Test-Path $b.exe)) { $rows += [pscustomobject]@{ browser = $name; manifest = "-"; result = "browser not installed" }; continue }
-    foreach ($variant in @("plain", $(if ($name -eq "edge") { "edge" } else { "chrome" }))) {
-        Stop-Browsers
-        $regPath = "$($b.reg)\$id"
-        New-Item $regPath -Force | Out-Null
-        Set-ItemProperty $regPath -Name path -Value $crx[$variant]
-        Set-ItemProperty $regPath -Name version -Value $version
-        $prof = Join-Path $work "profile-$name-$variant"
-        Remove-Item $prof -Recurse -Force -ErrorAction SilentlyContinue
-        $p = Start-Process $b.exe -ArgumentList "--user-data-dir=$prof", "--no-first-run", "--no-default-browser-check", "--headless=new", "about:blank" -PassThru
-        Start-Sleep 45
-        Stop-Browsers
-        Remove-Item $regPath -Recurse -Force -ErrorAction SilentlyContinue
+    if (-not $b.exe -or -not (Test-Path $b.exe)) { $rows += [pscustomobject]@{ browser = $name; manifest = "-"; result = "browser not installed" }; continue }
+    $variants = if ($name -eq "edge") { @("plain", "edge") } elseif ($name -eq "brave") { @("chrome") } else { @("plain", "chrome") }
+    foreach ($variant in $variants) {
+        foreach ($reg in $b.regs) {
+            Stop-Browsers
+            $regPath = "$reg\$id"
+            New-Item $regPath -Force | Out-Null
+            Set-ItemProperty $regPath -Name path -Value $crx[$variant]
+            Set-ItemProperty $regPath -Name version -Value $version
+            $prof = Join-Path $work ("profile-{0}-{1}-{2}" -f $name, $variant, ($reg -replace '[^A-Za-z]', ''))
+            Remove-Item $prof -Recurse -Force -ErrorAction SilentlyContinue
+            $p = Start-Process $b.exe -ArgumentList "--user-data-dir=$prof", "--no-first-run", "--no-default-browser-check", "--headless=new", "about:blank" -PassThru
+            Start-Sleep 45
+            Stop-Browsers
+            Remove-Item $regPath -Recurse -Force -ErrorAction SilentlyContinue
 
-        $found = $null
-        foreach ($f in "Secure Preferences", "Preferences") {
-            $path = Join-Path $prof "Default\$f"
-            if (-not (Test-Path $path)) { continue }
-            $prefs = Get-Content $path -Raw | ConvertFrom-Json
-            $e = $prefs.extensions.settings.$id
-            if ($e) { $found = $e; break }
-        }
-        $installed = Test-Path (Join-Path $prof "Default\Extensions\$id")
-        $label = if ($variant -eq "plain") { "no update_url" } else { "update_url = store" }
-        if ($found) {
-            $rows += [pscustomobject]@{ browser = $name; manifest = $label; result = "KNOWN to the browser"; state = $found.state; disable_reasons = ($found.disable_reasons -join ","); location = $found.location; from_webstore = $found.from_webstore; files_installed = $installed }
-        } else {
-            $rows += [pscustomobject]@{ browser = $name; manifest = $label; result = "not picked up"; files_installed = $installed }
+            $found = $null
+            foreach ($f in "Secure Preferences", "Preferences") {
+                $path = Join-Path $prof "Default\$f"
+                if (-not (Test-Path $path)) { continue }
+                $prefs = Get-Content $path -Raw | ConvertFrom-Json
+                $e = $prefs.extensions.settings.$id
+                if ($e) { $found = $e; break }
+            }
+            $installed = Test-Path (Join-Path $prof "Default\Extensions\$id")
+            $label = if ($variant -eq "plain") { "no update_url" } else { "update_url = store" }
+            $where = $reg.Replace('HKCU:\Software\', '')
+            if ($found) {
+                $rows += [pscustomobject]@{ browser = $name; key = $where; manifest = $label; result = "KNOWN to the browser"; disable_reasons = ($found.disable_reasons -join ","); location = $found.location; files_installed = $installed }
+            } else {
+                $rows += [pscustomobject]@{ browser = $name; key = $where; manifest = $label; result = "not picked up"; files_installed = $installed }
+            }
         }
     }
 }
