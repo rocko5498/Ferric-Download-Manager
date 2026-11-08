@@ -17,111 +17,88 @@ Rectangle {
     property var onDeleteRule: function(id) {}
     property var showError: function(msg) {}
 
-    Column {
+    Flickable {
+        id: scroller
         anchors.fill: parent
-        anchors.margins: Theme.sp3
-        spacing: Theme.sp2
+        contentWidth: width
+        contentHeight: mainCol.height + 2 * Theme.sp4
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
+        QQC.ScrollBar.vertical: QQC.ScrollBar {}
 
-        Row {
-            spacing: Theme.sp2
-            Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("RSS Feeds"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
-            Rectangle {
-                width: 60; height: Theme.rowH; radius: Theme.radius; color: rssAddArea.containsMouse ? Theme.accentDark : Theme.accent
-                Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
-                MouseArea { id: rssAddArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onAddFeed() }
+        Column {
+            id: mainCol
+            x: Theme.sp4; y: Theme.sp4
+            width: scroller.width - 2 * Theme.sp4
+            spacing: Theme.sp3
+
+            Column {
+                spacing: 2
+                Text { text: qsTr("RSS"); color: Theme.text; font.pixelSize: Theme.fontSizeLarge; font.weight: Font.Bold }
+                Text { text: qsTr("Follow a feed and let Ferric download new items that match your rules."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
             }
-            Rectangle {
-                width: 60; height: Theme.rowH; radius: Theme.radius; color: rssRefreshArea.containsMouse ? Theme.surfaceAlt : "transparent"
-                Text { anchors.centerIn: parent; text: qsTr("Refresh"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                MouseArea { id: rssRefreshArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onRefreshFeeds() }
-            }
-        }
 
-        // Feeds list header
-        Row {
-            width: parent.width; height: Theme.rowH; spacing: 0
-            Text { anchors.verticalCenter: parent.verticalCenter; width: 30; text: qsTr("#"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { anchors.verticalCenter: parent.verticalCenter; width: 250; text: qsTr("URL"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { anchors.verticalCenter: parent.verticalCenter; width: 80; text: qsTr("Poll (s)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            Text { anchors.verticalCenter: parent.verticalCenter; width: 50; text: qsTr("Action"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-        }
-
-        Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
-
-        // Feeds list
-        ListView {
-            width: parent.width
-            height: Math.max(60, (parent.height - 126) * 0.6)
-            clip: true
-            cacheBuffer: 200
-            model: rssWorkspace.rssFeeds
-            QQC.ScrollBar.vertical: QQC.ScrollBar {}
-            delegate: Rectangle {
-                width: ListView.view.width
-                height: Theme.rowH
-                color: Theme.bg
-                Row {
-                    anchors.fill: parent
-                    Text { anchors.verticalCenter: parent.verticalCenter; width: 30; text: (index + 1); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                    Text { anchors.verticalCenter: parent.verticalCenter; width: 250; text: modelData.url || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight }
-                    Text { anchors.verticalCenter: parent.verticalCenter; width: 80; text: modelData.poll_secs || "-"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                    Rectangle {
-                        width: 45; height: Theme.rowH; radius: Theme.radius; color: Theme.surfaceAlt
-                        Text { anchors.centerIn: parent; text: qsTr("Delete"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
-                        MouseArea { anchors.fill: parent; onClicked: rssWorkspace.onDeleteFeed(modelData.id) }
+            Card {
+                heading: qsTr("Feeds")
+                Text { visible: rssWorkspace.rssFeeds.length === 0; text: qsTr("No feeds yet. Add one to start following it."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
+                Repeater {
+                    model: rssWorkspace.rssFeeds
+                    Row {
+                        width: parent.width; height: Theme.rowH; spacing: Theme.sp2
+                        Text { anchors.verticalCenter: parent.verticalCenter; width: parent.width - pollText.width - delFeed.width - 2 * Theme.sp2
+                            text: modelData.url || "-"; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; elide: Text.ElideRight }
+                        Text { id: pollText; anchors.verticalCenter: parent.verticalCenter; width: Theme.btnM + Theme.sp3
+                            text: qsTr("every %1 s").arg(modelData.poll_secs || "-"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                        Rectangle {
+                            id: delFeed
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: Theme.btnM - Theme.sp3; height: Theme.sp4 + Theme.sp1; radius: Theme.radius
+                            color: delFeedArea.containsMouse ? Theme.dangerSoft : "transparent"
+                            Text { anchors.centerIn: parent; text: qsTr("Remove"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall; font.weight: Font.DemiBold }
+                            MouseArea { id: delFeedArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onDeleteFeed(modelData.id) }
+                        }
                     }
+                }
+                Row {
+                    spacing: Theme.sp2
+                    PillButton { label: qsTr("Add feed"); onClicked: rssWorkspace.onAddFeed() }
+                    PillButton { label: qsTr("Refresh"); primary: false; onClicked: rssWorkspace.onRefreshFeeds() }
                 }
             }
 
-            Text {
-                visible: rssWorkspace.rssFeeds.length === 0
-                anchors.centerIn: parent
-                text: qsTr("No RSS feeds \u2014 click + Add to subscribe")
-                color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal
-            }
-        }
-
-        // RSS auto-download rules
-        Rectangle { width: parent.width; height: 1; color: Theme.surfaceAlt }
-
-        Row {
-            spacing: Theme.sp2
-            Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Auto-download Rules"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
-            Rectangle {
-                width: 60; height: Theme.rowH; radius: Theme.radius; color: rssRuleAddArea.containsMouse ? Theme.accentDark : Theme.accent
-                Text { anchors.centerIn: parent; text: qsTr("+ Add"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
-                MouseArea { id: rssRuleAddArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onAddRule() }
-            }
-        }
-
-        Flickable { width: parent.width; height: Math.max(40, (parent.height - 126) * 0.4); clip: true; contentHeight: rssRulesCol.height
-            QQC.ScrollBar.vertical: QQC.ScrollBar {}
-            Column { id: rssRulesCol; width: parent.width; spacing: Theme.sp1
+            Card {
+                heading: qsTr("Auto-download rules")
+                Text { visible: rssWorkspace.rssRules.length === 0; text: qsTr("No rules yet. A rule downloads feed items whose title matches a pattern."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
                 Repeater {
                     model: rssWorkspace.rssRules
-                    Row { spacing: Theme.sp1; height: Theme.rowH; width: rssRulesCol.width
-                        Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: modelData.enabled ? Theme.success : Theme.danger }
-                        Column { width: rssRulesCol.width - 100
-                            Text { text: modelData.name + " \u2014 " + modelData.match_pattern; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; elide: Text.ElideRight; width: parent.width }
+                    Row {
+                        width: parent.width; height: Theme.sp5 + Theme.sp3; spacing: Theme.sp2
+                        Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: modelData.enabled ? Theme.success : Theme.textDim }
+                        Column {
+                            anchors.verticalCenter: parent.verticalCenter
+                            width: parent.width - 8 - delRule.width - 2 * Theme.sp2
+                            Text { text: modelData.name + " — " + modelData.match_pattern; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; elide: Text.ElideRight; width: parent.width }
                             Text {
+                                width: parent.width; elide: Text.ElideRight; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                                 text: {
                                     var feedUrl = modelData.feed_id;
                                     for (var i = 0; i < rssWorkspace.rssFeeds.length; i++)
                                         if (rssWorkspace.rssFeeds[i].id === modelData.feed_id) { feedUrl = rssWorkspace.rssFeeds[i].url; break; }
-                                    return "Feed: " + feedUrl + " | Action: " + modelData.action;
+                                    return qsTr("Feed: ") + feedUrl + "  ·  " + qsTr("Action: ") + modelData.action;
                                 }
-                                color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                             }
                         }
                         Rectangle {
+                            id: delRule
                             anchors.verticalCenter: parent.verticalCenter
-                            width: 45; height: Theme.rowH; radius: Theme.radius; color: Theme.surfaceAlt
-                            Text { anchors.centerIn: parent; text: qsTr("Delete"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall }
-                            MouseArea { anchors.fill: parent; onClicked: rssWorkspace.onDeleteRule(modelData.id) }
+                            width: Theme.btnM - Theme.sp3; height: Theme.sp4 + Theme.sp1; radius: Theme.radius
+                            color: delRuleArea.containsMouse ? Theme.dangerSoft : "transparent"
+                            Text { anchors.centerIn: parent; text: qsTr("Remove"); color: Theme.danger; font.pixelSize: Theme.fontSizeSmall; font.weight: Font.DemiBold }
+                            MouseArea { id: delRuleArea; anchors.fill: parent; hoverEnabled: true; onClicked: rssWorkspace.onDeleteRule(modelData.id) }
                         }
                     }
                 }
-                Text { visible: rssWorkspace.rssRules.length === 0; text: qsTr("No rules \u2014 add a rule to auto-download matching items"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                PillButton { label: qsTr("Add rule"); onClicked: rssWorkspace.onAddRule() }
             }
         }
     }

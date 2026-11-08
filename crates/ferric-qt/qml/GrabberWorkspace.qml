@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls as QQC
 
 // Link Grabber workspace \u2014 extracted from main.qml (Phase 2 split #2)
 Rectangle {
@@ -24,12 +25,12 @@ Rectangle {
     // Fill the settings fields from a saved project or template.
     function applyConfig(cfg) {
         if (!cfg) return;
-        grabUrlInput.text = cfg.url || "";
-        grabExtInput.text = cfg.extensions || "";
-        grabDepthInput.text = String(cfg.depth || 0);
-        grabExternalInput.text = String(cfg.external_levels || 0);
-        grabIncludeInput.text = cfg.include || "";
-        grabExcludeInput.text = cfg.exclude || "";
+        grabUrlField.text = cfg.url || "";
+        grabExtField.text = cfg.extensions || "";
+        grabDepthField.text = String(cfg.depth || 0);
+        grabExternalField.text = String(cfg.external_levels || 0);
+        grabIncludeField.text = cfg.include || "";
+        grabExcludeField.text = cfg.exclude || "";
         grabber.grabStayBelow = cfg.stay_below === true;
     }
     property var grabResults: []
@@ -41,188 +42,91 @@ Rectangle {
     property var onToggleResult: function(idx) {}
     property var onAddSelected: function() {}
 
-    Column {
-        anchors.fill: parent
-        anchors.margins: Theme.sp3
-        spacing: Theme.sp2
+    Flickable {
+      id: scroller
+      anchors.fill: parent
+      contentWidth: width
+      contentHeight: mainCol.height + 2 * Theme.sp4
+      clip: true
+      boundsBehavior: Flickable.StopAtBounds
+      QQC.ScrollBar.vertical: QQC.ScrollBar {}
 
-        Text { text: qsTr("Link Grabber"); color: Theme.text; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
+      Column {
+        id: mainCol
+        x: Theme.sp4; y: Theme.sp4
+        width: scroller.width - 2 * Theme.sp4
+        spacing: Theme.sp3
 
-        // URL input
-        Row {
-            width: parent.width; spacing: Theme.sp1
-            Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                width: parent.width - 160; height: Theme.controlH; color: Theme.bg
-                border.color: grabUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                TextInput {
-                    clip: true
-                    id: grabUrlInput
-                    anchors { fill: parent; margins: Theme.sp1 }
-                    color: Theme.text; font.pixelSize: Theme.fontSizeNormal
-                    Text { visible: parent.text.length === 0; text: qsTr("https://example.com/page"); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
-                    // The typed URL must reach the root state (it used to stay in this
-                    // field, so Grab always answered "URL required").
+        Column {
+            spacing: 2
+            Text { text: qsTr("Site Grabber"); color: Theme.text; font.pixelSize: Theme.fontSizeLarge; font.weight: Font.Bold }
+            Text { text: qsTr("Find and download the files linked from a web page."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
+        }
+
+        // Where to look
+        Card {
+            Row {
+                spacing: Theme.sp2
+                LabeledField {
+                    id: grabUrlField
+                    label: qsTr("Page address")
+                    placeholder: qsTr("https://example.com/page")
+                    fieldWidth: Math.max(233, parent.parent.width - Theme.btnM - Theme.sp2)
+                    // The typed URL must reach the root state (it used to stay in this field, so Grab always
+                    // answered "URL required").
                     onTextChanged: grabber.grabUrl = text
                     onAccepted: grabber.onGrab()
                 }
-            }
-            Rectangle {
-                width: 70; height: Theme.controlH; radius: Theme.radius
-                color: grabBtnArea.containsMouse ? Theme.accentDark : Theme.accent
-                Text { anchors.centerIn: parent; text: grabber.grabLoading ? "..." : "Grab"; color: "white"; font.pixelSize: Theme.fontSizeNormal }
-                MouseArea { id: grabBtnArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onGrab() }
-            }
-        }
-
-        // Options row
-        Row {
-            spacing: Theme.sp3
-            Row {
-                spacing: Theme.sp1
-                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Extensions:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                Rectangle {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 140; height: Theme.controlH; color: Theme.bg
-                    border.color: grabExtInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                    TextInput {
-                        clip: true
-                        id: grabExtInput
-                        anchors { fill: parent; margins: Theme.sp1 }
-                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                        Text { visible: parent.text.length === 0; text: qsTr("mp4,zip,pdf"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                        onTextChanged: grabber.grabExtensions = text
-                    }
-                }
-            }
-            Row {
-                spacing: Theme.sp1
-                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Depth:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                Rectangle {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 40; height: Theme.controlH; color: Theme.bg
-                    border.color: grabDepthInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                    TextInput {
-                        clip: true
-                        id: grabDepthInput
-                        anchors { fill: parent; margins: Theme.sp1 }
-                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                        inputMethodHints: Qt.ImhDigitsOnly
-                        text: qsTr("0")
-                        onTextChanged: grabber.grabDepth = Math.min(5, parseInt(text) || 0)
-                    }
-                }
-                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("(0-5)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-            }
-            Row {
-                spacing: Theme.sp1
-                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Levels on other sites:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                Rectangle {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 40; height: Theme.controlH; color: Theme.bg
-                    border.color: grabExternalInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                    TextInput {
-                        clip: true
-                        id: grabExternalInput
-                        anchors { fill: parent; margins: Theme.sp1 }
-                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                        inputMethodHints: Qt.ImhDigitsOnly
-                        text: "0"
-                        onTextChanged: grabber.grabExternal = Math.min(5, parseInt(text) || 0)
-                    }
+                Item {
+                    width: grabBtn.width; height: grabUrlField.height
+                    PillButton { id: grabBtn; anchors.bottom: parent.bottom; label: grabber.grabLoading ? "..." : qsTr("Grab"); onClicked: grabber.onGrab() }
                 }
             }
         }
 
-        // IDM Site Grabber page filters
-        Row {
-            spacing: Theme.sp3
-            Row {
-                spacing: Theme.sp1
-                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Explore only:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                Rectangle {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 170; height: Theme.controlH; color: Theme.bg
-                    border.color: grabIncludeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                    TextInput {
-                        clip: true
-                        id: grabIncludeInput
-                        anchors { fill: parent; margins: Theme.sp1 }
-                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                        Text { visible: parent.text.length === 0; text: qsTr("site.com/docs/*"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                        onTextChanged: grabber.grabInclude = text
-                    }
+        // What to look for
+        Card {
+            heading: qsTr("What to find")
+            Flow {
+                width: parent.width; spacing: Theme.sp4
+                LabeledField { id: grabExtField; label: qsTr("File types"); placeholder: qsTr("mp4, zip, pdf"); onTextChanged: grabber.grabExtensions = text }
+                LabeledField { id: grabDepthField; label: qsTr("Link depth (0-5)"); fieldWidth: 89; hints: Qt.ImhDigitsOnly; text: "0"; onTextChanged: grabber.grabDepth = Math.min(5, parseInt(text) || 0) }
+                LabeledField { id: grabExternalField; label: qsTr("Levels on other sites"); fieldWidth: 89; hints: Qt.ImhDigitsOnly; text: "0"; onTextChanged: grabber.grabExternal = Math.min(5, parseInt(text) || 0) }
+                LabeledField { id: grabIncludeField; label: qsTr("Explore only"); placeholder: qsTr("site.com/docs/*"); onTextChanged: grabber.grabInclude = text }
+                LabeledField { id: grabExcludeField; label: qsTr("Never open"); placeholder: qsTr("*/logout*"); onTextChanged: grabber.grabExclude = text }
+                Item {
+                    width: stayBelow.width; height: Theme.sp1 + 13 + Theme.controlH
+                    CheckRow { id: stayBelow; anchors.bottom: parent.bottom; anchors.bottomMargin: (Theme.controlH - Theme.sp4) / 2
+                        label: qsTr("Stay below the starting folder"); checked: grabber.grabStayBelow; onToggled: grabber.grabStayBelow = !grabber.grabStayBelow }
                 }
-            }
-            Row {
-                spacing: Theme.sp1
-                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Never open:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                Rectangle {
-                    anchors.verticalCenter: parent.verticalCenter
-                    width: 170; height: Theme.controlH; color: Theme.bg
-                    border.color: grabExcludeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                    TextInput {
-                        clip: true
-                        id: grabExcludeInput
-                        anchors { fill: parent; margins: Theme.sp1 }
-                        color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                        Text { visible: parent.text.length === 0; text: qsTr("*/logout*"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                        onTextChanged: grabber.grabExclude = text
-                    }
-                }
-            }
-            Row {
-                spacing: Theme.sp1
-                Rectangle { width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; anchors.verticalCenter: parent.verticalCenter
-                    color: grabber.grabStayBelow ? Theme.accent : Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
-                    Text { anchors.centerIn: parent; text: grabber.grabStayBelow ? "✓" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
-                    MouseArea { anchors.fill: parent; onClicked: grabber.grabStayBelow = !grabber.grabStayBelow }
-                }
-                Text { text: qsTr("Don't explore parent directories"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
         }
 
-        // Saved projects and templates (IDM's Recent projects / Project template)
-        Row {
-            spacing: Theme.sp2
-            Text { text: qsTr("Project:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
-            Rectangle {
-                anchors.verticalCenter: parent.verticalCenter
-                width: 170; height: Theme.controlH; color: Theme.bg
-                border.color: grabProjectName.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                TextInput {
-                    clip: true
-                    id: grabProjectName
-                    anchors { fill: parent; margins: Theme.sp1 }
-                    color: Theme.text; font.pixelSize: Theme.fontSizeSmall
-                    Text { visible: parent.text.length === 0; text: qsTr("project name"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+        // Saved projects and templates
+        Card {
+            heading: qsTr("Projects")
+            Flow {
+                width: parent.width; spacing: Theme.sp3
+                LabeledField { id: grabProjectField; label: qsTr("Project name"); placeholder: qsTr("my project") }
+                Item {
+                    width: projButtons.width; height: Theme.sp1 + 13 + Theme.controlH
+                    Row {
+                        id: projButtons
+                        anchors.bottom: parent.bottom
+                        spacing: Theme.sp2
+                        PillButton { label: qsTr("Save project"); onClicked: grabber.onProjectSave(grabProjectField.text, false) }
+                        PillButton { label: qsTr("Save as template"); primary: false; onClicked: grabber.onProjectSave(grabProjectField.text, true) }
+                        PillButton { label: qsTr("Update project"); primary: false; onClicked: grabber.onProjectUpdate() }
+                    }
                 }
-            }
-            Rectangle {
-                width: 90; height: Theme.controlH; radius: Theme.radius; color: saveProjArea.containsMouse ? Theme.accentDark : Theme.accent
-                Text { anchors.centerIn: parent; text: qsTr("Save project"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
-                MouseArea { id: saveProjArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onProjectSave(grabProjectName.text, false) }
-            }
-            Rectangle {
-                width: 100; height: Theme.controlH; radius: Theme.radius; color: saveTplArea.containsMouse ? Theme.accentDark : Theme.accent
-                Text { anchors.centerIn: parent; text: qsTr("Save as template"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
-                MouseArea { id: saveTplArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onProjectSave(grabProjectName.text, true) }
-            }
-            Rectangle {
-                width: 100; height: Theme.controlH; radius: Theme.radius; color: updProjArea.containsMouse ? Theme.accentDark : Theme.accent
-                Text { anchors.centerIn: parent; text: qsTr("Update project"); color: "white"; font.pixelSize: Theme.fontSizeSmall }
-                MouseArea { id: updProjArea; anchors.fill: parent; hoverEnabled: true; onClicked: grabber.onProjectUpdate() }
-            }
-            Row {
-                spacing: Theme.sp1
-                Rectangle { width: Theme.sp4; height: Theme.sp4; radius: Theme.radius; anchors.verticalCenter: parent.verticalCenter
-                    color: grabber.grabDownloadAll ? Theme.accent : Theme.bg; border.color: Theme.surfaceAlt; border.width: 1
-                    Text { anchors.centerIn: parent; text: grabber.grabDownloadAll ? "\u2713" : ""; color: "#fff"; font.pixelSize: Theme.fontSizeSmall }
-                    MouseArea { anchors.fill: parent; onClicked: grabber.grabDownloadAll = !grabber.grabDownloadAll }
+                Item {
+                    width: allRow.width; height: Theme.sp1 + 13 + Theme.controlH
+                    CheckRow { id: allRow; anchors.bottom: parent.bottom; anchors.bottomMargin: (Theme.controlH - Theme.sp4) / 2
+                        label: qsTr("Download everything found"); checked: grabber.grabDownloadAll; onToggled: grabber.grabDownloadAll = !grabber.grabDownloadAll }
                 }
-                Text { text: qsTr("Download everything found"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; anchors.verticalCenter: parent.verticalCenter }
             }
         }
+
         Flow {
             width: parent.width; spacing: Theme.sp1
             visible: grabber.projects.length > 0
@@ -238,7 +142,7 @@ Rectangle {
                         text: (modelData.is_template ? "[template] " : "") + modelData.name + (modelData.is_template ? "" : " (" + modelData.result_count + ")")
                         color: Theme.text; font.pixelSize: Theme.fontSizeSmall
                     }
-                    MouseArea { anchors { left: parent.left; top: parent.top; bottom: parent.bottom; right: closeProj.left } onClicked: { grabProjectName.text = modelData.name; grabber.onProjectOpen(modelData.id) } }
+                    MouseArea { anchors { left: parent.left; top: parent.top; bottom: parent.bottom; right: closeProj.left } onClicked: { grabProjectField.text = modelData.name; grabber.onProjectOpen(modelData.id) } }
                     Text { id: closeProj; anchors { right: parent.right; rightMargin: Theme.sp1; verticalCenter: parent.verticalCenter } text: "\u2715"; color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall
                         MouseArea { anchors.fill: parent; anchors.margins: -4; onClicked: grabber.onProjectDelete(modelData.id) } }
                 }
@@ -260,7 +164,7 @@ Rectangle {
             width: parent.width
             // Leave room for the "Add Selected" button below (it used to be pushed
             // under the status bar).
-            height: Math.max(80, grabber.height - 260)
+            height: Math.max(200, Math.round(grabber.height * 0.45))
             clip: true
             cacheBuffer: 200
             model: grabber.grabResults
@@ -286,18 +190,17 @@ Rectangle {
             Text {
                 visible: grabber.grabResults.length === 0 && !grabber.grabLoading
                 anchors.centerIn: parent
-                text: qsTr("Enter a URL and click Grab")
+                text: qsTr("Enter a web page address above and press Grab to list its files.")
                 color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal
             }
         }
 
         // Add selected button
-        Rectangle {
-            width: 140; height: Theme.controlH; radius: Theme.radius
-            color: grabber.grabSelected.length > 0 ? Theme.accent : Theme.surfaceAlt
+        PillButton {
+            label: qsTr("Add selected") + " (" + grabber.grabSelected.length + ")"
             opacity: grabber.grabSelected.length > 0 ? 1.0 : 0.4
-            Text { anchors.centerIn: parent; text: "Add Selected (" + grabber.grabSelected.length + ")"; color: "white"; font.pixelSize: Theme.fontSizeSmall }
-            MouseArea { anchors.fill: parent; enabled: grabber.grabSelected.length > 0; onClicked: grabber.onAddSelected() }
+            onClicked: if (grabber.grabSelected.length > 0) grabber.onAddSelected()
         }
+    }
     }
 }
