@@ -16,7 +16,7 @@ def extension_id(manifest_key_b64):
 
 
 def main():
-    ferricd, host, ext, pw, chrome_bin = sys.argv[1:6]
+    ferricd, host, ext, pw, chrome_bin = [os.path.abspath(a) for a in sys.argv[1:6]]
     manifest = json.load(open(os.path.join(ext, "manifest.json"), encoding="utf-8-sig"))
     ext_id = extension_id(manifest["key"])
     root = tempfile.mkdtemp(prefix="ferric-capture-")
