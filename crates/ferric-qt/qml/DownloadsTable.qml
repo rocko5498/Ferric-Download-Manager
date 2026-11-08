@@ -289,18 +289,18 @@ Flickable {
         Text { anchors.horizontalCenter: parent.horizontalCenter; text: qsTr("Click Add URL, or start a download in your browser."); color: Theme.textDim; font.pixelSize: Theme.fontSizeNormal }
     }
 
-    Menu {
+    ThemedMenu {
         id: downloadContextMenu
         property string rowId: ""
         property string rowName: ""
         property string rowSavePath: ""
         property string rowUrlHost: ""
         property string rowUrl: ""
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Properties")
             onTriggered: downloadHFlick.onShowProperties(downloadContextMenu.rowId, "", downloadContextMenu.rowName, downloadContextMenu.rowSavePath, downloadContextMenu.rowUrlHost)
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Open")
             enabled: downloadHFlick.bus !== null
             onTriggered: {
@@ -308,7 +308,7 @@ Flickable {
                     downloadHFlick.bus.open_file(downloadContextMenu.rowSavePath + "/" + downloadContextMenu.rowName)
             }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Open Folder")
             enabled: downloadHFlick.bus !== null
             onTriggered: {
@@ -316,35 +316,35 @@ Flickable {
                     downloadHFlick.bus.open_folder(downloadContextMenu.rowSavePath)
             }
         }
-        MenuSeparator {}
-        MenuItem {
+        ThemedMenuSeparator {}
+        ThemedMenuItem {
             text: qsTr("Copy URL")
             onTriggered: {
                 clipboardInput.text = downloadContextMenu.rowUrlHost
                 clipboardInput.selectAll(); clipboardInput.copy()
             }
         }
-        MenuSeparator {}
-        MenuItem {
+        ThemedMenuSeparator {}
+        ThemedMenuItem {
             text: qsTr("Pause")
             enabled: downloadHFlick.bus !== null
             onTriggered: { if (downloadHFlick.requestBus) downloadHFlick.requestBus("download_action", { id: downloadContextMenu.rowId, action: "pause" }, function() {}) }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Resume")
             enabled: downloadHFlick.bus !== null
             onTriggered: { if (downloadHFlick.requestBus) downloadHFlick.requestBus("download_action", { id: downloadContextMenu.rowId, action: "resume" }, function() {}) }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Download Now")
             enabled: downloadHFlick.bus !== null
             onTriggered: { if (downloadHFlick.requestBus) downloadHFlick.requestBus("download_action", { id: downloadContextMenu.rowId, action: "start-now" }, function() {}) }
         }
-        Menu {
+        ThemedMenu {
             title: qsTr("Move to queue")
             Repeater {
                 model: downloadHFlick.queues
-                MenuItem {
+                ThemedMenuItem {
                     text: modelData.name
                     onTriggered: {
                         if (downloadHFlick.requestBus)
@@ -353,13 +353,13 @@ Flickable {
                 }
             }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Redownload")
             enabled: downloadHFlick.bus !== null
             onTriggered: { if (downloadHFlick.requestBus) downloadHFlick.requestBus("download_action", { id: downloadContextMenu.rowId, action: "redownload" }, function() {}) }
         }
-        MenuSeparator {}
-        MenuItem {
+        ThemedMenuSeparator {}
+        ThemedMenuItem {
             text: qsTr("Delete (keep file)")
             onTriggered: {
                 if (downloadHFlick.requestBus) {
@@ -369,7 +369,7 @@ Flickable {
                 }
             }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Delete + Remove File")
             onTriggered: {
                 if (downloadHFlick.requestBus) {

@@ -239,12 +239,12 @@ Flickable {
         text: qsTr("No torrents yet \u2014 Add magnet or .torrent to stage")
     }
 
-    Menu {
+    ThemedMenu {
         id: torrentContextMenu
         property string rowId: ""
         property string rowName: ""
         property string rowInfoHash: ""
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Pause/Resume")
             enabled: torrentHFlick.bus !== null
             onTriggered: {
@@ -259,72 +259,72 @@ Flickable {
                 })
             }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Recheck")
             enabled: torrentHFlick.bus !== null
             onTriggered: { if (torrentHFlick.requestBus) torrentHFlick.requestBus("torrent_action", { id: torrentContextMenu.rowId, action: "recheck" }, function() {}) }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Reannounce")
             enabled: torrentHFlick.bus !== null
             onTriggered: { if (torrentHFlick.requestBus) torrentHFlick.requestBus("torrent_action", { id: torrentContextMenu.rowId, action: "reannounce" }, function() {}) }
         }
-        MenuSeparator {}
-        MenuItem {
+        ThemedMenuSeparator {}
+        ThemedMenuItem {
             text: qsTr("Copy Name")
             onTriggered: {
                 clipboardInput.text = torrentContextMenu.rowName
                 clipboardInput.selectAll(); clipboardInput.copy()
             }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Copy Hash")
             onTriggered: {
                 clipboardInput.text = torrentContextMenu.rowInfoHash
                 clipboardInput.selectAll(); clipboardInput.copy()
             }
         }
-        MenuItem {
+        ThemedMenuItem {
             text: qsTr("Copy Magnet")
             onTriggered: {
                 clipboardInput.text = "magnet:?xt=urn:btih:" + torrentContextMenu.rowInfoHash
                 clipboardInput.selectAll(); clipboardInput.copy()
             }
         }
-        MenuSeparator {}
-        MenuItem {
+        ThemedMenuSeparator {}
+        ThemedMenuItem {
             text: qsTr("Set Location")
             enabled: torrentHFlick.bus !== null
             onTriggered: {
                 torrentHFlick.onSetLocation && torrentHFlick.onSetLocation(torrentContextMenu.rowId)
             }
         }
-        MenuSeparator {}
-        Menu {
+        ThemedMenuSeparator {}
+        ThemedMenu {
             title: qsTr("Queue")
-            MenuItem {
+            ThemedMenuItem {
                 text: qsTr("Move Up")
                 enabled: torrentHFlick.bus !== null
                 onTriggered: { if (torrentHFlick.requestBus) torrentHFlick.requestBus("set_torrent_queue", { id: torrentContextMenu.rowId, position: "up" }, function() {}) }
             }
-            MenuItem {
+            ThemedMenuItem {
                 text: qsTr("Move Down")
                 enabled: torrentHFlick.bus !== null
                 onTriggered: { if (torrentHFlick.requestBus) torrentHFlick.requestBus("set_torrent_queue", { id: torrentContextMenu.rowId, position: "down" }, function() {}) }
             }
-            MenuItem {
+            ThemedMenuItem {
                 text: qsTr("Move to Top")
                 enabled: torrentHFlick.bus !== null
                 onTriggered: { if (torrentHFlick.requestBus) torrentHFlick.requestBus("set_torrent_queue", { id: torrentContextMenu.rowId, position: "top" }, function() {}) }
             }
-            MenuItem {
+            ThemedMenuItem {
                 text: qsTr("Move to Bottom")
                 enabled: torrentHFlick.bus !== null
                 onTriggered: { if (torrentHFlick.requestBus) torrentHFlick.requestBus("set_torrent_queue", { id: torrentContextMenu.rowId, position: "bottom" }, function() {}) }
             }
         }
-        MenuSeparator {}
-        MenuItem {
+        ThemedMenuSeparator {}
+        ThemedMenuItem {
             text: qsTr("Remove")
             onTriggered: torrentHFlick.onDeleteTorrent(torrentContextMenu.rowId)
         }

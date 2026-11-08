@@ -192,14 +192,14 @@ Rectangle {
     }
 
     // IDM's queue commands: Start queue / Stop queue (Downloads menu) and the Scheduler's New queue / Delete.
-    QQC.Menu {
+    ThemedMenu {
         id: queueMenu
         property var queue: null
-        QQC.MenuItem { text: qsTr("Start queue"); onTriggered: sideFilter.onQueueAction(queueMenu.queue.id, "start") }
-        QQC.MenuItem { text: qsTr("Stop queue"); onTriggered: sideFilter.onQueueAction(queueMenu.queue.id, "stop") }
-        QQC.MenuSeparator {}
-        QQC.MenuItem { text: qsTr("Edit queue..."); onTriggered: sideFilter.onEditQueue(queueMenu.queue) }
-        QQC.MenuItem {
+        ThemedMenuItem { text: qsTr("Start queue"); onTriggered: sideFilter.onQueueAction(queueMenu.queue.id, "start") }
+        ThemedMenuItem { text: qsTr("Stop queue"); onTriggered: sideFilter.onQueueAction(queueMenu.queue.id, "stop") }
+        ThemedMenuSeparator {}
+        ThemedMenuItem { text: qsTr("Edit queue..."); onTriggered: sideFilter.onEditQueue(queueMenu.queue) }
+        ThemedMenuItem {
             text: qsTr("Delete queue")
             enabled: queueMenu.queue !== null && queueMenu.queue.id !== sideFilter.defaultQueueId
             onTriggered: sideFilter.onDeleteQueue(queueMenu.queue)

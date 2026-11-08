@@ -108,17 +108,6 @@ Rectangle {
                         // ── General tab ─────────────────────────────────
                         Item { visible: prefsTab === 0; width: parent.width; height: visible ? genCol.height : 0; clip: true
                         Column { id: genCol; width: parent.width; spacing: Theme.sp2
-                            Text { text: qsTr("Application"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
-
-                            // Language
-                            Row { spacing: Theme.sp2; height: Theme.controlH
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Language:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 120 }
-                                Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 140; height: Theme.controlH; color: Theme.bg; border.color: langInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: langInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
-                                        text: prefsData["ui_language"] || "en-US"
-                                        onEditingFinished: savePref("ui_language", text) } }
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("en-US"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
-                            }
 
                             Text { text: qsTr("Network"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
@@ -288,7 +277,7 @@ Rectangle {
                             Column { width: parent.width; spacing: Theme.sp1
                                 Text { text: qsTr("Default save path"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                                 Rectangle { width: parent.width; height: Theme.controlH; color: Theme.bg; border.color: defaultSaveDirInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: defaultSaveDirInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                                    TextInput { id: defaultSaveDirInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                         text: prefsData["default_save_dir"] || ""
                                         onEditingFinished: savePref("default_save_dir", text) } }
                             }
@@ -297,7 +286,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Retries per file if downloading fails"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: retriesInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: retriesInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                                    TextInput { id: retriesInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                         inputMethodHints: Qt.ImhDigitsOnly
                                         text: prefsData["max_retries"] || "4"
                                         onEditingFinished: savePref("max_retries", text) } }
@@ -557,7 +546,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Max connections/host:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 160 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: connPerHost.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: connPerHost; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: connPerHost; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["max_connections_per_host"] || "8"
                                         onEditingFinished: savePref("max_connections_per_host", text) } }
                             }
@@ -565,7 +554,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Max connections/download:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 160 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: connPerDl.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: connPerDl; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: connPerDl; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["max_connections_per_download"] || "8"
                                         onEditingFinished: savePref("max_connections_per_download", text) } }
                             }
@@ -573,7 +562,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Max concurrent:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 160 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: maxConc.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: maxConc; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: maxConc; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["max_concurrent"] || "3"
                                         onEditingFinished: savePref("max_concurrent", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("0 = unlimited"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -584,7 +573,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("User agent:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 120 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 380; height: Theme.controlH; color: Theme.bg; border.color: uaInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: uaInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                                    TextInput { id: uaInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                         text: prefsData["user_agent"] || ""
                                         onEditingFinished: savePref("user_agent", text) } }
                             }
@@ -592,7 +581,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Connect timeout:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 120 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: timeoutInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: timeoutInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: timeoutInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["connect_timeout_secs"] || "30"
                                         onEditingFinished: savePref("connect_timeout_secs", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("seconds"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -620,7 +609,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Listen port:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 100 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: listenPortInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: listenPortInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: listenPortInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["listen_port"] || "6881"
                                         onEditingFinished: savePref("listen_port", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("only when TCP listen enabled"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -657,7 +646,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Global connections:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 100 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: globalConn.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: globalConn; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: globalConn; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["max_connections_global"] || "200"
                                         onEditingFinished: savePref("max_connections_global", text) } }
                             }
@@ -665,7 +654,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Max uploads/torrent:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 100 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: maxUp.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: maxUp; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: maxUp; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["max_uploads_per_torrent"] || "4"
                                         onEditingFinished: savePref("max_uploads_per_torrent", text) } }
                             }
@@ -678,21 +667,21 @@ Rectangle {
                             Text { text: qsTr("Global speed limits"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
 
                             Row { spacing: Theme.sp2; height: Theme.controlH
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Download limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 110 }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Download limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 144 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 80; height: Theme.controlH; color: Theme.bg; border.color: dlLimitInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: dlLimitInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
-                                        text: prefsData["bandwidth_limit_bps"] || "0"
-                                        onEditingFinished: savePref("bandwidth_limit_bps", text) } }
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("bytes/sec (0 = unlimited)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                                    TextInput { id: dlLimitInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                        text: String(Math.round((parseInt(prefsData["bandwidth_limit_bps"]) || 0) / 1024))
+                                        onEditingFinished: savePref("bandwidth_limit_bps", String(Math.max(0, Math.round((parseFloat(text) || 0) * 1024)))) } }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("KB/s (0 = no limit)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                             }
 
                             Row { spacing: Theme.sp2; height: Theme.controlH
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Upload limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 110 }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Upload limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 144 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 80; height: Theme.controlH; color: Theme.bg; border.color: ulLimitInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: ulLimitInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
-                                        text: prefsData["global_upload_limit_bps"] || "0"
-                                        onEditingFinished: savePref("global_upload_limit_bps", text) } }
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("bytes/sec (0 = unlimited)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                                    TextInput { id: ulLimitInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                        text: String(Math.round((parseInt(prefsData["global_upload_limit_bps"]) || 0) / 1024))
+                                        onEditingFinished: savePref("global_upload_limit_bps", String(Math.max(0, Math.round((parseFloat(text) || 0) * 1024)))) } }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("KB/s (0 = no limit)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                             }
 
                             Text { text: qsTr("Alternative speed limits"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
@@ -708,21 +697,21 @@ Rectangle {
                             }
 
                             Row { spacing: Theme.sp2; height: Theme.controlH
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Alt DL limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 110 }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Alternative download:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 144 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 80; height: Theme.controlH; color: Theme.bg; border.color: altDlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: altDlInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
-                                        text: prefsData["alt_speed_download_bps"] || "0"
-                                        onEditingFinished: savePref("alt_speed_download_bps", text) } }
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("bytes/sec (0 = unlimited)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                                    TextInput { id: altDlInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                        text: String(Math.round((parseInt(prefsData["alt_speed_download_bps"]) || 0) / 1024))
+                                        onEditingFinished: savePref("alt_speed_download_bps", String(Math.max(0, Math.round((parseFloat(text) || 0) * 1024)))) } }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("KB/s (0 = no limit)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                             }
 
                             Row { spacing: Theme.sp2; height: Theme.controlH
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Alt UL limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 110 }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Alternative upload:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 144 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 80; height: Theme.controlH; color: Theme.bg; border.color: altUlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: altUlInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
-                                        text: prefsData["alt_speed_upload_bps"] || "0"
-                                        onEditingFinished: savePref("alt_speed_upload_bps", text) } }
-                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("bytes/sec (0 = unlimited)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
+                                    TextInput { id: altUlInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                        text: String(Math.round((parseInt(prefsData["alt_speed_upload_bps"]) || 0) / 1024))
+                                        onEditingFinished: savePref("alt_speed_upload_bps", String(Math.max(0, Math.round((parseFloat(text) || 0) * 1024)))) } }
+                                Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("KB/s (0 = no limit)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                             }
 
                             Text { text: qsTr("Schedule"); color: Theme.accent; font.pixelSize: Theme.fontSizeNormal; font.bold: true }
@@ -735,12 +724,12 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("From:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 110 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: schedFrom.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: schedFrom; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                                    TextInput { id: schedFrom; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                         text: prefsData["alt_speed_schedule_from"] || "02:00"
                                         onEditingFinished: savePref("alt_speed_schedule_from", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("To:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: schedTo.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: schedTo; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                                    TextInput { id: schedTo; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                         text: prefsData["alt_speed_schedule_to"] || "07:00"
                                         onEditingFinished: savePref("alt_speed_schedule_to", text) } }
                             }
@@ -852,7 +841,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Ratio limit:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 80 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: seedRatioInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: seedRatioInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: seedRatioInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["torrent_seed_ratio_limit"] || "0"
                                         onEditingFinished: savePref("torrent_seed_ratio_limit", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("0 = unlimited"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -861,7 +850,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Time limit (min):"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 80 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: seedTimeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: seedTimeInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: seedTimeInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: { var secs = parseInt(prefsData["torrent_seed_time_limit_secs"] || "0"); return Math.round(secs / 60).toString(); }
                                         onEditingFinished: savePref("torrent_seed_time_limit_secs", (parseInt(text) * 60).toString()) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("0 = unlimited"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -872,7 +861,7 @@ Rectangle {
                             Column { width: parent.width; spacing: Theme.sp1
                                 Text { text: qsTr("SOCKS5 proxy URL (e.g. socks5://127.0.0.1:1080)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                                 Rectangle { width: parent.width; height: Theme.controlH; color: Theme.bg; border.color: proxyUrlInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: proxyUrlInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal
+                                    TextInput { id: proxyUrlInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal
                                         text: prefsData["torrent_proxy_url"] || ""
                                         onTextChanged: savePref("torrent_proxy_url", text) } }
                             }
@@ -901,7 +890,7 @@ Rectangle {
                             Column { width: parent.width; spacing: Theme.sp1
                                 Text { text: qsTr("qBittorrent BT_backup folder (leave blank for default location)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
                                 Rectangle { width: parent.width; height: Theme.controlH; color: Theme.bg; border.color: qbtImportDirInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: qbtImportDirInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal } }
+                                    TextInput { id: qbtImportDirInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal } }
                             clip: true
                             }
 
@@ -940,7 +929,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Min capture size:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 120 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 80; height: Theme.controlH; color: Theme.bg; border.color: minCapInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: minCapInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: minCapInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["min_capture_size"] || "0"
                                         onEditingFinished: savePref("min_capture_size", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("bytes (0 = capture all)"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -951,7 +940,7 @@ Rectangle {
                             Row { spacing: Theme.sp2; height: Theme.controlH
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("Chunk size:"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall; width: 120 }
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 60; height: Theme.controlH; color: Theme.bg; border.color: chunkSizeInput.activeFocus ? Theme.accent : Theme.surfaceAlt; radius: Theme.radius
-                                    TextInput { id: chunkSizeInput; anchors { fill: parent; margins: Theme.sp1 } color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
+                                    TextInput { id: chunkSizeInput; anchors { fill: parent; margins: Theme.sp1 } verticalAlignment: TextInput.AlignVCenter; color: Theme.text; font.pixelSize: Theme.fontSizeNormal; inputMethodHints: Qt.ImhFormattedNumbersOnly
                                         text: prefsData["chunk_size_kb"] || "512"
                                         onEditingFinished: savePref("chunk_size_kb", text) } }
                                 Text { anchors.verticalCenter: parent.verticalCenter; text: qsTr("KB"); color: Theme.textDim; font.pixelSize: Theme.fontSizeSmall }
@@ -1007,7 +996,7 @@ Rectangle {
 
                             Row { spacing: Theme.sp2; height: Theme.rowH
                                 Rectangle { anchors.verticalCenter: parent.verticalCenter; width: 8; height: 8; radius: 4; color: Theme.success }
-                                Text { anchors.verticalCenter: parent.verticalCenter; id: anonScoreText; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; text: qsTr("Anonymity score: ") + ((anonymityScore !== null && anonymityScore !== undefined) ? anonymityScore + "/100" : "...") + " - " + anonymityGrade }
+                                Text { anchors.verticalCenter: parent.verticalCenter; id: anonScoreText; color: Theme.text; font.pixelSize: Theme.fontSizeSmall; text: qsTr("Privacy rating: ") + ((anonymityScore !== null && anonymityScore !== undefined) ? anonymityScore + "/100" : "...") + " - " + anonymityGrade }
                             }
 
                             Row { spacing: Theme.sp2; height: Theme.controlH

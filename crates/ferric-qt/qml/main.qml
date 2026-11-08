@@ -791,12 +791,12 @@ Window {
         queuePickMenu.action = action;
         queuePickMenu.popup();
     }
-    Menu {
+    ThemedMenu {
         id: queuePickMenu
         property string action: "start"
         Repeater {
             model: root.queues
-            MenuItem { text: modelData.name; onTriggered: root.doQueueAction(modelData.id, queuePickMenu.action) }
+            ThemedMenuItem { text: modelData.name; onTriggered: root.doQueueAction(modelData.id, queuePickMenu.action) }
         }
     }
 
@@ -1806,10 +1806,10 @@ Window {
             }
         }
 
-        Menu {
+        ThemedMenu {
             title: qsTr("&File")
             Action { text: qsTr("Add &URL..."); onTriggered: addUrlDialog.visible = true }
-            MenuItem {
+            ThemedMenuItem {
                 visible: root.torrentsEnabled
                 height: visible ? implicitHeight : 0
                 action: Action { text: qsTr("Add &Torrent..."); onTriggered: addTorrentDialog.visible = true }
@@ -1822,27 +1822,27 @@ Window {
                 checked: root.dropTargetShown
                 onTriggered: root.setDropTarget(!root.dropTargetShown)
             }
-            MenuSeparator {}
-            Menu {
+            ThemedMenuSeparator {}
+            ThemedMenu {
                 title: qsTr("E&xport")
                 Action { text: qsTr("To &text file"); onTriggered: root.startExport("text") }
                 Action { text: qsTr("To &export file (.ef2)"); onTriggered: root.startExport("ef2") }
             }
-            Menu {
+            ThemedMenu {
                 title: qsTr("&Import")
                 Action { text: qsTr("From &text or export file..."); onTriggered: importDialog.open() }
             }
-            MenuSeparator {}
+            ThemedMenuSeparator {}
             Action { text: qsTr("E&xit"); onTriggered: { if (root.prefsData["confirm_on_exit"] !== "0") root.promptExit(); else root.quitApp(); } }
         }
-        Menu {
+        ThemedMenu {
             title: qsTr("&Downloads")
             Action { text: qsTr("&Pause All"); onTriggered: root.runAllDownloads("pause_all_downloads") }
             Action { text: qsTr("&Resume All"); onTriggered: root.runAllDownloads("resume_all_downloads") }
-            MenuSeparator {}
+            ThemedMenuSeparator {}
             Action { text: qsTr("Show &Progress Window"); enabled: root.selectedDownloads.length === 1; onTriggered: root.openProgress(root.selectedDownloads[0].id) }
             Action { text: qsTr("&Clear Completed"); onTriggered: root.runAllDownloads("clear_completed_downloads") }
-            MenuSeparator {}
+            ThemedMenuSeparator {}
             Action {
                 text: qsTr("Download &Now")
                 enabled: root.selectedDownloads.length > 0
@@ -1864,72 +1864,72 @@ Window {
                 enabled: root.queues.length > 0
                 onTriggered: root.doEditQueue(root.queues[0])
             }
-            Menu {
+            ThemedMenu {
                 title: qsTr("Start &queue")
                 Repeater {
                     model: root.queues
-                    MenuItem { text: modelData.name; onTriggered: root.doQueueAction(modelData.id, "start") }
+                    ThemedMenuItem { text: modelData.name; onTriggered: root.doQueueAction(modelData.id, "start") }
                 }
             }
-            Menu {
+            ThemedMenu {
                 title: qsTr("Stop q&ueue")
                 Repeater {
                     model: root.queues
-                    MenuItem { text: modelData.name; onTriggered: root.doQueueAction(modelData.id, "stop") }
+                    ThemedMenuItem { text: modelData.name; onTriggered: root.doQueueAction(modelData.id, "stop") }
                 }
             }
             Action { text: qsTr("Speed &Limiter..."); onTriggered: { root.loadPreferences(); prefsDialog.prefsTab = 3; prefsDialog.visible = true } }
             Action { text: qsTr("&Find...	Ctrl+F"); onTriggered: root.openFind() }
         }
-        Menu {
+        ThemedMenu {
             title: qsTr("&View")
             Action { text: qsTr("&Speed Graph"); checkable: true; checked: root.showSpeedGraph; onTriggered: root.showSpeedGraph = !root.showSpeedGraph }
             Action { text: qsTr("&Log Drawer"); checkable: true; checked: root.showLogDrawer; onTriggered: root.showLogDrawer = !root.showLogDrawer }
             Action { text: qsTr("&Dark Mode"); checkable: true; checked: Theme.dark; onTriggered: Theme.dark = !Theme.dark }
-            Menu {
+            ThemedMenu {
                 title: qsTr("&Arrange files")
-                MenuItem { text: (root.downloadSortKey === 0 ? "• " : "   ") + qsTr("By &Order Of Addition"); onTriggered: root.setDownloadSort(0) }
-                MenuItem { text: (root.downloadSortKey === 1 ? "• " : "   ") + qsTr("By &File Name"); onTriggered: root.setDownloadSort(1) }
-                MenuItem { text: (root.downloadSortKey === 2 ? "• " : "   ") + qsTr("By &Size"); onTriggered: root.setDownloadSort(2) }
-                MenuItem { text: (root.downloadSortKey === 3 ? "• " : "   ") + qsTr("By St&atus"); onTriggered: root.setDownloadSort(3) }
-                MenuItem { text: (root.downloadSortKey === 4 ? "• " : "   ") + qsTr("By &Time Left"); onTriggered: root.setDownloadSort(4) }
-                MenuItem { text: (root.downloadSortKey === 5 ? "• " : "   ") + qsTr("By Transfer &Rate"); onTriggered: root.setDownloadSort(5) }
-                MenuItem { text: (root.downloadSortKey === 6 ? "• " : "   ") + qsTr("By &Last Try Date"); onTriggered: root.setDownloadSort(6) }
-                MenuItem { text: (root.downloadSortKey === 7 ? "• " : "   ") + qsTr("By &Description"); onTriggered: root.setDownloadSort(7) }
-                MenuItem { text: (root.downloadSortKey === 8 ? "• " : "   ") + qsTr("By Save &Path"); onTriggered: root.setDownloadSort(8) }
-                MenuItem { text: (root.downloadSortKey === 9 ? "• " : "   ") + qsTr("By R&eferer"); onTriggered: root.setDownloadSort(9) }
-                MenuItem { text: (root.downloadSortKey === 10 ? "• " : "   ") + qsTr("By Parent &Web Page"); onTriggered: root.setDownloadSort(10) }
+                ThemedMenuItem { text: (root.downloadSortKey === 0 ? "• " : "   ") + qsTr("By &Order Of Addition"); onTriggered: root.setDownloadSort(0) }
+                ThemedMenuItem { text: (root.downloadSortKey === 1 ? "• " : "   ") + qsTr("By &File Name"); onTriggered: root.setDownloadSort(1) }
+                ThemedMenuItem { text: (root.downloadSortKey === 2 ? "• " : "   ") + qsTr("By &Size"); onTriggered: root.setDownloadSort(2) }
+                ThemedMenuItem { text: (root.downloadSortKey === 3 ? "• " : "   ") + qsTr("By St&atus"); onTriggered: root.setDownloadSort(3) }
+                ThemedMenuItem { text: (root.downloadSortKey === 4 ? "• " : "   ") + qsTr("By &Time Left"); onTriggered: root.setDownloadSort(4) }
+                ThemedMenuItem { text: (root.downloadSortKey === 5 ? "• " : "   ") + qsTr("By Transfer &Rate"); onTriggered: root.setDownloadSort(5) }
+                ThemedMenuItem { text: (root.downloadSortKey === 6 ? "• " : "   ") + qsTr("By &Last Try Date"); onTriggered: root.setDownloadSort(6) }
+                ThemedMenuItem { text: (root.downloadSortKey === 7 ? "• " : "   ") + qsTr("By &Description"); onTriggered: root.setDownloadSort(7) }
+                ThemedMenuItem { text: (root.downloadSortKey === 8 ? "• " : "   ") + qsTr("By Save &Path"); onTriggered: root.setDownloadSort(8) }
+                ThemedMenuItem { text: (root.downloadSortKey === 9 ? "• " : "   ") + qsTr("By R&eferer"); onTriggered: root.setDownloadSort(9) }
+                ThemedMenuItem { text: (root.downloadSortKey === 10 ? "• " : "   ") + qsTr("By Parent &Web Page"); onTriggered: root.setDownloadSort(10) }
             }
             Action { text: qsTr("Hide &categories"); checkable: true; checked: root.hideCategories; onTriggered: root.hideCategories = !root.hideCategories }
-            Menu {
+            ThemedMenu {
                 title: qsTr("&Toolbar")
-                MenuItem { text: (root.toolbarSmall ? "   " : "\u2022 ") + qsTr("&Large buttons"); onTriggered: root.setPref("toolbar_small", "0") }
-                MenuItem { text: (root.toolbarSmall ? "\u2022 " : "   ") + qsTr("&Small buttons"); onTriggered: root.setPref("toolbar_small", "1") }
+                ThemedMenuItem { text: (root.toolbarSmall ? "   " : "\u2022 ") + qsTr("&Large buttons"); onTriggered: root.setPref("toolbar_small", "0") }
+                ThemedMenuItem { text: (root.toolbarSmall ? "\u2022 " : "   ") + qsTr("&Small buttons"); onTriggered: root.setPref("toolbar_small", "1") }
             }
-            Menu {
+            ThemedMenu {
                 title: qsTr("Tray &icon")
-                MenuItem { text: (root.showTrayIcon ? "\u2022 " : "   ") + qsTr("&Show"); onTriggered: root.setPref("show_tray_icon", "1") }
-                MenuItem { text: (root.showTrayIcon ? "   " : "\u2022 ") + qsTr("Do&n't show"); onTriggered: root.setPref("show_tray_icon", "0") }
+                ThemedMenuItem { text: (root.showTrayIcon ? "\u2022 " : "   ") + qsTr("&Show"); onTriggered: root.setPref("show_tray_icon", "1") }
+                ThemedMenuItem { text: (root.showTrayIcon ? "   " : "\u2022 ") + qsTr("Do&n't show"); onTriggered: root.setPref("show_tray_icon", "0") }
             }
-            Menu {
+            ThemedMenu {
                 title: qsTr("&Font")
-                MenuItem { text: qsTr("&Choose font..."); onTriggered: uiFontDialog.open() }
-                MenuItem { text: qsTr("&Reset to default font"); onTriggered: root.setPref("ui_font", "") }
+                ThemedMenuItem { text: qsTr("&Choose font..."); onTriggered: uiFontDialog.open() }
+                ThemedMenuItem { text: qsTr("&Reset to default font"); onTriggered: root.setPref("ui_font", "") }
             }
-            MenuSeparator {}
+            ThemedMenuSeparator {}
             Action { text: qsTr("&Statistics..."); onTriggered: { root.loadStats(); statsDialog.visible = true } }
             Action { text: qsTr("&Keyboard Shortcuts..."); onTriggered: shortcutsDialog.visible = true }
         }
-        Menu {
+        ThemedMenu {
             title: qsTr("&Tools")
             Action { text: qsTr("&Proxy Manager..."); onTriggered: { root.loadProxies(); proxyDialog.visible = true } }
             Action { text: qsTr("&Site Rules..."); onTriggered: { root.loadSiteRules(); siteRuleDialog.visible = true } }
         }
-        Menu {
+        ThemedMenu {
             title: qsTr("&Options")
             Action { text: qsTr("&Preferences..."); onTriggered: { root.loadPreferences(); prefsDialog.visible = true } }
         }
-        Menu {
+        ThemedMenu {
             title: qsTr("&Help")
             Action { text: qsTr("&About Ferric..."); onTriggered: aboutDialog.visible = true }
         }
