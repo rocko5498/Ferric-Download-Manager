@@ -47,7 +47,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
             self.send_response(200); self.send_header("Content-Type", "text/html"); self.send_header("Content-Length", str(len(body))); self.end_headers()
             if not head: self.wfile.write(body)
             return
-        if path != "/file.bin":
+        if path == "/page.html":  # test page for the browser-capture test
+            body = (b"<!doctype html><html><body><h1>Downloads</h1>"
+                    b"<a id=attach href=/attach.bin>attachment</a> "
+                    b"<a id=redirect href=/redirect>redirect</a> "
+                    b"<a id=plain href=/file.bin>plain</a></body></html>")
+            self.send_response(200); self.send_header("Content-Type", "text/html"); self.send_header("Content-Length", str(len(body))); self.end_headers()
+            if not head: self.wfile.write(body)
+            return
+        if path not in ("/file.bin", "/attach.bin"):
             self.send_response(404); self.send_header("Content-Length", "0"); self.end_headers(); return
         start, end = 0, FILE_SIZE - 1
         rng = self.headers.get("Range")
@@ -64,6 +72,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/octet-stream")
         self.send_header("Content-Length", str(end - start + 1))
         self.send_header("ETag", '"ferric-test"')
+        if path == "/attach.bin":
+            self.send_header("Content-Disposition", 'attachment; filename="attached.bin"')
         self.end_headers()
         if head:
             return
@@ -89,6 +99,9 @@ class Daemon:
         shutil.copy2(exe, self.exe)
         open(os.path.join(self.dir, "portable"), "w").close()  # data dir = bin/data
         self.dl = os.path.join(root, "dl"); os.makedirs(self.dl)
+        # Applied after every start: LAN access for the test server, and a default folder inside the sandbox
+        # (browser captures do not name a folder, so they would land in the real Downloads otherwise).
+        self.settings = {"allow_lan_downloads": "1", "default_save_dir": self.dl}
         self.proc = None
 
     def start(self):
@@ -104,16 +117,33 @@ class Daemon:
                     self.port, self.token = int(lines[0]), lines[1]
                     try:
                         self.call("GET", "/health")
-                        if self.restarted: self.call("POST", "/settings", {"allow_lan_downloads": "1"})
-                        self.restarted = True
+                        self.call("POST", "/settings", self.settings)
                         return
                     except Exception:
                         pass
         raise RuntimeError("daemon did not start; see " + self.log.name)
 
+    def attach(self, wait=20):
+        """Pick up a daemon somebody else started (the native host starts Ferric when it is not running)."""
+        lock = os.path.join(self.dir, "data", "ferric.lock")
+        for _ in range(int(wait * 5)):
+            time.sleep(0.2)
+            if os.path.exists(lock):
+                lines = open(lock).read().split()
+                if len(lines) >= 2:
+                    self.port, self.token = int(lines[0]), lines[1]
+                    try: self.call("GET", "/health"); return True
+                    except Exception: pass
+        return False
+
     def kill(self):
+        # also stop a daemon that the native host started on its own
+        for pid in filter(str.isdigit, os.listdir("/proc")):
+            try:
+                if os.path.realpath(f"/proc/{pid}/exe") == os.path.realpath(self.exe): os.kill(int(pid), signal.SIGKILL)
+            except OSError: pass
         if self.proc:
-            self.proc.send_signal(signal.SIGKILL); self.proc.wait(); self.proc = None
+            self.proc.wait(); self.proc = None
         lock = os.path.join(self.dir, "data", "ferric.lock")
         if os.path.exists(lock): os.remove(lock)
 
@@ -266,7 +296,9 @@ def main():
             if dm.proc is None:
                 dm.start()
     dm.kill()
-    print(f"{len(JOURNEYS) - failed if not flt else '-'} passed, {failed} failed  (logs: {root})")
+    print(f"{len(JOURNEYS) - failed if not flt else '-'} passed, {failed} failed")
+    if failed or os.environ.get("FERRIC_E2E_KEEP"): print("logs kept in", root)
+    else: shutil.rmtree(root, ignore_errors=True)   # the daemon copy alone is hundreds of MB
     sys.exit(1 if failed else 0)
 
 

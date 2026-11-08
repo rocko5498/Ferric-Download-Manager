@@ -23,3 +23,31 @@ jobs:
         run: cargo build -p ferricd
       - name: Run the journeys
         run: python3 scripts/e2e/journeys.py target/debug/ferricd
+
+  browser-capture:
+    # Chromium + the real extension + ferric-host + a real daemon: clicks download links and checks that Ferric gets them.
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build the daemon and the native host
+        run: cargo build -p ferricd -p ferric-host
+      - name: Build the extension
+        working-directory: extension
+        run: |
+          npm ci
+          npm run build
+      - name: Install a Chromium that still allows --load-extension
+        run: |
+          mkdir -p "$RUNNER_TEMP/browser" && cd "$RUNNER_TEMP/browser"
+          npm init -y >/dev/null
+          npm i puppeteer-core playwright@1.49.1
+          npx playwright install --with-deps chromium
+          echo "CHROME=$(ls -d $HOME/.cache/ms-playwright/chromium-*/chrome-linux/chrome | head -1)" >> "$GITHUB_ENV"
+      - name: Run the capture journeys
+        run: python3 -u scripts/e2e/capture.py target/debug/ferricd target/debug/ferric-host extension/build/chrome-mv3-prod "$RUNNER_TEMP/browser" "$CHROME"
