@@ -232,7 +232,7 @@ impl FtpSession {
                 }
                 // Closing the data connection early makes the server answer 426;
                 // that is expected after a deliberate stop.
-                let finished = $stream.finalize_retr_stream(data_stream).await;
+                let finished = data_stream.finish().await;
                 if !stopped_early {
                     finished.map_err(|e| anyhow!(concat!($label, " finalize RETR: {}"), e))?;
                 }

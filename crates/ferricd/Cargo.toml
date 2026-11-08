@@ -56,7 +56,7 @@ tracing-subscriber = { workspace = true }
 console-subscriber = { version = "0.4", optional = true }
 chrono             = { workspace = true }
 windows-sys        = { workspace = true }
-suppaftp     = { version = "10.0.0", features = ["tokio", "tokio-rustls-aws-lc-rs", "deprecated"] }
+suppaftp     = { version = "12.2", features = ["tokio", "tokio-rustls-aws-lc-rs", "deprecated"] }
 # SFTP (Task 097) — pure-Rust SSH (no OpenSSL/perl)
 russh        = { version = "0.65", default-features = false, features = ["aws-lc-rs", "flate2"] }
 russh-sftp   = "2.3"

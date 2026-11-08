@@ -573,6 +573,11 @@ pub(crate) fn parse_content_digest(header: &str) -> Option<(DigestAlg, String)> 
     Some((alg, digest))
 }
 
+/// Lower-case hex of a digest (sha2/sha1 0.11 outputs no longer implement `LowerHex`).
+pub(crate) fn hex_lower(bytes: impl AsRef<[u8]>) -> String {
+    bytes.as_ref().iter().map(|b| format!("{b:02x}")).collect()
+}
+
 #[derive(Debug, Clone, Copy)]
 pub(crate) enum DigestAlg {
     Sha256,
@@ -620,8 +625,8 @@ impl BodyHasher {
     fn finalize_hex(self) -> String {
         use sha1::Digest as _;
         match self {
-            Self::Sha256(h) => format!("{:x}", h.finalize()),
-            Self::Sha1(h) => format!("{:x}", h.finalize()),
+            Self::Sha256(h) => hex_lower(h.finalize()),
+            Self::Sha1(h) => hex_lower(h.finalize()),
             Self::Md5(h) => format!("{:x}", h.compute()),
         }
     }
@@ -2072,7 +2077,7 @@ mod tests {
         let header = format!("sha-256=:{b64}:");
         let (alg, hex) = parse_content_digest(&header).unwrap();
         assert!(matches!(alg, DigestAlg::Sha256));
-        assert_eq!(hex, format!("{:x}", Sha256::digest(data)));
+        assert_eq!(hex, hex_lower(Sha256::digest(data)));
     }
 }
 

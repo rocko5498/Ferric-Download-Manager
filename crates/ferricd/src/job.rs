@@ -2217,7 +2217,7 @@ async fn verify_checksum(path: &Path, expected: &str) -> Result<bool> {
                 }
                 hasher.update(&buf[..n]);
             }
-            format!("{:x}", hasher.finalize())
+            crate::chunk::hex_lower(hasher.finalize())
         }
         "sha1" => {
             use sha1::{Digest as _, Sha1};
@@ -2229,7 +2229,7 @@ async fn verify_checksum(path: &Path, expected: &str) -> Result<bool> {
                 }
                 hasher.update(&buf[..n]);
             }
-            format!("{:x}", hasher.finalize())
+            crate::chunk::hex_lower(hasher.finalize())
         }
         "md5" => {
             let mut hasher = md5::Context::new();
@@ -2923,7 +2923,7 @@ mod tests {
         use sha2::{Digest as _, Sha256};
 
         let data = Arc::new(b"known sha256 payload".to_vec());
-        let checksum = format!("sha256:{:x}", Sha256::digest(data.as_slice()));
+        let checksum = format!("sha256:{}", crate::chunk::hex_lower(Sha256::digest(data.as_slice())));
         let (record, events, _dir) = run_no_range_checksum_job(data, Some(checksum)).await?;
 
         assert_eq!(record.status, DownloadStatus::Completed);

@@ -86,8 +86,8 @@ governor = "0.6"
 
 # Crypto
 ring = "0.17"
-sha1 = "0.10"
-sha2 = "0.10"
+sha1 = "0.11"
+sha2 = "0.11"
 md5  = "0.7"
 
 # Pinned >=36 to stay clear of RUSTSEC-2026-0095/0096/0088/0149/0182/0188 etc. (17 advisories
