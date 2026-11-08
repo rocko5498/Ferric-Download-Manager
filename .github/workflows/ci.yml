@@ -140,3 +140,10 @@ jobs:
 
       - name: Wire audit (FQT-018 — QML action ids must be in catalog/actions.json)
         run: python tasks/cxx-qt/tools/wire_audit.py
+
+      # Debug builds keep the console subsystem, so the smoke markers reach stdout.
+      - name: QML smoke (every tab and dialog opens without a QML error)
+        shell: bash
+        run: |
+          cargo build -p ferric-qt
+          bash scripts/qml-smoke.sh target/debug/ferric-qt.exe
