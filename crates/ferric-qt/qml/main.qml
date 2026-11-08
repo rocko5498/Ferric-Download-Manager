@@ -1623,8 +1623,14 @@ Window {
             var visible = downloadVisibleColumns.indexOf(col.title) >= 0;
             out.push({ title: col.title, width: visible ? col.width : 0, role: col.role });
         }
+        // Spare room goes to the Name column, so the table always fills the window.
+        var used = 28 + 24 + 16; // "#", icon, scrollbar
+        for (var j = 0; j < out.length; j++) used += out[j].width;
+        for (var k = 0; k < out.length; k++)
+            if (out[k].role === "name" && out[k].width > 0) out[k].width += Math.max(0, root.downloadViewW - used);
         return out;
     }
+    property int downloadViewW: 0
     readonly property int downloadTableWidth: {
         var w = 28 + 24; // "#" + icon swatch columns
         for (var i = 0; i < root.downloadColumns.length; i++) w += root.downloadColumns[i].width;
@@ -2230,7 +2236,7 @@ Window {
             }
 
             // Tables
-            DownloadsTable { visible: root.workspaceIndex === 1; anchors.fill: parent; downloadModel: downloadModel; columns: root.downloadColumns; tableWidth: root.downloadTableWidth; selectedDownloads: root.selectedDownloads; categoryFilter: root.categoryFilter; queueFilter: root.queueFilter; queues: root.queues; findText: root.findText; findScope: root.findScope; findMatchCase: root.findMatchCase; findWhole: root.findWhole; hiddenIds: root.pendingCaptures; onOpenProgress: function(id) { root.openProgress(id) }; onToggleSelection: function(id, st, n, sp, u, add) { root.toggleDownloadSelection(id, st, n, sp, u, add) }; onShowProperties: function(id, st, n, sp, u) { root.toggleDownloadSelection(id, st, n, sp, u, false) }; bus: bus; requestBus: root.requestBus; lastError: downloadModel.last_error; lastOk: downloadModel.last_ok }
+            DownloadsTable { visible: root.workspaceIndex === 1; anchors.fill: parent; onWidthChanged: root.downloadViewW = width; downloadModel: downloadModel; columns: root.downloadColumns; tableWidth: root.downloadTableWidth; selectedDownloads: root.selectedDownloads; categoryFilter: root.categoryFilter; queueFilter: root.queueFilter; queues: root.queues; findText: root.findText; findScope: root.findScope; findMatchCase: root.findMatchCase; findWhole: root.findWhole; hiddenIds: root.pendingCaptures; onOpenProgress: function(id) { root.openProgress(id) }; onToggleSelection: function(id, st, n, sp, u, add) { root.toggleDownloadSelection(id, st, n, sp, u, add) }; onShowProperties: function(id, st, n, sp, u) { root.toggleDownloadSelection(id, st, n, sp, u, false) }; bus: bus; requestBus: root.requestBus; lastError: downloadModel.last_error; lastOk: downloadModel.last_ok }
             TorrentsTable { visible: root.workspaceIndex === 2; anchors.fill: parent; torrentModel: torrentModel; columns: root.torrentColumns; columnsAll: root.torrentColumnsAll; tableWidth: root.torrentTableWidth; selectedTorrents: root.selectedTorrents; tagFilter: root.tagFilter; statusFilter: root.torrentStatusFilter; onToggleSelection: function(id, st, add) { root.toggleTorrentSelection(id, st, add) }; onSetColWidth: function(i, w, f) { root.setTorrentColWidth(i, w, f) }; onDeleteTorrent: function(id) { root.pendingDeleteTorrentIds = [id]; deleteTorrentDialog.visible = true }; onSetLocation: function(id) { root.setLocationTarget = id; root.doShowSetLocation() }; bus: bus; requestBus: root.requestBus; lastError: torrentModel.last_error; lastOk: torrentModel.last_ok }
         }
     }
