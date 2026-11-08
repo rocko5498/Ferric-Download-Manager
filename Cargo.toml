@@ -48,7 +48,7 @@ quick-xml  = "0.41"
 base64     = "0.22"
 
 # Database
-sqlx = { version = "0.8", default-features = false, features = [
+sqlx = { version = "0.9", default-features = false, features = [
     "sqlite", "runtime-tokio", "macros", "migrate",
 ] }
 
@@ -74,7 +74,7 @@ rand              = "0.8"
 regex             = "1"
 winreg            = "0.52"
 chrono            = { version = "0.4", default-features = false, features = ["clock"] }
-windows-sys       = { version = "0.59", features = [
+windows-sys       = { version = "0.61", features = [
     "Win32_Foundation",
     "Win32_System_IO",
     "Win32_System_Ioctl",
