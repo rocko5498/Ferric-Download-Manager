@@ -49,7 +49,7 @@ def main():
                 proc.kill(); rc = -9
         text = open(out).read()
         if rc != 0:
-            raise RuntimeError("browser run failed (exit %s): %s" % (rc, text[-400:]))
+            raise RuntimeError("browser run failed (exit %s): %s" % (rc, text[:900] + " ... " + text[-300:]))
         if os.environ.get("FERRIC_E2E_VERBOSE"): print(text[-1500:])
         return text
 
