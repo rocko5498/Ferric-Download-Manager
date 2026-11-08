@@ -112,6 +112,29 @@ Window {
         startupTimer.start();
     }
 
+    // `ferric-qt --smoke`: visit every tab and open every plain dialog, log a marker and quit.
+    // scripts/qml-smoke.sh runs this and fails on any QML error in the log.
+    Timer {
+        id: smokeTimer
+        interval: 700
+        repeat: true
+        running: Qt.application.arguments.indexOf("--smoke") >= 0
+        property int step: 0
+        readonly property var dialogs: [addUrlDialog, addBatchDialog, addTorrentDialog, prefsDialog, proxyDialog, webhooksDialog,
+                                        aboutDialog, shortcutsDialog, statsDialog, columnChooserDialog, addCategoryDialog,
+                                        addRssDialog, addRssRuleDialog, exitDialog]
+        onTriggered: {
+            var tabs = 5;
+            if (step > 0 && step <= tabs + dialogs.length) {
+                if (step > tabs) dialogs[step - tabs - 1].visible = false;   // close the previous dialog
+            }
+            if (step < tabs) { root.workspaceIndex = step; console.log("SMOKE tab " + step); }
+            else if (step < tabs + dialogs.length) { dialogs[step - tabs].visible = true; console.log("SMOKE dialog " + (step - tabs)); }
+            else { console.log("FERRIC-SMOKE-DONE"); running = false; root.quitApp(); }
+            step++;
+        }
+    }
+
     Timer {
         id: startupTimer
         interval: 0
