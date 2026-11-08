@@ -20,7 +20,10 @@ const browser = await puppeteer.launch({
   ignoreDefaultArgs: ["--disable-extensions"],
   args: [`--disable-extensions-except=${ext}`, `--load-extension=${ext}`, "--no-first-run", "--no-sandbox"],
 })
-const target = await browser.waitForTarget((t) => t.type() === "service_worker" && t.url().includes("background"), { timeout: 20000 })
+const target = await browser.waitForTarget((t) => t.type() === "service_worker" && t.url().includes("background"), { timeout: 20000 }).catch((e) => {
+  say({ ev: "no-service-worker", targets: browser.targets().map((t) => t.type() + " " + t.url()), ext: fs.existsSync(ext) ? fs.readdirSync(ext) : "missing" })
+  throw e
+})
 const worker = await target.worker()
 say({ ev: "service-worker", url: target.url() })
 await new Promise((r) => setTimeout(r, 6000)) // let the extension start and talk to the host
